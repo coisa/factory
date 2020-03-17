@@ -10,6 +10,11 @@ namespace CoiSA\Factory;
 final class ReflectionFactory implements FactoryInterface
 {
     /**
+     * @var array
+     */
+    private static $instances = array();
+
+    /**
      * @param string $className
      * @param array $arguments
      *
@@ -29,5 +34,38 @@ final class ReflectionFactory implements FactoryInterface
         }
 
         return $reflection->newInstanceArgs($arguments);
+    }
+
+    /**
+     * @param string $className
+     * @param array|null $arguments
+     *
+     * @return mixed|object
+     * @throws \ReflectionException
+     */
+    public function getInstance($className, array $arguments = null)
+    {
+        $hash = self::getHash($className, $arguments);
+
+        if (!isset(self::$instances[$hash])) {
+            self::$instances[$hash] = $this->newInstance($className, $arguments);
+        }
+
+        return self::$instances[$hash];
+    }
+
+    /**
+     * @param string $className
+     * @param array|null $arguments
+     *
+     * @return string
+     */
+    private static function getHash($className, array $arguments = null)
+    {
+        if (empty($arguments)) {
+            return $className;
+        }
+
+        return $className. '::' . \json_encode($arguments);
     }
 }

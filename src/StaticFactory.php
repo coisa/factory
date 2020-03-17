@@ -32,8 +32,19 @@ final class StaticFactory implements StaticFactoryInterface
      *
      * @return object
      */
-    public static function getInstance($className, array $arguments = null)
+    public static function newInstance($className, array $arguments = null)
     {
         return self::getFactory()->newInstance($className, $arguments);
+    }
+
+    /**
+     * @param string $className
+     * @param array|null $arguments
+     *
+     * @return object
+     */
+    public static function getInstance($className, array $arguments = null)
+    {
+        return self::getFactory()->getInstance($className, $arguments);
     }
 }

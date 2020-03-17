@@ -16,4 +16,12 @@ interface FactoryInterface
      * @return object
      */
     public function newInstance($className, array $arguments = null);
+
+    /**
+     * @param string $className
+     * @param array $arguments
+     *
+     * @return object
+     */
+    public function getInstance($className, array $arguments = null);
 }

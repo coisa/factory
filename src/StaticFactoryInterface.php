@@ -15,5 +15,13 @@ interface StaticFactoryInterface
      *
      * @return object
      */
+    public static function newInstance($className, array $arguments = null);
+
+    /**
+     * @param string $className
+     * @param array $arguments
+     *
+     * @return object
+     */
     public static function getInstance($className, array $arguments = null);
 }
