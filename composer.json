@@ -1,0 +1,35 @@
+{
+    "name": "coisa/factory",
+    "description": "Object Factory Utility",
+    "type": "library",
+    "require": {
+        "php": "^5.3"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Felipe Sayão Lobato Abreu",
+            "email": "github@felipeabreu.com.br"
+        }
+    ],
+    "minimum-stability": "stable",
+    "config": {
+        "platform": {
+            "php": "5.3.29"
+        },
+        "sort-packages": true
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4"
+    },
+    "autoload": {
+        "psr-4": {
+            "CoiSA\\Factory\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CoiSA\\Factory\\": "tests"
+        }
+    }
+}
