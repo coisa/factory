@@ -28,7 +28,11 @@ final class SharedFactory implements SharedFactoryInterface
      */
     public function __construct(FactoryInterface $factory = null)
     {
-        $this->factory = StaticFactory::getInstance(__NAMESPACE__ . '\\ReflectionFactory');
+        if (null === $factory) {
+            $factory = StaticFactory::getInstance(__NAMESPACE__ . '\\ReflectionFactory');
+        }
+
+        $this->factory = $factory;
     }
 
     /**
