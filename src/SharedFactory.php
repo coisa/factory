@@ -40,8 +40,7 @@ final class SharedFactory implements SharedFactoryInterface
         $hash = self::getHash($className, $arguments);
 
         if (!isset(self::$instances[$hash])) {
-            self::$instances[$hash] = empty($arguments) ? StaticFactory::getInstance($className) :
-                StaticFactory::getInstance($className, $arguments);
+            self::$instances[$hash] = StaticFactory::getInstance($className, $arguments);
         }
 
         return self::$instances[$hash];
