@@ -10,62 +10,58 @@ namespace CoiSA\Factory;
 final class ReflectionFactory implements FactoryInterface
 {
     /**
+     * @var \ReflectionClass
+     */
+    private $reflectionClass;
+
+    /**
      * @var array
      */
     private static $instances = array();
 
     /**
-     * @param string $className
-     * @param array $arguments
+     * ReflectionFactory constructor.
      *
-     * @return object
+     * @param string $className
+     *
      * @throws \ReflectionException
      */
-    public function newInstance($className, array $arguments = null)
+    public function __construct($className)
     {
-        $reflection = new \ReflectionClass($className);
-
-        if (!$reflection->hasMethod('__construct')) {
-            return $reflection->newInstanceWithoutConstructor();
-        }
-
-        if (empty($arguments)) {
-            return $reflection->newInstance();
-        }
-
-        return $reflection->newInstanceArgs($arguments);
+        $this->reflectionClass = new \ReflectionClass($className);
     }
 
     /**
-     * @param string $className
      * @param array|null $arguments
      *
-     * @return mixed|object
-     * @throws \ReflectionException
+     * @return object
      */
-    public function getInstance($className, array $arguments = null)
+    public function newInstance(array $arguments = null)
     {
-        $hash = self::getHash($className, $arguments);
+        if (!$this->reflectionClass->hasMethod('__construct')) {
+            return $this->reflectionClass->newInstanceWithoutConstructor();
+        }
+
+        if (empty($arguments)) {
+            return $this->reflectionClass->newInstance();
+        }
+
+        return $this->reflectionClass->newInstanceArgs($arguments);
+    }
+
+    /**
+     * @param array|null $arguments
+     *
+     * @return object
+     */
+    public function getInstance(array $arguments = null)
+    {
+        $hash = \serialize($arguments);
 
         if (!isset(self::$instances[$hash])) {
-            self::$instances[$hash] = $this->newInstance($className, $arguments);
+            self::$instances[$hash] = $this->newInstance($arguments);
         }
 
         return self::$instances[$hash];
-    }
-
-    /**
-     * @param string $className
-     * @param array|null $arguments
-     *
-     * @return string
-     */
-    private static function getHash($className, array $arguments = null)
-    {
-        if (empty($arguments)) {
-            return $className;
-        }
-
-        return $className. '::' . \json_encode($arguments);
     }
 }

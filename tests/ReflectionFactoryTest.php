@@ -12,32 +12,30 @@ use CoiSA\Factory\Stub\ConstructorWithoutArgument;
  */
 final class ReflectionFactoryTest extends TestCase
 {
-    /**
-     * @var ReflectionFactory
-     */
-    private $reflectionFactory;
-
-    public function setUp()
-    {
-        $this->reflectionFactory = new ReflectionFactory();
-    }
-
     public function test_new_instance_with_non_existent_class_will_throw_exception()
     {
+        $className = __NAMESPACE__ . '\\' . \uniqid('Test', false);
+
         $this->setExpectedException('ReflectionException');
-        $this->reflectionFactory->newInstance(__NAMESPACE__ . '\\' . \uniqid('Test', false));
+        $reflectionFactory = new ReflectionFactory($className);
     }
 
     public function test_new_instace_without_arguments_return_object_on_class_without_constructor()
     {
-        $object = $this->reflectionFactory->newInstance(__NAMESPACE__ . '\\Stub\\ClassWithoutConstructor');
+        $className = __NAMESPACE__ . '\\Stub\\ClassWithoutConstructor';
+        $reflectionFactory = new ReflectionFactory($className);
+
+        $object = $reflectionFactory->newInstance();
 
         $this->assertInstanceOf(__NAMESPACE__ . '\\Stub\\ClassWithoutConstructor', $object);
     }
 
     public function test_new_instace_without_arguments_return_initialized_object_on_class_without_argument_constructor()
     {
-        $object = $this->reflectionFactory->newInstance(__NAMESPACE__ . '\\Stub\\ConstructorWithoutArgument');
+        $className = __NAMESPACE__ . '\\Stub\\ConstructorWithoutArgument';
+        $reflectionFactory = new ReflectionFactory($className);
+
+        $object = $reflectionFactory->newInstance();
 
         $this->assertInstanceOf(__NAMESPACE__ . '\\Stub\\ConstructorWithoutArgument', $object);
         $this->assertStringStartsWith('test', $object->argument);
@@ -58,14 +56,15 @@ final class ReflectionFactoryTest extends TestCase
      */
     public function test_get_shared_without_argument_will_return_same_instance($className, array $arguments = null)
     {
-        $expected = $this->reflectionFactory->getInstance($className, $arguments);
+        $reflectionFactory = new ReflectionFactory($className);
+        $otherReflectionFactory = new ReflectionFactory($className);
 
-        $this->assertSame($expected, $this->reflectionFactory->getInstance($className, $arguments));
-        $this->assertSame($expected, $this->reflectionFactory->getInstance($className, $arguments));
+        $expected = $reflectionFactory->getInstance($arguments);
 
-        $sharedFactory = new ReflectionFactory();
+        $this->assertSame($expected, $reflectionFactory->getInstance($arguments));
+        $this->assertSame($expected, $reflectionFactory->getInstance($arguments));
 
-        $this->assertSame($expected, $sharedFactory->getInstance($className, $arguments));
-        $this->assertSame($expected, $sharedFactory->getInstance($className, $arguments));
+        $this->assertSame($expected, $otherReflectionFactory->getInstance($arguments));
+        $this->assertSame($expected, $otherReflectionFactory->getInstance($arguments));
     }
 }
