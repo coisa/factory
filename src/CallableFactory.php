@@ -17,7 +17,7 @@ final class CallableFactory implements FactoryInterface
     /**
      * @var array
      */
-    private static $factories = array();
+    private static $instances = array();
 
     /**
      * CallableFactory constructor.
@@ -54,10 +54,10 @@ final class CallableFactory implements FactoryInterface
     {
         $hash = \serialize($arguments);
 
-        if (!isset(self::$factories[$hash])) {
-            self::$factories[$hash] = $this->newInstance($arguments);
+        if (!isset(self::$instances[$hash])) {
+            self::$instances[$hash] = $this->newInstance($arguments);
         }
 
-        return self::$factories[$hash];
+        return self::$instances[$hash];
     }
 }
