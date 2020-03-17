@@ -7,17 +7,12 @@ namespace CoiSA\Factory;
  *
  * @package CoiSA\Factory
  */
-final class ReflectionFactory implements FactoryInterface
+final class ReflectionFactory extends AbstractSharedFactory
 {
     /**
      * @var \ReflectionClass
      */
     private $reflectionClass;
-
-    /**
-     * @var array
-     */
-    private static $instances = array();
 
     /**
      * ReflectionFactory constructor.
@@ -47,21 +42,5 @@ final class ReflectionFactory implements FactoryInterface
         }
 
         return $this->reflectionClass->newInstanceArgs($arguments);
-    }
-
-    /**
-     * @param array|null $arguments
-     *
-     * @return object
-     */
-    public function getInstance(array $arguments = null)
-    {
-        $hash = \serialize($arguments);
-
-        if (!isset(self::$instances[$hash])) {
-            self::$instances[$hash] = $this->newInstance($arguments);
-        }
-
-        return self::$instances[$hash];
     }
 }
