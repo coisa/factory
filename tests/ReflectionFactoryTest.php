@@ -3,7 +3,6 @@
 namespace CoiSA\Factory;
 
 use PHPUnit\Framework\TestCase;
-use CoiSA\Factory\Stub\ConstructorWithoutArgument;
 
 /**
  * Class ReflectionFactoryTest
@@ -17,7 +16,7 @@ final class ReflectionFactoryTest extends TestCase
         $className = __NAMESPACE__ . '\\' . \uniqid('Test', false);
 
         $this->setExpectedException('ReflectionException');
-        $reflectionFactory = new ReflectionFactory($className);
+        new ReflectionFactory($className);
     }
 
     public function test_new_instace_without_arguments_return_object_on_class_without_constructor()

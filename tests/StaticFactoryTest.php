@@ -3,7 +3,6 @@
 namespace CoiSA\Factory;
 
 use PHPUnit\Framework\TestCase;
-use CoiSA\Factory\Stub\ConstructorWithoutArgument;
 
 /**
  * Class StaticFactoryTest
