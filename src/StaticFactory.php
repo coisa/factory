@@ -16,21 +16,6 @@ final class StaticFactory implements StaticFactoryInterface
 
     /**
      * @param string $className
-     *
-     * @return object
-     * @throws \ReflectionException
-     */
-    private static function getFactory($className)
-    {
-        if (!isset(self::$instances[$className])) {
-            self::$instances[$className] = new ReflectionFactory($className);
-        }
-
-        return self::$instances[$className];
-    }
-
-    /**
-     * @param string $className
      * @param array|null $arguments
      *
      * @return object
@@ -51,5 +36,29 @@ final class StaticFactory implements StaticFactoryInterface
     public static function getInstance($className, array $arguments = null)
     {
         return self::getFactory($className)->getInstance($arguments);
+    }
+
+    /**
+     * @param string $className
+     * @param FactoryInterface $factory
+     */
+    public static function setFactory($className, FactoryInterface $factory)
+    {
+        self::$instances[$className] = $factory;
+    }
+
+    /**
+     * @param string $className
+     *
+     * @return object
+     * @throws \ReflectionException
+     */
+    private static function getFactory($className)
+    {
+        if (!isset(self::$instances[$className])) {
+            self::setFactory($className, new ReflectionFactory($className));
+        }
+
+        return self::$instances[$className];
     }
 }
