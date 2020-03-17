@@ -2,8 +2,6 @@
 
 namespace CoiSA\Factory;
 
-use CoiSA\Factory\Exception\ReflectionFactoryException;
-
 /**
  * Class SharedFactory
  *
