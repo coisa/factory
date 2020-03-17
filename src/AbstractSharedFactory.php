@@ -22,7 +22,7 @@ abstract class AbstractSharedFactory implements FactoryInterface
     public function getInstance(array $arguments = null)
     {
         # PHP 5.3 compatibility
-        $className = \get_class($this);
+        $className = \get_called_class();
 
         $hash = \serialize($arguments);
 
