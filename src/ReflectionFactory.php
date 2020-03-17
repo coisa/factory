@@ -24,7 +24,7 @@ final class ReflectionFactory implements FactoryInterface
             return $reflection->newInstanceWithoutConstructor();
         }
 
-        if (null === $arguments) {
+        if (empty($arguments)) {
             return $reflection->newInstance();
         }
 
