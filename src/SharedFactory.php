@@ -10,28 +10,9 @@ namespace CoiSA\Factory;
 final class SharedFactory implements SharedFactoryInterface
 {
     /**
-     * @var FactoryInterface
-     */
-    private $factory;
-
-    /**
      * @var array
      */
     private static $instances = array();
-
-    /**
-     * SharedFactory constructor.
-     *
-     * @param FactoryInterface|null $factory
-     */
-    public function __construct(FactoryInterface $factory = null)
-    {
-        if (null === $factory) {
-            $factory = StaticFactory::getInstance(__NAMESPACE__ . '\\ReflectionFactory');
-        }
-
-        $this->factory = $factory;
-    }
 
     /**
      * @param string $className
@@ -59,8 +40,8 @@ final class SharedFactory implements SharedFactoryInterface
         $hash = self::getHash($className, $arguments);
 
         if (!isset(self::$instances[$hash])) {
-            self::$instances[$hash] = empty($arguments) ? $this->factory->newInstance($className) :
-                $this->factory->newInstance($className, $arguments);
+            self::$instances[$hash] = empty($arguments) ? StaticFactory::getInstance($className) :
+                StaticFactory::getInstance($className, $arguments);
         }
 
         return self::$instances[$hash];
