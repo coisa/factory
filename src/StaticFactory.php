@@ -12,7 +12,7 @@ final class StaticFactory implements StaticFactoryInterface
     /**
      * @var array
      */
-    private static $instances;
+    private static $factories;
 
     /**
      * @param string $className
@@ -44,7 +44,7 @@ final class StaticFactory implements StaticFactoryInterface
      */
     public static function setFactory($className, FactoryInterface $factory)
     {
-        self::$instances[$className] = $factory;
+        self::$factories[$className] = $factory;
     }
 
     /**
@@ -55,10 +55,10 @@ final class StaticFactory implements StaticFactoryInterface
      */
     private static function getFactory($className)
     {
-        if (!isset(self::$instances[$className])) {
+        if (!isset(self::$factories[$className])) {
             self::setFactory($className, new ReflectionFactory($className));
         }
 
-        return self::$instances[$className];
+        return self::$factories[$className];
     }
 }
