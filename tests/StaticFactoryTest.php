@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * This file is part of coisa/factory.
+ *
+ * This source file is subject to the license that is bundled
+ * with this source code in the file LICENSE.
+ *
+ * @link      https://github.com/coisa/factory
+ * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @license   https://opensource.org/licenses/MIT MIT License
+ */
+
 namespace CoiSA\Factory;
 
 use PHPUnit\Framework\TestCase;
@@ -11,20 +22,20 @@ use PHPUnit\Framework\TestCase;
  */
 final class StaticFactoryTest extends TestCase
 {
-    public function test_new_instance_with_non_existent_class_will_throw_exception()
+    public function testNewInstanceWithNonExistentClassWillThrowException()
     {
         $this->expectException('ReflectionException');
         StaticFactory::newInstance(__NAMESPACE__ . '\\' . \uniqid('Test', false));
     }
 
-    public function test_new_instace_without_arguments_return_object_on_class_without_constructor()
+    public function testNewInstaceWithoutArgumentsReturnObjectOnClassWithoutConstructor()
     {
         $object = StaticFactory::newInstance(__NAMESPACE__ . '\\Stub\\ClassWithoutConstructor');
 
         $this->assertInstanceOf(__NAMESPACE__ . '\\Stub\\ClassWithoutConstructor', $object);
     }
 
-    public function test_new_instace_without_arguments_return_initialized_object_on_class_without_argument_constructor()
+    public function testNewInstaceWithoutArgumentsReturnInitializedObjectOnClassWithoutArgumentConstructor()
     {
         $object = StaticFactory::newInstance(__NAMESPACE__ . '\\Stub\\ConstructorWithoutArgument');
 
@@ -44,8 +55,10 @@ final class StaticFactoryTest extends TestCase
 
     /**
      * @dataProvider provideClassNameAndArguments
+     *
+     * @param mixed $className
      */
-    public function test_get_shared_without_argument_will_return_same_instance($className, array $arguments = null)
+    public function testGetSharedWithoutArgumentWillReturnSameInstance($className, array $arguments = null)
     {
         $expected = StaticFactory::getInstance($className, $arguments);
 

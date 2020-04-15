@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * This file is part of coisa/factory.
+ *
+ * This source file is subject to the license that is bundled
+ * with this source code in the file LICENSE.
+ *
+ * @link      https://github.com/coisa/factory
+ * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @license   https://opensource.org/licenses/MIT MIT License
+ */
+
 namespace CoiSA\Factory;
 
 /**
@@ -17,19 +28,17 @@ final class ReflectionFactory extends AbstractSharedFactory
     /**
      * ReflectionFactory constructor.
      *
-     * @param string $className
+     * @param mixed $class
      *
      * @throws \ReflectionException
      */
-    public function __construct($className)
+    public function __construct($class)
     {
-        $this->reflectionClass = new \ReflectionClass($className);
+        $this->reflectionClass = new \ReflectionClass($class);
     }
 
     /**
-     * @param array|null $arguments
-     *
-     * @return object
+     * {@inheritDoc}
      */
     public function newInstance(array $arguments = null)
     {

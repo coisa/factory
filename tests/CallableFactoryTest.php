@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * This file is part of coisa/factory.
+ *
+ * This source file is subject to the license that is bundled
+ * with this source code in the file LICENSE.
+ *
+ * @link      https://github.com/coisa/factory
+ * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @license   https://opensource.org/licenses/MIT MIT License
+ */
+
 namespace CoiSA\Factory;
 
 use PHPUnit\Framework\TestCase;
@@ -23,10 +34,12 @@ final class CallableFactoryTest extends TestCase
 
     /**
      * @dataProvider provideArguments
+     *
+     * @param null|mixed $arguments
      */
-    public function test_new_instance_will_return_same_as_callable_return($arguments = null)
+    public function testNewInstanceWillReturnSameAsCallableReturn($arguments = null)
     {
-        $object = new \stdClass();
+        $object       = new \stdClass();
         $object->test = \uniqid('test', true);
 
         $callable = function () use ($object, $arguments) {
@@ -42,10 +55,12 @@ final class CallableFactoryTest extends TestCase
 
     /**
      * @dataProvider provideArguments
+     *
+     * @param null|mixed $arguments
      */
-    public function test_get_instance_will_return_same_as_callable_return($arguments = null)
+    public function testGetInstanceWillReturnSameAsCallableReturn($arguments = null)
     {
-        $object = new \stdClass();
+        $object       = new \stdClass();
         $object->test = \uniqid('test', true);
 
         $callable = function () use ($object, $arguments) {
@@ -61,10 +76,12 @@ final class CallableFactoryTest extends TestCase
 
     /**
      * @dataProvider provideArguments
+     *
+     * @param null|mixed $arguments
      */
-    public function test_get_instance_will_return_always_same_instance($arguments = null)
+    public function testGetInstanceWillReturnAlwaysSameInstance($arguments = null)
     {
-        $object = new \stdClass();
+        $object       = new \stdClass();
         $object->test = \uniqid('test', true);
 
         $callable = function () use ($object, $arguments) {

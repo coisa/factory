@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * This file is part of coisa/factory.
+ *
+ * This source file is subject to the license that is bundled
+ * with this source code in the file LICENSE.
+ *
+ * @link      https://github.com/coisa/factory
+ * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @license   https://opensource.org/licenses/MIT MIT License
+ */
+
 namespace CoiSA\Factory;
 
 /**
@@ -10,15 +21,13 @@ namespace CoiSA\Factory;
 final class StaticFactory implements StaticFactoryInterface
 {
     /**
-     * @var array
+     * @var FactoryInterface[]
      */
     private static $factories;
 
     /**
-     * @param string $className
-     * @param array|null $arguments
+     * {@inheritDoc}
      *
-     * @return object
      * @throws \ReflectionException
      */
     public static function newInstance($className, array $arguments = null)
@@ -27,10 +36,8 @@ final class StaticFactory implements StaticFactoryInterface
     }
 
     /**
-     * @param string $className
-     * @param array|null $arguments
+     * {@inheritDoc}
      *
-     * @return object
      * @throws \ReflectionException
      */
     public static function getInstance($className, array $arguments = null)
@@ -39,8 +46,10 @@ final class StaticFactory implements StaticFactoryInterface
     }
 
     /**
-     * @param string $className
+     * @param string           $className
      * @param FactoryInterface $factory
+     *
+     * @return void
      */
     public static function setFactory($className, FactoryInterface $factory)
     {
@@ -50,8 +59,9 @@ final class StaticFactory implements StaticFactoryInterface
     /**
      * @param string $className
      *
-     * @return object
      * @throws \ReflectionException
+     *
+     * @return FactoryInterface
      */
     private static function getFactory($className)
     {
