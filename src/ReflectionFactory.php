@@ -28,13 +28,13 @@ final class ReflectionFactory extends AbstractSharedFactory
     /**
      * ReflectionFactory constructor.
      *
-     * @param mixed $class
+     * @param mixed $objectOrClassName
      *
      * @throws \ReflectionException
      */
-    public function __construct($class)
+    public function __construct($objectOrClassName)
     {
-        $this->reflectionClass = new \ReflectionClass($class);
+        $this->reflectionClass = new \ReflectionClass($objectOrClassName);
     }
 
     /**
