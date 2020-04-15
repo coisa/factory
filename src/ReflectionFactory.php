@@ -33,7 +33,7 @@ final class ReflectionFactory extends AbstractSharedFactory
      */
     public function newInstance(array $arguments = null)
     {
-        if (!$this->reflectionClass->hasMethod('__construct')) {
+        if (null === $this->reflectionClass->getConstructor()) {
             return $this->reflectionClass->newInstanceWithoutConstructor();
         }
 
