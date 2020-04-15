@@ -3,7 +3,7 @@
     "description": "Object Factory Utility",
     "type": "library",
     "require": {
-        "php": "^5.3"
+        "php": ">=5.3"
     },
     "license": "MIT",
     "authors": [
@@ -14,13 +14,10 @@
     ],
     "minimum-stability": "stable",
     "config": {
-        "platform": {
-            "php": "5.3.29"
-        },
         "sort-packages": true
     },
     "require-dev": {
-        "phpunit/phpunit": "^4"
+        "phpunit/phpunit": "^9.1"
     },
     "autoload": {
         "psr-4": {
@@ -31,5 +28,8 @@
         "psr-4": {
             "CoiSA\\Factory\\": "tests"
         }
+    },
+    "scripts": {
+        "test": "phpunit --color=always"
     }
 }

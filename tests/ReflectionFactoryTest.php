@@ -15,7 +15,7 @@ final class ReflectionFactoryTest extends TestCase
     {
         $className = __NAMESPACE__ . '\\' . \uniqid('Test', false);
 
-        $this->setExpectedException('ReflectionException');
+        $this->expectException('ReflectionException');
         new ReflectionFactory($className);
     }
 

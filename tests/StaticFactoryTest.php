@@ -13,7 +13,7 @@ final class StaticFactoryTest extends TestCase
 {
     public function test_new_instance_with_non_existent_class_will_throw_exception()
     {
-        $this->setExpectedException('ReflectionException');
+        $this->expectException('ReflectionException');
         StaticFactory::newInstance(__NAMESPACE__ . '\\' . \uniqid('Test', false));
     }
 
