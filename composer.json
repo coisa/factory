@@ -17,7 +17,7 @@
         "sort-packages": true
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.16",
+        "coisa/php-cs-fixer": "^1.0",
         "jangregor/phpstan-prophecy": "^0.6.2",
         "malukenho/docheader": "^0.1.8",
         "phpstan/phpstan": "^0.12.18",
