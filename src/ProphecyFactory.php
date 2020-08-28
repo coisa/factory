@@ -47,12 +47,12 @@ class ProphecyFactory implements FactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function create(array $arguments = null)
+    public function create()
     {
         $objectProphecy = clone $this->objectProphecy;
 
         if ($this->prophesizeMethodsCallable) {
-            \call_user_func($this->prophesizeMethodsCallable, $objectProphecy, $arguments);
+            \call_user_func($this->prophesizeMethodsCallable, $objectProphecy, func_get_args());
         }
 
         return $objectProphecy->reveal();

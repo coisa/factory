@@ -23,9 +23,7 @@ interface FactoryInterface
     /**
      * Create new instance with given arguments.
      *
-     * @param mixed[] $arguments
-     *
      * @return object
      */
-    public function create(array $arguments = null);
+    public function create();
 }

@@ -30,9 +30,14 @@ final class StaticFactory implements StaticFactoryInterface
      *
      * @throws \ReflectionException
      */
-    public static function create($className, array $arguments = null)
+    public static function create($className)
     {
-        return self::getFactory($className)->create($arguments);
+        $factory = self::getFactory($className);
+
+        $arguments = func_get_args();
+        array_shift($arguments);
+
+        return call_user_func_array(array($factory, 'create'), $arguments);
     }
 
     /**

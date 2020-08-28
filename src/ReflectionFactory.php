@@ -40,16 +40,16 @@ final class ReflectionFactory implements FactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function create(array $arguments = null)
+    public function create()
     {
         if (null === $this->reflectionClass->getConstructor()) {
             return $this->reflectionClass->newInstanceWithoutConstructor();
         }
 
-        if (empty($arguments)) {
+        if (func_num_args() === 0) {
             return $this->reflectionClass->newInstance();
         }
 
-        return $this->reflectionClass->newInstanceArgs($arguments);
+        return $this->reflectionClass->newInstanceArgs(func_get_args());
     }
 }

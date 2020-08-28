@@ -24,9 +24,8 @@ interface StaticFactoryInterface
      * Create new instance of a class with given arguments.
      *
      * @param string  $className
-     * @param mixed[] $arguments
      *
      * @return object
      */
-    public static function create($className, array $arguments = null);
+    public static function create($className);
 }
