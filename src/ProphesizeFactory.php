@@ -13,6 +13,8 @@
 
 namespace CoiSA\Factory;
 
+use Prophecy\Prophet;
+
 /**
  * Class ProphesizeFactory
  *
@@ -28,7 +30,7 @@ final class ProphesizeFactory extends ProphecyFactory
      */
     public function __construct($classOrInterface = null, callable $prophesizeMethodsCallable = null)
     {
-        $prophet        = StaticFactory::getInstance('Prophecy\Prophet');
+        $prophet        = new Prophet();
         $objectProphecy = $prophet->prophesize($classOrInterface);
 
         parent::__construct($objectProphecy, $prophesizeMethodsCallable);

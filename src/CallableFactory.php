@@ -18,7 +18,7 @@ namespace CoiSA\Factory;
  *
  * @package CoiSA\Factory
  */
-final class CallableFactory extends AbstractSharedFactory
+final class CallableFactory implements FactoryInterface
 {
     /**
      * @var callable
@@ -38,7 +38,7 @@ final class CallableFactory extends AbstractSharedFactory
     /**
      * {@inheritDoc}
      */
-    public function newInstance(array $arguments = null)
+    public function create(array $arguments = null)
     {
         if (empty($arguments)) {
             return \call_user_func($this->callable);

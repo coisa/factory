@@ -32,4 +32,12 @@ final class ConstructorWithTypedArgument
     {
         $this->argument = $argument;
     }
+
+    /**
+     * @return mixed[]
+     */
+    public function getArgument()
+    {
+        return $this->argument;
+    }
 }

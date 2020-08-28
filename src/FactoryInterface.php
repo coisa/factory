@@ -21,16 +21,11 @@ namespace CoiSA\Factory;
 interface FactoryInterface
 {
     /**
+     * Create new instance with given arguments.
+     *
      * @param mixed[] $arguments
      *
      * @return object
      */
-    public function newInstance(array $arguments = null);
-
-    /**
-     * @param mixed[] $arguments
-     *
-     * @return object
-     */
-    public function getInstance(array $arguments = null);
+    public function create(array $arguments = null);
 }

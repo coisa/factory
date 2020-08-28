@@ -22,7 +22,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class ReflectionFactoryTest extends TestCase
 {
-    public function testNewInstanceWithNonExistentClassWillThrowException()
+    public function testConstructorWithNonExistentClassWillThrowException()
     {
         $className = __NAMESPACE__ . '\\' . \uniqid('Test', false);
 
@@ -30,53 +30,24 @@ final class ReflectionFactoryTest extends TestCase
         new ReflectionFactory($className);
     }
 
-    public function testNewInstaceWithoutArgumentsReturnObjectOnClassWithoutConstructor()
+    public function testCreateWithoutArgumentsReturnObjectOnClassWithoutConstructor()
     {
         $className         = __NAMESPACE__ . '\\Stub\\ClassWithoutConstructor';
         $reflectionFactory = new ReflectionFactory($className);
 
-        $object = $reflectionFactory->newInstance();
+        $object = $reflectionFactory->create();
 
-        $this->assertInstanceOf(__NAMESPACE__ . '\\Stub\\ClassWithoutConstructor', $object);
+        self::assertInstanceOf(__NAMESPACE__ . '\\Stub\\ClassWithoutConstructor', $object);
     }
 
-    public function testNewInstaceWithoutArgumentsReturnInitializedObjectOnClassWithoutArgumentConstructor()
+    public function testCreateWithoutArgumentsReturnInitializedObjectOnClassWithoutArgumentConstructor()
     {
         $className         = __NAMESPACE__ . '\\Stub\\ConstructorWithoutArgument';
         $reflectionFactory = new ReflectionFactory($className);
 
-        $object = $reflectionFactory->newInstance();
+        $object = $reflectionFactory->create();
 
-        $this->assertInstanceOf(__NAMESPACE__ . '\\Stub\\ConstructorWithoutArgument', $object);
-        $this->assertStringStartsWith('test', $object->argument);
-    }
-
-    public function provideClassNameAndArguments()
-    {
-        return array(
-            array(__NAMESPACE__ . '\\Stub\\ClassWithoutConstructor'),
-            array(__NAMESPACE__ . '\\Stub\\ConstructorWithoutArgument'),
-            array(__NAMESPACE__ . '\\Stub\\ConstructorWithMixedArgument', array(\uniqid('test', true))),
-            array(__NAMESPACE__ . '\\Stub\\ConstructorWithTypedArgument', array(array(\uniqid('test', true)))),
-        );
-    }
-
-    /**
-     * @dataProvider provideClassNameAndArguments
-     *
-     * @param mixed $className
-     */
-    public function testGetSharedWithoutArgumentWillReturnSameInstance($className, array $arguments = null)
-    {
-        $reflectionFactory      = new ReflectionFactory($className);
-        $otherReflectionFactory = new ReflectionFactory($className);
-
-        $expected = $reflectionFactory->getInstance($arguments);
-
-        $this->assertSame($expected, $reflectionFactory->getInstance($arguments));
-        $this->assertSame($expected, $reflectionFactory->getInstance($arguments));
-
-        $this->assertSame($expected, $otherReflectionFactory->getInstance($arguments));
-        $this->assertSame($expected, $otherReflectionFactory->getInstance($arguments));
+        self::assertInstanceOf(__NAMESPACE__ . '\\Stub\\ConstructorWithoutArgument', $object);
+        self::assertStringStartsWith('test', $object->argument);
     }
 }

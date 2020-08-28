@@ -18,7 +18,7 @@ namespace CoiSA\Factory;
  *
  * @package CoiSA\Factory
  */
-final class ReflectionFactory extends AbstractSharedFactory
+final class ReflectionFactory implements FactoryInterface
 {
     /**
      * @var \ReflectionClass
@@ -40,7 +40,7 @@ final class ReflectionFactory extends AbstractSharedFactory
     /**
      * {@inheritDoc}
      */
-    public function newInstance(array $arguments = null)
+    public function create(array $arguments = null)
     {
         if (null === $this->reflectionClass->getConstructor()) {
             return $this->reflectionClass->newInstanceWithoutConstructor();

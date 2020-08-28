@@ -37,7 +37,7 @@ final class CallableFactoryTest extends TestCase
      *
      * @param null|mixed $arguments
      */
-    public function testNewInstanceWillReturnSameAsCallableReturn($arguments = null)
+    public function testCreateWillReturnSameAsCallableReturn($arguments = null)
     {
         $object       = new \stdClass();
         $object->test = \uniqid('test', true);
@@ -50,49 +50,6 @@ final class CallableFactoryTest extends TestCase
 
         $factory = new CallableFactory($callable);
 
-        $this->assertSame($object, $factory->newInstance($arguments));
-    }
-
-    /**
-     * @dataProvider provideArguments
-     *
-     * @param null|mixed $arguments
-     */
-    public function testGetInstanceWillReturnSameAsCallableReturn($arguments = null)
-    {
-        $object       = new \stdClass();
-        $object->test = \uniqid('test', true);
-
-        $callable = function () use ($object, $arguments) {
-            $object->arguments = $arguments;
-
-            return $object;
-        };
-
-        $factory = new CallableFactory($callable);
-
-        $this->assertSame($object, $factory->getInstance());
-    }
-
-    /**
-     * @dataProvider provideArguments
-     *
-     * @param null|mixed $arguments
-     */
-    public function testGetInstanceWillReturnAlwaysSameInstance($arguments = null)
-    {
-        $object       = new \stdClass();
-        $object->test = \uniqid('test', true);
-
-        $callable = function () use ($object, $arguments) {
-            $object->arguments = $arguments;
-
-            return $object;
-        };
-
-        $factory = new CallableFactory($callable);
-
-        $this->assertSame($object, $factory->getInstance());
-        $this->assertSame($object, $factory->getInstance());
+        self::assertSame($object, $factory->create($arguments));
     }
 }

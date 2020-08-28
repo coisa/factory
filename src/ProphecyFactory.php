@@ -20,7 +20,7 @@ use Prophecy\Prophecy\ObjectProphecy;
  *
  * @package CoiSA\Factory
  */
-class ProphecyFactory extends AbstractSharedFactory
+class ProphecyFactory implements FactoryInterface
 {
     /**
      * @var ObjectProphecy
@@ -47,7 +47,7 @@ class ProphecyFactory extends AbstractSharedFactory
     /**
      * {@inheritDoc}
      */
-    public function newInstance(array $arguments = null)
+    public function create(array $arguments = null)
     {
         $objectProphecy = clone $this->objectProphecy;
 

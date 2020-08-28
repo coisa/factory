@@ -22,47 +22,24 @@ use PHPUnit\Framework\TestCase;
  */
 final class StaticFactoryTest extends TestCase
 {
-    public function testNewInstanceWithNonExistentClassWillThrowException()
+    public function testCreateWithNonExistentClassWillThrowException()
     {
         $this->expectException('ReflectionException');
-        StaticFactory::newInstance(__NAMESPACE__ . '\\' . \uniqid('Test', false));
+        StaticFactory::create(__NAMESPACE__ . '\\' . \uniqid('Test', false));
     }
 
-    public function testNewInstaceWithoutArgumentsReturnObjectOnClassWithoutConstructor()
+    public function testCreateWithoutArgumentsReturnObjectOnClassWithoutConstructor()
     {
-        $object = StaticFactory::newInstance(__NAMESPACE__ . '\\Stub\\ClassWithoutConstructor');
+        $object = StaticFactory::create(__NAMESPACE__ . '\\Stub\\ClassWithoutConstructor');
 
-        $this->assertInstanceOf(__NAMESPACE__ . '\\Stub\\ClassWithoutConstructor', $object);
+        self::assertInstanceOf(__NAMESPACE__ . '\\Stub\\ClassWithoutConstructor', $object);
     }
 
-    public function testNewInstaceWithoutArgumentsReturnInitializedObjectOnClassWithoutArgumentConstructor()
+    public function testCreateWithoutArgumentsReturnInitializedObjectOnClassWithoutArgumentConstructor()
     {
-        $object = StaticFactory::newInstance(__NAMESPACE__ . '\\Stub\\ConstructorWithoutArgument');
+        $object = StaticFactory::create(__NAMESPACE__ . '\\Stub\\ConstructorWithoutArgument');
 
-        $this->assertInstanceOf(__NAMESPACE__ . '\\Stub\\ConstructorWithoutArgument', $object);
-        $this->assertStringStartsWith('test', $object->argument);
-    }
-
-    public function provideClassNameAndArguments()
-    {
-        return array(
-            array(__NAMESPACE__ . '\\Stub\\ClassWithoutConstructor'),
-            array(__NAMESPACE__ . '\\Stub\\ConstructorWithoutArgument'),
-            array(__NAMESPACE__ . '\\Stub\\ConstructorWithMixedArgument', array(\uniqid('test', true))),
-            array(__NAMESPACE__ . '\\Stub\\ConstructorWithTypedArgument', array(array(\uniqid('test', true)))),
-        );
-    }
-
-    /**
-     * @dataProvider provideClassNameAndArguments
-     *
-     * @param mixed $className
-     */
-    public function testGetSharedWithoutArgumentWillReturnSameInstance($className, array $arguments = null)
-    {
-        $expected = StaticFactory::getInstance($className, $arguments);
-
-        $this->assertSame($expected, StaticFactory::getInstance($className, $arguments));
-        $this->assertSame($expected, StaticFactory::getInstance($className, $arguments));
+        self::assertInstanceOf(__NAMESPACE__ . '\\Stub\\ConstructorWithoutArgument', $object);
+        self::assertStringStartsWith('test', $object->argument);
     }
 }
