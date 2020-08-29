@@ -18,7 +18,7 @@ namespace CoiSA\Factory\Stub;
  *
  * @package CoiSA\Factory\Stub
  */
-final class ConstructorWithoutArgument
+class ConstructorWithoutArgument
 {
     /**
      * @var string

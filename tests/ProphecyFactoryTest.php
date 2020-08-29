@@ -51,8 +51,6 @@ final class ProphecyFactoryTest extends TestCase
             $objectProphecy,
             function (ObjectProphecy $objectProphecy, $arguments = null) {
                 $objectProphecy->create()->willReturn($arguments);
-
-                return $objectProphecy;
             }
         );
 

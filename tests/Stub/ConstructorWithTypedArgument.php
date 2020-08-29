@@ -18,7 +18,7 @@ namespace CoiSA\Factory\Stub;
  *
  * @package CoiSA\Factory\Stub
  */
-final class ConstructorWithTypedArgument
+class ConstructorWithTypedArgument
 {
     /** @var mixed[] */
     public $argument;

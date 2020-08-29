@@ -18,7 +18,7 @@ namespace CoiSA\Factory\Stub;
  *
  * @package CoiSA\Factory\Stub
  */
-final class ConstructorWithMixedArgument
+class ConstructorWithMixedArgument
 {
     /** @var mixed */
     public $argument;
@@ -28,7 +28,7 @@ final class ConstructorWithMixedArgument
      *
      * @param mixed $argument
      */
-    public function __construct($argument)
+    public function __construct($argument = null)
     {
         $this->argument = $argument;
     }

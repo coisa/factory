@@ -13,6 +13,9 @@
 
 namespace CoiSA\Factory;
 
+use CoiSA\Factory\Stub\ClassWithoutConstructor;
+use CoiSA\Factory\Stub\ConstructorWithMixedArgument;
+use CoiSA\Factory\Stub\ConstructorWithTypedArgument;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -22,10 +25,20 @@ use PHPUnit\Framework\TestCase;
  */
 final class CallableFactoryTest extends TestCase
 {
+    public function testCreateWithouArgumentWillReturnCallableResult()
+    {
+        $callable = function () {
+            return new ClassWithoutConstructor();
+        };
+
+        $factory = new CallableFactory($callable);
+
+        self::assertInstanceOf('CoiSA\\Factory\\Stub\\ClassWithoutConstructor', $factory->create());
+    }
+
     public function provideArguments()
     {
         return array(
-            array(array()),
             array(array(1)),
             array(array(1, 2)),
             array(array(1, 2, 3)),
@@ -37,19 +50,20 @@ final class CallableFactoryTest extends TestCase
      *
      * @param null|mixed $arguments
      */
-    public function testCreateWillReturnSameAsCallableReturn($arguments = null)
+    public function testCreateWithArgumentsWillReturnReturnCallableResult($arguments = null)
     {
-        $object       = new \stdClass();
-        $object->test = \uniqid('test', true);
-
-        $callable = function () use ($object, $arguments) {
-            $object->arguments = $arguments;
-
-            return $object;
+        $callable = function () {
+            return new ConstructorWithMixedArgument(func_get_args());
         };
 
         $factory = new CallableFactory($callable);
 
-        self::assertSame($object, \call_user_func_array(array($factory, 'create'), $arguments));
+        self::assertInstanceOf(
+            'CoiSA\\Factory\\Stub\\ConstructorWithMixedArgument',
+            \call_user_func_array(array($factory, 'create'), $arguments)
+        );
+
+        $object = \call_user_func_array(array($factory, 'create'), $arguments);
+        self::assertSame($arguments, $object->getArgument());
     }
 }

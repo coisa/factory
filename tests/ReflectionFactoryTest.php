@@ -50,4 +50,26 @@ final class ReflectionFactoryTest extends TestCase
         self::assertInstanceOf(__NAMESPACE__ . '\\Stub\\ConstructorWithoutArgument', $object);
         self::assertStringStartsWith('test', $object->argument);
     }
+
+    public function provideArguments()
+    {
+        return array(
+            array(array(1)),
+            array(array(1, 2)),
+            array(array(1, 2, 3)),
+        );
+    }
+
+    /**
+     * @dataProvider provideArguments
+     */
+    public function testCreateWithArgumentsWillInstantiateConstructorWithArguments(array $arguments)
+    {
+        $className         = __NAMESPACE__ . '\\Stub\\ConstructorWithMixedArgument';
+        $reflectionFactory = new ReflectionFactory($className);
+
+        $object = $reflectionFactory->create($arguments);
+
+        self::assertEquals($arguments, $object->getArgument());
+    }
 }
