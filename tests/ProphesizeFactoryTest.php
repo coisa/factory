@@ -33,6 +33,8 @@ final class ProphesizeFactoryTest extends TestCase
 
     /**
      * @dataProvider provideClassOrIterface
+     *
+     * @param mixed $classOrInterface
      */
     public function testCreateWillReturnRevealedGivenClassOrInterface($classOrInterface)
     {
@@ -43,6 +45,8 @@ final class ProphesizeFactoryTest extends TestCase
 
     /**
      * @dataProvider provideClassOrIterface
+     *
+     * @param mixed $classOrInterface
      */
     public function testCreateWillReturnDifferentRevealedGivenClassOrInterfaceEveryCall($classOrInterface)
     {
@@ -54,6 +58,8 @@ final class ProphesizeFactoryTest extends TestCase
 
     /**
      * @dataProvider provideClassOrIterface
+     *
+     * @param mixed $classOrInterface
      */
     public function testCreateeWillApplyProphesizeMethodToGivenClassOrInterfaceBeforeReveal($classOrInterface)
     {

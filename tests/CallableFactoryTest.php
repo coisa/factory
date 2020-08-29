@@ -15,7 +15,6 @@ namespace CoiSA\Factory;
 
 use CoiSA\Factory\Stub\ClassWithoutConstructor;
 use CoiSA\Factory\Stub\ConstructorWithMixedArgument;
-use CoiSA\Factory\Stub\ConstructorWithTypedArgument;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -53,7 +52,7 @@ final class CallableFactoryTest extends TestCase
     public function testCreateWithArgumentsWillReturnReturnCallableResult($arguments = null)
     {
         $callable = function () {
-            return new ConstructorWithMixedArgument(func_get_args());
+            return new ConstructorWithMixedArgument(\func_get_args());
         };
 
         $factory = new CallableFactory($callable);
