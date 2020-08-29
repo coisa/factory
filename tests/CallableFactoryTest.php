@@ -50,6 +50,6 @@ final class CallableFactoryTest extends TestCase
 
         $factory = new CallableFactory($callable);
 
-        self::assertSame($object, call_user_func_array(array($factory, 'create'), $arguments));
+        self::assertSame($object, \call_user_func_array(array($factory, 'create'), $arguments));
     }
 }

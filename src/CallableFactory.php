@@ -40,10 +40,10 @@ final class CallableFactory implements FactoryInterface
      */
     public function create()
     {
-        if (func_num_args() === 0) {
+        if (\func_num_args() === 0) {
             return \call_user_func($this->callable);
         }
 
-        return \call_user_func_array($this->callable, func_get_args());
+        return \call_user_func_array($this->callable, \func_get_args());
     }
 }

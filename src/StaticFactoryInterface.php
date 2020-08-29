@@ -23,7 +23,7 @@ interface StaticFactoryInterface
     /**
      * Create new instance of a class with given arguments.
      *
-     * @param string  $className
+     * @param string $className
      *
      * @return object
      */

@@ -20,7 +20,7 @@ use Prophecy\Prophecy\ObjectProphecy;
  *
  * @package CoiSA\Factory
  */
-class ProphecyFactory implements FactoryInterface
+final class ProphecyFactory implements FactoryInterface
 {
     /**
      * @var ObjectProphecy
@@ -49,12 +49,10 @@ class ProphecyFactory implements FactoryInterface
      */
     public function create()
     {
-        $objectProphecy = clone $this->objectProphecy;
-
         if ($this->prophesizeMethodsCallable) {
-            $objectProphecy = \call_user_func($this->prophesizeMethodsCallable, $objectProphecy, func_get_args());
+            \call_user_func($this->prophesizeMethodsCallable, $this->objectProphecy, \func_get_args());
         }
 
-        return $objectProphecy->reveal();
+        return $this->objectProphecy->reveal();
     }
 }

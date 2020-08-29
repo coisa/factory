@@ -26,7 +26,7 @@ final class ProphecyFactoryTest extends TestCase
     public function testCreateWillReturnRevealedGivenObjectProphecy()
     {
         $objectProphecy = $this->prophesize('CoiSA\\Factory\\FactoryInterface');
-        $factory = new ProphecyFactory($objectProphecy);
+        $factory        = new ProphecyFactory($objectProphecy);
 
         self::assertSame($objectProphecy->reveal(), $factory->create());
     }
@@ -57,6 +57,6 @@ final class ProphecyFactoryTest extends TestCase
         );
 
         self::assertNotSame($objectProphecy, $factory->create($arguments));
-        self::assertEquals($arguments, call_user_func_array(array($factory, 'create'), $arguments)->create());
+        self::assertEquals($arguments, \call_user_func_array(array($factory, 'create'), $arguments)->create());
     }
 }

@@ -34,10 +34,10 @@ final class StaticFactory implements StaticFactoryInterface
     {
         $factory = self::getFactory($className);
 
-        $arguments = func_get_args();
-        array_shift($arguments);
+        $arguments = \func_get_args();
+        \array_shift($arguments);
 
-        return call_user_func_array(array($factory, 'create'), $arguments);
+        return \call_user_func_array(array($factory, 'create'), $arguments);
     }
 
     /**

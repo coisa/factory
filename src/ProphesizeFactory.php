@@ -20,19 +20,42 @@ use Prophecy\Prophet;
  *
  * @package CoiSA\Factory
  */
-final class ProphesizeFactory extends ProphecyFactory
+final class ProphesizeFactory implements FactoryInterface
 {
+    /**
+     * @var string
+     */
+    private $classOrInterface;
+
+    /**
+     * @var null|callable
+     */
+    private $prophesizeMethodsCallable;
+
     /**
      * ProphesizeFactory constructor.
      *
-     * @param null          $classOrInterface
+     * @param string        $classOrInterface
      * @param null|callable $prophesizeMethodsCallable
      */
-    public function __construct($classOrInterface = null, callable $prophesizeMethodsCallable = null)
+    public function __construct($classOrInterface, callable $prophesizeMethodsCallable = null)
+    {
+        $this->classOrInterface          = $classOrInterface;
+        $this->prophesizeMethodsCallable = $prophesizeMethodsCallable;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function create()
     {
         $prophet        = new Prophet();
-        $objectProphecy = $prophet->prophesize($classOrInterface);
+        $objectProphecy = $prophet->prophesize($this->classOrInterface);
 
-        parent::__construct($objectProphecy, $prophesizeMethodsCallable);
+        if ($this->prophesizeMethodsCallable) {
+            \call_user_func($this->prophesizeMethodsCallable, $objectProphecy, \func_get_args());
+        }
+
+        return $objectProphecy->reveal();
     }
 }

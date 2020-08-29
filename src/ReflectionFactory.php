@@ -46,10 +46,10 @@ final class ReflectionFactory implements FactoryInterface
             return $this->reflectionClass->newInstanceWithoutConstructor();
         }
 
-        if (func_num_args() === 0) {
+        if (\func_num_args() === 0) {
             return $this->reflectionClass->newInstance();
         }
 
-        return $this->reflectionClass->newInstanceArgs(func_get_args());
+        return $this->reflectionClass->newInstanceArgs(\func_get_args());
     }
 }
