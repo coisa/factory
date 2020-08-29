@@ -25,7 +25,7 @@ final class CallableFactoryTest extends TestCase
     public function provideArguments()
     {
         return array(
-            array(),
+            array(array()),
             array(array(1)),
             array(array(1, 2)),
             array(array(1, 2, 3)),
@@ -50,6 +50,6 @@ final class CallableFactoryTest extends TestCase
 
         $factory = new CallableFactory($callable);
 
-        self::assertSame($object, $factory->create($arguments));
+        self::assertSame($object, call_user_func_array(array($factory, 'create'), $arguments));
     }
 }

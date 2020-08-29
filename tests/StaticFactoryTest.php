@@ -24,7 +24,7 @@ final class StaticFactoryTest extends TestCase
 {
     public function testCreateWithNonExistentClassWillThrowException()
     {
-        $this->expectException('ReflectionException');
+        $this->setExpectedException('ReflectionException');
         StaticFactory::create(__NAMESPACE__ . '\\' . \uniqid('Test', false));
     }
 

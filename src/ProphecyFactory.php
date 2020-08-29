@@ -52,7 +52,7 @@ class ProphecyFactory implements FactoryInterface
         $objectProphecy = clone $this->objectProphecy;
 
         if ($this->prophesizeMethodsCallable) {
-            \call_user_func($this->prophesizeMethodsCallable, $objectProphecy, func_get_args());
+            $objectProphecy = \call_user_func($this->prophesizeMethodsCallable, $objectProphecy, func_get_args());
         }
 
         return $objectProphecy->reveal();
