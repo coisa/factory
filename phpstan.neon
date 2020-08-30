@@ -1,7 +1,0 @@
-includes:
-    - vendor/jangregor/phpstan-prophecy/src/extension.neon
-parameters:
-    checkGenericClassInNonGenericObjectType: false
-    level: max
-    paths:
-        - %rootDir%/../../../src
