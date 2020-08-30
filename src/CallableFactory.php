@@ -30,8 +30,12 @@ final class CallableFactory implements FactoryInterface
      *
      * @param callable $callable
      */
-    public function __construct(callable $callable)
+    public function __construct($callable)
     {
+        if (false === \is_callable($callable)) {
+            throw new \InvalidArgumentException('The $callable argument should a valid callable function.');
+        }
+
         $this->callable = $callable;
     }
 

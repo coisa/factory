@@ -38,8 +38,14 @@ final class ProphecyFactory implements FactoryInterface
      * @param ObjectProphecy $objectProphecy
      * @param null|callable  $prophesizeMethodsCallable
      */
-    public function __construct(ObjectProphecy $objectProphecy, callable $prophesizeMethodsCallable = null)
+    public function __construct(ObjectProphecy $objectProphecy, $prophesizeMethodsCallable = null)
     {
+        if ($prophesizeMethodsCallable && false === \is_callable($prophesizeMethodsCallable)) {
+            throw new \InvalidArgumentException(
+                'The $prophesizeMethodsCallable argument should be a valid callable function.'
+            );
+        }
+
         $this->objectProphecy            = $objectProphecy;
         $this->prophesizeMethodsCallable = $prophesizeMethodsCallable;
     }

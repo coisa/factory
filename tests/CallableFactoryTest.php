@@ -24,6 +24,12 @@ use PHPUnit\Framework\TestCase;
  */
 final class CallableFactoryTest extends TestCase
 {
+    public function testCreateWithInvalidCallableArgumentWillThrowInvalidArgumentException()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        new CallableFactory(true);
+    }
+
     public function testCreateWithouArgumentWillReturnCallableResult()
     {
         $callable = function () {

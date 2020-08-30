@@ -38,8 +38,14 @@ final class ProphesizeFactory implements FactoryInterface
      * @param string        $classOrInterface
      * @param null|callable $prophesizeMethodsCallable
      */
-    public function __construct($classOrInterface, callable $prophesizeMethodsCallable = null)
+    public function __construct($classOrInterface, $prophesizeMethodsCallable = null)
     {
+        if ($prophesizeMethodsCallable && false === \is_callable($prophesizeMethodsCallable)) {
+            throw new \InvalidArgumentException(
+                'The $prophesizeMethodsCallable argument should be a valid callable function.'
+            );
+        }
+
         $this->classOrInterface          = $classOrInterface;
         $this->prophesizeMethodsCallable = $prophesizeMethodsCallable;
     }

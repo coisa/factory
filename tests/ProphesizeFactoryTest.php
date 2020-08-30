@@ -23,6 +23,12 @@ use Prophecy\Prophecy\ObjectProphecy;
  */
 final class ProphesizeFactoryTest extends TestCase
 {
+    public function testCreateWithInvalidProphesizeMethodsCallableArgumentWillThrowInvalidArgumentException()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        new ProphesizeFactory('CoiSA\\Factory\\FactoryInterface', true);
+    }
+
     public function provideClassOrIterface()
     {
         return array(
