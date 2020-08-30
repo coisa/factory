@@ -20,7 +20,10 @@
         "squizlabs/php_codesniffer": "^2.9"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "php": "5.3.29"
+        }
     },
     "extra": {
         "branch-alias": {
@@ -39,17 +42,13 @@
     },
     "minimum-stability": "stable",
     "scripts": {
-        "analyze": "phpstan analyze",
         "check": [
             "@test",
             "@sniff",
-            "@cs-check",
-            "@analyze",
-            "@docheader-check"
+            "@cs-check"
         ],
         "cs-check": "php-cs-fixer fix --dry-run --diff",
         "cs-fix": "php-cs-fixer fix",
-        "docheader-check": "docheader check ./src ./tests",
         "sniff": "phpcs",
         "test": "phpunit --color=always"
     }
