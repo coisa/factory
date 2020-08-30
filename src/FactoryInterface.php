@@ -23,6 +23,8 @@ interface FactoryInterface
     /**
      * Create new instance with given arguments.
      *
+     * @param mixed $arguments [optional] Zero or more arguments to be passed to construct the object
+     *
      * @return object
      */
     public function create();

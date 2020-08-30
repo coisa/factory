@@ -24,6 +24,7 @@ interface StaticFactoryInterface
      * Create new instance of a class with given arguments.
      *
      * @param string $className
+     * @param mixed  $arguments [optional] Zero or more arguments to be passed to the construct the object
      *
      * @return object
      */
