@@ -20,6 +20,12 @@ namespace CoiSA\Factory\Exception;
  */
 final class UnexpectedValueException extends \UnexpectedValueException implements FactoryException
 {
+    /**
+     * @param string $class
+     * @param string $implements
+     *
+     * @return UnexpectedValueException
+     */
     public static function forExpectedClassImplements($class, $implements)
     {
         $message = \sprintf(
