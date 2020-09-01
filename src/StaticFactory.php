@@ -25,12 +25,16 @@ final class StaticFactory implements StaticFactoryInterface
      */
     private static $factories;
 
+    // @codeCoverageIgnoreStart
+
     /**
      * Prevent class from being initialized.
      */
     private function __construct()
     {
     }
+
+    // @codeCoverageIgnoreEnd
 
     /**
      * {@inheritDoc}
