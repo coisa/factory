@@ -20,11 +20,36 @@ use PHPUnit\Framework\TestCase;
  *
  * @package CoiSA\Factory
  */
-final class StaticFactoryTest extends TestCase
+final class StaticFactoryTest extends TestCase implements StaticFactoryInterface
 {
+    public function testClassIsFinal()
+    {
+        $reflectionClass = new \ReflectionClass('CoiSA\\Factory\\StaticFactory');
+
+        self::assertTrue($reflectionClass->isFinal());
+    }
+
+    public function testConstructorIsNotPublic()
+    {
+        $reflectionClass = new \ReflectionClass('CoiSA\\Factory\\StaticFactory');
+        $constructor     = $reflectionClass->getConstructor();
+
+        self::assertFalse($constructor->isPublic());
+    }
+
+    /**
+     * @expectedException BadMethodCallException
+     */
+    public function testCreateWithoutArgumentsWillThrowBadMethodCallException()
+    {
+        StaticFactory::create();
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
     public function testCreateWithNonExistentClassWillThrowException()
     {
-        $this->setExpectedException('ReflectionException');
         StaticFactory::create(__NAMESPACE__ . '\\' . \uniqid('Test', false));
     }
 
@@ -41,5 +66,37 @@ final class StaticFactoryTest extends TestCase
 
         self::assertInstanceOf(__NAMESPACE__ . '\\Stub\\ConstructorWithoutArgument', $object);
         self::assertStringStartsWith('test', $object->argument);
+    }
+
+    public static function create()
+    {
+        $object       = new \stdClass();
+        $object->argv = \func_get_args();
+
+        return $object;
+    }
+
+    public function testCreateWithStaticFactoryImplementationWillReturnCreateFromGivenClass()
+    {
+        $class = \get_called_class();
+        $arg1  = \uniqid('arg1', true);
+        $arg2  = \uniqid('arg2', true);
+
+        $object = StaticFactory::create($class, $arg1, $arg2);
+
+        self::assertInstanceOf('stdClass', $object);
+        self::assertEquals(array($arg1, $arg2), $object->argv);
+    }
+
+    public function testGetFactoryWillReturnGivenSetFactory()
+    {
+        $class   = \get_called_class();
+        $factory = new CallableFactory(function () {
+            return true;
+        });
+
+        StaticFactory::setFactory($class, $factory);
+
+        self::assertSame($factory, StaticFactory::getFactory($class));
     }
 }

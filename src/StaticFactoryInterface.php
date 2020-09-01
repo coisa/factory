@@ -23,10 +23,9 @@ interface StaticFactoryInterface
     /**
      * Create new instance of a class with given arguments.
      *
-     * @param string $className
-     * @param mixed  $arguments [optional] Zero or more arguments to be passed to the construct the object
+     * @throws \UnexpectedValueException when given arguments are invalid for create a new instance
      *
      * @return object
      */
-    public static function create($className);
+    public static function create();
 }

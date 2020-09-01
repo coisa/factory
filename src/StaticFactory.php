@@ -26,16 +26,31 @@ final class StaticFactory implements StaticFactoryInterface
     private static $factories;
 
     /**
+     * Prevent class from being initialized.
+     */
+    private function __construct()
+    {
+    }
+
+    /**
      * {@inheritDoc}
      *
+     * @param string $className
+     * @param mixed  $arguments [optional] Zero or more arguments to be passed to the construct the object
+     *
+     * @throws \BadMethodCallException
      * @throws \ReflectionException
      */
-    public static function create($className)
+    public static function create()
     {
-        $factory = self::getFactory($className);
+        if (\func_num_args() === 0) {
+            throw new \BadMethodCallException('You should inform at least one argument to create an instance');
+        }
 
         $arguments = \func_get_args();
-        \array_shift($arguments);
+        $className = \array_shift($arguments);
+
+        $factory = self::getFactory($className);
 
         return \call_user_func_array(array($factory, 'create'), $arguments);
     }
@@ -60,7 +75,13 @@ final class StaticFactory implements StaticFactoryInterface
      */
     public static function getFactory($className)
     {
-        if (!isset(self::$factories[$className])) {
+        if (isset(self::$factories[$className])) {
+            return self::$factories[$className];
+        }
+
+        try {
+            self::setFactory($className, new StaticFactoryFactory($className));
+        } catch (\UnexpectedValueException $unexpectedValueException) {
             self::setFactory($className, new ReflectionFactory($className));
         }
 
