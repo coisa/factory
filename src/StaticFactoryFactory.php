@@ -45,7 +45,7 @@ final class StaticFactoryFactory implements FactoryInterface
         $staticFactoryInterface = 'CoiSA\\Factory\\StaticFactoryInterface';
 
         if (false === \in_array($staticFactoryInterface, $implements)) {
-            throw UnexpectedValueException::expectClassImplements($staticFactory, $staticFactoryInterface);
+            throw UnexpectedValueException::forExpectedClassImplements($staticFactory, $staticFactoryInterface);
         }
 
         $this->staticFactory = $staticFactory;
