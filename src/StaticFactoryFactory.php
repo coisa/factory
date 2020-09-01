@@ -13,6 +13,9 @@
 
 namespace CoiSA\Factory;
 
+use CoiSA\Factory\Exception\InvalidArgumentException;
+use CoiSA\Factory\Exception\UnexpectedValueException;
+
 /**
  * Class StaticFactoryFactory
  *
@@ -35,17 +38,14 @@ final class StaticFactoryFactory implements FactoryInterface
     public function __construct($staticFactory)
     {
         if (false === \class_exists($staticFactory)) {
-            throw new \InvalidArgumentException(\sprintf('Class "%s" not found!', $staticFactory));
+            throw InvalidArgumentException::forClassNotFound($staticFactory);
         }
 
-        $implements = \class_implements($staticFactory);
+        $implements             = \class_implements($staticFactory);
+        $staticFactoryInterface = 'CoiSA\\Factory\\StaticFactoryInterface';
 
-        if (false === \in_array('CoiSA\\Factory\\StaticFactoryInterface', $implements)) {
-            throw new \UnexpectedValueException(\sprintf(
-                'Class "%s" should implement %s',
-                $staticFactory,
-                'CoiSA\\Factory\\StaticFactoryInterface'
-            ));
+        if (false === \in_array($staticFactoryInterface, $implements)) {
+            throw UnexpectedValueException::expectClassImplements($staticFactory, $staticFactoryInterface);
         }
 
         $this->staticFactory = $staticFactory;

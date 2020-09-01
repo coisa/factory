@@ -13,6 +13,8 @@
 
 namespace CoiSA\Factory;
 
+use CoiSA\Factory\Exception\BadMethodCallException;
+
 /**
  * Class StaticFactory
  *
@@ -48,7 +50,7 @@ final class StaticFactory implements StaticFactoryInterface
     public static function create()
     {
         if (\func_num_args() === 0) {
-            throw new \BadMethodCallException('You should inform at least one argument to create an instance');
+            throw BadMethodCallException::forEmptyGivenArguments();
         }
 
         $arguments = \func_get_args();

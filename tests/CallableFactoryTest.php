@@ -26,7 +26,7 @@ final class CallableFactoryTest extends TestCase
 {
     public function testCreateWithInvalidCallableArgumentWillThrowInvalidArgumentException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('CoiSA\\Factory\\Exception\\InvalidArgumentException');
         new CallableFactory(true);
     }
 

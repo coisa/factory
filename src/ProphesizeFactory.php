@@ -13,6 +13,7 @@
 
 namespace CoiSA\Factory;
 
+use CoiSA\Factory\Exception\InvalidArgumentException;
 use Prophecy\Prophet;
 
 /**
@@ -41,9 +42,7 @@ final class ProphesizeFactory implements FactoryInterface
     public function __construct($classOrInterface, $prophesizeMethodsCallable = null)
     {
         if ($prophesizeMethodsCallable && false === \is_callable($prophesizeMethodsCallable)) {
-            throw new \InvalidArgumentException(
-                'The $prophesizeMethodsCallable argument should be a valid callable function.'
-            );
+            throw InvalidArgumentException::isNotCallable('prophesizeMethodsCallable');
         }
 
         $this->classOrInterface          = $classOrInterface;

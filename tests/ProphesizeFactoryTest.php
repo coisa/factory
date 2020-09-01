@@ -25,7 +25,7 @@ final class ProphesizeFactoryTest extends TestCase
 {
     public function testCreateWithInvalidProphesizeMethodsCallableArgumentWillThrowInvalidArgumentException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('CoiSA\\Factory\\Exception\\InvalidArgumentException');
         new ProphesizeFactory('CoiSA\\Factory\\FactoryInterface', true);
     }
 

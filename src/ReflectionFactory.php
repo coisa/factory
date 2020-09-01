@@ -13,6 +13,8 @@
 
 namespace CoiSA\Factory;
 
+use CoiSA\Factory\Exception\ReflectionException;
+
 /**
  * Class ReflectionFactory
  *
@@ -34,7 +36,11 @@ final class ReflectionFactory implements FactoryInterface
      */
     public function __construct($objectOrClassName)
     {
-        $this->reflectionClass = new \ReflectionClass($objectOrClassName);
+        try {
+            $this->reflectionClass = new \ReflectionClass($objectOrClassName);
+        } catch (\ReflectionException $reflectionException) {
+            throw ReflectionException::fromReflectionException($reflectionException);
+        }
     }
 
     /**
