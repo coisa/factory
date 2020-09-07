@@ -23,7 +23,7 @@ interface FactoryFactoryInterface extends FactoryInterface
     /**
      * Create new factory instance with given class.
      *
-     * @param string $class Class name to create a factory object.
+     * @param string $class class name to create a factory object
      *
      * @return FactoryInterface
      */
