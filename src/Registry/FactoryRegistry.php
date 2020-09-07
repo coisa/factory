@@ -14,6 +14,7 @@
 namespace CoiSA\Factory\Registry;
 
 use CoiSA\Factory\AbstractFactoryFactory;
+use CoiSA\Factory\FactoryFactoryInterface;
 use CoiSA\Factory\FactoryInterface;
 
 /**
@@ -36,9 +37,9 @@ final class FactoryRegistry implements RegistryInterface
     /**
      * FactoryRegistry constructor.
      *
-     * @param null|AbstractFactoryFactory $abstractFactoryFactory
+     * @param null|FactoryFactoryInterface $abstractFactoryFactory
      */
-    public function __construct(AbstractFactoryFactory $abstractFactoryFactory = null)
+    public function __construct(FactoryFactoryInterface $abstractFactoryFactory = null)
     {
         $this->abstractFactoryFactory = $abstractFactoryFactory ?: new AbstractFactoryFactory();
     }
