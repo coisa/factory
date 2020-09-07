@@ -14,6 +14,7 @@
 namespace CoiSA\Factory;
 
 use CoiSA\Factory\Exception\BadMethodCallException;
+use CoiSA\Factory\Registry\RegistryInterface;
 
 /**
  * Class StaticFactory
@@ -23,9 +24,9 @@ use CoiSA\Factory\Exception\BadMethodCallException;
 final class StaticFactory implements StaticFactoryInterface
 {
     /**
-     * @var FactoryInterface[]
+     * @var Registry\RegistryInterface
      */
-    private static $factories;
+    private static $registry;
 
     // @codeCoverageIgnoreStart
 
@@ -62,35 +63,43 @@ final class StaticFactory implements StaticFactoryInterface
     }
 
     /**
-     * @param string           $className
+     * @param string           $class
      * @param FactoryInterface $factory
      *
      * @return void
      */
-    public static function setFactory($className, FactoryInterface $factory)
+    public static function setFactory($class, FactoryInterface $factory)
     {
-        self::$factories[$className] = $factory;
+        self::getRegistry()->set($class, $factory);
     }
 
     /**
-     * @param string $className
-     *
-     * @throws \ReflectionException
+     * @param string $class
      *
      * @return FactoryInterface
      */
-    public static function getFactory($className)
+    public static function getFactory($class)
     {
-        if (isset(self::$factories[$className])) {
-            return self::$factories[$className];
+        return self::getRegistry()->get($class);
+    }
+
+    /**
+     * @param RegistryInterface $registry
+     */
+    public static function setRegistry(RegistryInterface $registry)
+    {
+        self::$registry = $registry;
+    }
+
+    /**
+     * @return Registry\RegistryInterface
+     */
+    private static function getRegistry()
+    {
+        if (!self::$registry instanceof RegistryInterface) {
+            self::setRegistry(new Registry\FactoryRegistry());
         }
 
-        try {
-            self::setFactory($className, new StaticFactoryFactory($className));
-        } catch (\UnexpectedValueException $unexpectedValueException) {
-            self::setFactory($className, new ReflectionFactory($className));
-        }
-
-        return self::$factories[$className];
+        return self::$registry;
     }
 }
