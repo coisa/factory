@@ -51,9 +51,16 @@ final class ContainerFactoryFactoryTest extends TestCase
 
         $this->container->has($class)->willReturn(false);
 
+        $containerFactory = $this->containerFactoryFactory->create($class);
+
         self::assertEquals(
             $abstractFactoryFactory->create($class),
-            $this->containerFactoryFactory->create($class)
+            $containerFactory
+        );
+
+        self::assertEquals(
+            $containerFactory->create(),
+            StaticFactory::create($class)
         );
     }
 
