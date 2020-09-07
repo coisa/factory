@@ -17,6 +17,7 @@
         "jakub-onderka/php-console-highlighter": "^0.3.2",
         "jakub-onderka/php-parallel-lint": "^1.0",
         "phpunit/phpunit": "^4.8",
+        "psr/container": "^1.0",
         "squizlabs/php_codesniffer": "^2.9"
     },
     "config": {
