@@ -30,18 +30,18 @@ final class FactoryRegistry implements RegistryInterface
     private static $factories = array();
 
     /**
-     * @var AbstractFactoryFactory
+     * @var FactoryFactoryInterface
      */
-    private $abstractFactoryFactory;
+    private $factoryFactory;
 
     /**
      * FactoryRegistry constructor.
      *
-     * @param null|FactoryFactoryInterface $abstractFactoryFactory
+     * @param null|FactoryFactoryInterface $factoryFactory
      */
-    public function __construct(FactoryFactoryInterface $abstractFactoryFactory = null)
+    public function __construct(FactoryFactoryInterface $factoryFactory = null)
     {
-        $this->abstractFactoryFactory = $abstractFactoryFactory ?: new AbstractFactoryFactory();
+        $this->factoryFactory = $factoryFactory ?: new AbstractFactoryFactory();
     }
 
     /**
@@ -67,7 +67,7 @@ final class FactoryRegistry implements RegistryInterface
             return self::$factories[$class];
         }
 
-        $factory = $this->abstractFactoryFactory->create($class);
+        $factory = $this->factoryFactory->create($class);
         $this->set($class, $factory);
 
         return $factory;
