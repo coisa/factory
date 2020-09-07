@@ -53,7 +53,7 @@ final class CallableFactoryTest extends TestCase
     /**
      * @dataProvider provideArguments
      *
-     * @param null|mixed $arguments
+     * @param array $arguments
      */
     public function testCreateWithArgumentsWillReturnReturnCallableResult($arguments = null)
     {
@@ -70,5 +70,24 @@ final class CallableFactoryTest extends TestCase
 
         $object = \call_user_func_array(array($factory, 'create'), $arguments);
         self::assertSame($arguments, $object->getArgument());
+    }
+
+    /**
+     * @dataProvider provideArguments
+     *
+     * @param array $arguments
+     */
+    public function testInvokeWillCallCreateWithSameArgs($arguments = null)
+    {
+        $callable = function () {
+            return new ConstructorWithMixedArgument(\func_get_args());
+        };
+
+        $factory = new CallableFactory($callable);
+
+        $invoke = \call_user_func_array($factory, $arguments);
+        $create = \call_user_func_array(array($factory, 'create'), $arguments);
+
+        self::assertEquals($create, $invoke);
     }
 }

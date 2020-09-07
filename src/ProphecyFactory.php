@@ -21,7 +21,7 @@ use Prophecy\Prophecy\ObjectProphecy;
  *
  * @package CoiSA\Factory
  */
-final class ProphecyFactory implements FactoryInterface
+final class ProphecyFactory extends AbstractFactory implements FactoryInterface
 {
     /**
      * @var ObjectProphecy

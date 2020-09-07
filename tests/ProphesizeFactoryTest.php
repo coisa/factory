@@ -40,7 +40,7 @@ final class ProphesizeFactoryTest extends TestCase
     /**
      * @dataProvider provideClassOrIterface
      *
-     * @param mixed $classOrInterface
+     * @param string $classOrInterface
      */
     public function testCreateWillReturnRevealedGivenClassOrInterface($classOrInterface)
     {
@@ -52,7 +52,7 @@ final class ProphesizeFactoryTest extends TestCase
     /**
      * @dataProvider provideClassOrIterface
      *
-     * @param mixed $classOrInterface
+     * @param string $classOrInterface
      */
     public function testCreateWillReturnDifferentRevealedGivenClassOrInterfaceEveryCall($classOrInterface)
     {
@@ -65,7 +65,7 @@ final class ProphesizeFactoryTest extends TestCase
     /**
      * @dataProvider provideClassOrIterface
      *
-     * @param mixed $classOrInterface
+     * @param string $classOrInterface
      */
     public function testCreateeWillApplyProphesizeMethodToGivenClassOrInterfaceBeforeReveal($classOrInterface)
     {
@@ -79,5 +79,20 @@ final class ProphesizeFactoryTest extends TestCase
         );
 
         self::assertEquals($id, $factory->create()->id);
+    }
+
+    /**
+     * @dataProvider provideClassOrIterface
+     *
+     * @param string $classOrInterface
+     */
+    public function testInvokeWillCallCreateWithSameArgs($classOrInterface)
+    {
+        $factory = new ProphesizeFactory($classOrInterface);
+
+        self::assertEquals(
+            $factory->create(),
+            $factory()
+        );
     }
 }

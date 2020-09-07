@@ -21,7 +21,7 @@ use CoiSA\Factory\Exception\UnexpectedValueException;
  *
  * @package CoiSA\Factory
  */
-final class StaticFactoryFactory implements FactoryInterface
+final class StaticFactoryFactory extends AbstractFactory implements FactoryInterface
 {
     /**
      * @var string

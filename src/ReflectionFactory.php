@@ -20,7 +20,7 @@ use CoiSA\Factory\Exception\ReflectionException;
  *
  * @package CoiSA\Factory
  */
-final class ReflectionFactory implements FactoryInterface
+final class ReflectionFactory extends AbstractFactory implements FactoryInterface
 {
     /**
      * @var \ReflectionClass

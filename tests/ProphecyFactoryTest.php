@@ -65,4 +65,21 @@ final class ProphecyFactoryTest extends TestCase
         self::assertNotSame($objectProphecy, $factory->create($arguments));
         self::assertEquals($arguments, \call_user_func_array(array($factory, 'create'), $arguments)->create());
     }
+
+    /**
+     * @dataProvider provideArguments
+     *
+     * @param array $arguments
+     */
+    public function testInvokeWillCallCreateWithSameArgs($arguments = null)
+    {
+        $objectProphecy = $this->prophesize('CoiSA\\Factory\\FactoryInterface');
+
+        $factory = new ProphecyFactory($objectProphecy);
+
+        $invoke = \call_user_func_array($factory, $arguments);
+        $create = \call_user_func_array(array($factory, 'create'), $arguments);
+
+        self::assertEquals($create, $invoke);
+    }
 }
