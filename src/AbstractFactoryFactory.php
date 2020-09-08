@@ -36,7 +36,7 @@ class AbstractFactoryFactory implements FactoryFactoryInterface
     public function factory($class)
     {
         try {
-            return new StaticFactoryFactory($class);
+            return new StaticFactoryProxyFactory($class);
         } catch (\UnexpectedValueException $unexpectedValueException) {
             return new ReflectionFactory($class);
         }

@@ -17,11 +17,11 @@ use CoiSA\Factory\Exception\InvalidArgumentException;
 use CoiSA\Factory\Exception\UnexpectedValueException;
 
 /**
- * Class StaticFactoryFactory
+ * Class StaticFactoryProxyFactory
  *
  * @package CoiSA\Factory
  */
-final class StaticFactoryFactory extends AbstractFactory implements FactoryInterface
+final class StaticFactoryProxyFactory extends AbstractFactory implements FactoryInterface
 {
     /**
      * @var string
@@ -29,7 +29,7 @@ final class StaticFactoryFactory extends AbstractFactory implements FactoryInter
     private $staticFactory;
 
     /**
-     * StaticFactoryFactory constructor.
+     * StaticFactoryProxyFactory constructor.
      *
      * @param string $staticFactory
      *
