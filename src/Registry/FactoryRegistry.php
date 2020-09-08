@@ -13,6 +13,7 @@
 
 namespace CoiSA\Factory\Registry;
 
+use CoiSA\Factory\AbstractFactory;
 use CoiSA\Factory\AbstractFactoryFactory;
 use CoiSA\Factory\FactoryFactoryInterface;
 use CoiSA\Factory\FactoryInterface;
@@ -28,11 +29,6 @@ final class FactoryRegistry implements FactoryRegistryInterface
      * @var FactoryInterface[]
      */
     private static $factories = array();
-
-    /**
-     * @var FactoryFactoryInterface
-     */
-    private static $factoryFactory;
 
     // @codeCoverageIgnoreStart
 
@@ -68,26 +64,6 @@ final class FactoryRegistry implements FactoryRegistryInterface
             return self::$factories[$class];
         }
 
-        return self::getFactoryFactory()->factory($class);
-    }
-
-    /**
-     * @param FactoryFactoryInterface $factoryFactory
-     */
-    public static function setFactoryFactory(FactoryFactoryInterface $factoryFactory)
-    {
-        self::$factoryFactory = $factoryFactory;
-    }
-
-    /**
-     * @return FactoryFactoryInterface
-     */
-    private static function getFactoryFactory()
-    {
-        if (false === isset(self::$factoryFactory)) {
-            self::setFactoryFactory(new AbstractFactoryFactory());
-        }
-
-        return self::$factoryFactory;
+        return AbstractFactory::create($class);
     }
 }

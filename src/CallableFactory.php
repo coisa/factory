@@ -20,7 +20,7 @@ use CoiSA\Factory\Exception\InvalidArgumentException;
  *
  * @package CoiSA\Factory
  */
-final class CallableFactory extends AbstractFactory implements FactoryInterface
+final class CallableFactory implements FactoryInterface
 {
     /**
      * @var callable

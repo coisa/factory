@@ -80,19 +80,4 @@ final class ProphesizeFactoryTest extends TestCase
 
         self::assertEquals($id, $factory->create()->id);
     }
-
-    /**
-     * @dataProvider provideClassOrIterface
-     *
-     * @param string $classOrInterface
-     */
-    public function testInvokeWillCallCreateWithSameArgs($classOrInterface)
-    {
-        $factory = new ProphesizeFactory($classOrInterface);
-
-        self::assertEquals(
-            $factory->create(),
-            $factory()
-        );
-    }
 }
