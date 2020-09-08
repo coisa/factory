@@ -13,6 +13,7 @@
 
 namespace CoiSA\Factory;
 
+use CoiSA\Factory\Registry\FactoryRegistry;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -41,11 +42,17 @@ final class AbstractFactory implements StaticFactoryInterface
     /**
      * {@inheritDoc}
      *
+     * @return FactoryInterface
+     *
      * @throws \ReflectionException
      */
     public static function create()
     {
         $class = \func_get_arg(0);
+
+        if (FactoryRegistry::has($class)) {
+            return FactoryRegistry::get($class);
+        }
 
         if (null !== self::$container && self::$container->has($class)) {
             return new ContainerFactory(self::$container, $class);

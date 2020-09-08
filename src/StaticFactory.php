@@ -75,6 +75,6 @@ final class StaticFactory implements StaticFactoryInterface
      */
     public static function getFactory($class)
     {
-        return FactoryRegistry::get($class);
+        return AbstractFactory::create($class);
     }
 }

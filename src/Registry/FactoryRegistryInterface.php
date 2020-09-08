@@ -13,6 +13,7 @@
 
 namespace CoiSA\Factory\Registry;
 
+use CoiSA\Factory\Exception\OutOfBoundsException;
 use CoiSA\Factory\FactoryInterface;
 
 /**
@@ -33,7 +34,16 @@ interface FactoryRegistryInterface
     /**
      * @param string $class
      *
+     * @return bool
+     */
+    public static function has($class);
+
+    /**
+     * @param string $class
+     *
      * @return FactoryInterface
+     *
+     * @throws OutOfBoundsException
      */
     public static function get($class);
 }
