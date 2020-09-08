@@ -22,7 +22,7 @@ use CoiSA\Factory\FactoryInterface;
  *
  * @package CoiSA\Factory\FactoryRegistry
  */
-final class FactoryRegistry implements RegistryInterface
+final class FactoryRegistry implements FactoryRegistryInterface
 {
     /**
      * @var FactoryInterface[]
@@ -32,23 +32,24 @@ final class FactoryRegistry implements RegistryInterface
     /**
      * @var FactoryFactoryInterface
      */
-    private $factoryFactory;
+    private static $factoryFactory;
+
+    // @codeCoverageIgnoreStart
 
     /**
-     * FactoryRegistry constructor.
-     *
-     * @param null|FactoryFactoryInterface $factoryFactory
+     * Prevent class from being initialized.
      */
-    public function __construct(FactoryFactoryInterface $factoryFactory = null)
+    private function __construct()
     {
-        $this->factoryFactory = $factoryFactory ?: new AbstractFactoryFactory();
     }
+
+    // @codeCoverageIgnoreEnd
 
     /**
      * @param FactoryInterface $factory
      * @param mixed            $class
      */
-    public function set($class, FactoryInterface $factory)
+    public static function set($class, FactoryInterface $factory)
     {
         self::$factories[$class] = $factory;
     }
@@ -61,15 +62,32 @@ final class FactoryRegistry implements RegistryInterface
      *
      * @return FactoryInterface
      */
-    public function get($class)
+    public static function get($class)
     {
         if (isset(self::$factories[$class])) {
             return self::$factories[$class];
         }
 
-        $factory = $this->factoryFactory->create($class);
-        $this->set($class, $factory);
+        return self::getFactoryFactory()->createFactory($class);
+    }
 
-        return $factory;
+    /**
+     * @param FactoryFactoryInterface $factoryFactory
+     */
+    public static function setFactoryFactory(FactoryFactoryInterface $factoryFactory)
+    {
+        self::$factoryFactory = $factoryFactory;
+    }
+
+    /**
+     * @return FactoryFactoryInterface
+     */
+    private static function getFactoryFactory()
+    {
+        if (false === isset(self::$factoryFactory)) {
+            self::setFactoryFactory(new AbstractFactoryFactory());
+        }
+
+        return self::$factoryFactory;
     }
 }

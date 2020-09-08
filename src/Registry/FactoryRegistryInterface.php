@@ -16,11 +16,11 @@ namespace CoiSA\Factory\Registry;
 use CoiSA\Factory\FactoryInterface;
 
 /**
- * Interface RegistryInterface
+ * Interface FactoryRegistryInterface
  *
  * @package CoiSA\Factory\FactoryRegistry
  */
-interface RegistryInterface
+interface FactoryRegistryInterface
 {
     /**
      * @param string           $class
@@ -28,12 +28,12 @@ interface RegistryInterface
      *
      * @return void
      */
-    public function set($class, FactoryInterface $factory);
+    public static function set($class, FactoryInterface $factory);
 
     /**
      * @param string $class
      *
      * @return FactoryInterface
      */
-    public function get($class);
+    public static function get($class);
 }

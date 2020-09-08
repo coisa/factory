@@ -18,15 +18,23 @@ namespace CoiSA\Factory;
  *
  * @package CoiSA\Factory
  */
-class AbstractFactoryFactory extends AbstractFactory implements FactoryFactoryInterface
+class AbstractFactoryFactory implements FactoryFactoryInterface
 {
+    /**
+     * @param string $class
+     *
+     * @return FactoryInterface
+     */
+    public function __invoke($class)
+    {
+        return $this->createFactory($class);
+    }
+
     /**
      * {@inheritDoc}
      */
-    public function create()
+    public function createFactory($class)
     {
-        $class = \func_get_arg(0);
-
         try {
             return new StaticFactoryFactory($class);
         } catch (\UnexpectedValueException $unexpectedValueException) {

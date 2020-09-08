@@ -14,7 +14,7 @@
 namespace CoiSA\Factory;
 
 use CoiSA\Factory\Exception\BadMethodCallException;
-use CoiSA\Factory\Registry\RegistryInterface;
+use CoiSA\Factory\Registry\FactoryRegistry;
 
 /**
  * Class StaticFactory
@@ -23,11 +23,6 @@ use CoiSA\Factory\Registry\RegistryInterface;
  */
 final class StaticFactory implements StaticFactoryInterface
 {
-    /**
-     * @var Registry\RegistryInterface
-     */
-    private static $registry;
-
     // @codeCoverageIgnoreStart
 
     /**
@@ -70,7 +65,7 @@ final class StaticFactory implements StaticFactoryInterface
      */
     public static function setFactory($class, FactoryInterface $factory)
     {
-        self::getRegistry()->set($class, $factory);
+        FactoryRegistry::set($class, $factory);
     }
 
     /**
@@ -80,26 +75,6 @@ final class StaticFactory implements StaticFactoryInterface
      */
     public static function getFactory($class)
     {
-        return self::getRegistry()->get($class);
-    }
-
-    /**
-     * @param RegistryInterface $registry
-     */
-    public static function setRegistry(RegistryInterface $registry)
-    {
-        self::$registry = $registry;
-    }
-
-    /**
-     * @return Registry\RegistryInterface
-     */
-    private static function getRegistry()
-    {
-        if (!self::$registry instanceof RegistryInterface) {
-            self::setRegistry(new Registry\FactoryRegistry());
-        }
-
-        return self::$registry;
+        return FactoryRegistry::get($class);
     }
 }

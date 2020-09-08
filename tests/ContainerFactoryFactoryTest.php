@@ -40,8 +40,7 @@ final class ContainerFactoryFactoryTest extends TestCase
         $this->container               = $this->prophesize('Psr\\Container\\ContainerInterface');
         $this->containerFactoryFactory = new ContainerFactoryFactory($this->container->reveal());
 
-        $registry = new FactoryRegistry($this->containerFactoryFactory);
-        StaticFactory::setRegistry($registry);
+        FactoryRegistry::setFactoryFactory($this->containerFactoryFactory);
     }
 
     public function testCreateWithoutEntryFromContainerWillReturnAbstractFactoryFactoryCreate()
@@ -51,10 +50,10 @@ final class ContainerFactoryFactoryTest extends TestCase
 
         $this->container->has($class)->willReturn(false);
 
-        $containerFactory = $this->containerFactoryFactory->create($class);
+        $containerFactory = $this->containerFactoryFactory->createFactory($class);
 
         self::assertEquals(
-            $abstractFactoryFactory->create($class),
+            $abstractFactoryFactory->createFactory($class),
             $containerFactory
         );
 
@@ -74,7 +73,7 @@ final class ContainerFactoryFactoryTest extends TestCase
         $this->container->has($class)->willReturn(true);
         $this->container->get($class)->willReturn($object);
 
-        $containerFactory = $this->containerFactoryFactory->create($class);
+        $containerFactory = $this->containerFactoryFactory->createFactory($class);
 
         self::assertInstanceOf('CoiSA\\Factory\\FactoryInterface', $containerFactory);
         self::assertInstanceOf('CoiSA\\Factory\\ContainerFactory', $containerFactory);

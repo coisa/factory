@@ -18,7 +18,7 @@ namespace CoiSA\Factory;
  *
  * @package CoiSA\Factory
  */
-interface FactoryFactoryInterface extends FactoryInterface
+interface FactoryFactoryInterface
 {
     /**
      * Create new factory instance with given class.
@@ -27,5 +27,5 @@ interface FactoryFactoryInterface extends FactoryInterface
      *
      * @return FactoryInterface
      */
-    public function create();
+    public function createFactory($class);
 }
