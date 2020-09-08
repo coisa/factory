@@ -42,10 +42,10 @@ final class ContainerFactoryFactory extends AbstractFactoryFactory
      *
      * @throws \Psr\Container\ContainerExceptionInterface error while retrieving the entry
      */
-    public function createFactory($class)
+    public function factory($class)
     {
         if (false === $this->container->has($class)) {
-            return parent::createFactory($class);
+            return parent::factory($class);
         }
 
         return new ContainerFactory($this->container, $class);

@@ -68,7 +68,7 @@ final class FactoryRegistry implements FactoryRegistryInterface
             return self::$factories[$class];
         }
 
-        return self::getFactoryFactory()->createFactory($class);
+        return self::getFactoryFactory()->factory($class);
     }
 
     /**

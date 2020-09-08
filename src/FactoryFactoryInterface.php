@@ -27,5 +27,5 @@ interface FactoryFactoryInterface
      *
      * @return FactoryInterface
      */
-    public function createFactory($class);
+    public function factory($class);
 }

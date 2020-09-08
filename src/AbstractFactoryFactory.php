@@ -27,13 +27,13 @@ class AbstractFactoryFactory implements FactoryFactoryInterface
      */
     public function __invoke($class)
     {
-        return $this->createFactory($class);
+        return $this->factory($class);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function createFactory($class)
+    public function factory($class)
     {
         try {
             return new StaticFactoryFactory($class);

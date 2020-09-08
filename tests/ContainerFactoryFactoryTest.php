@@ -50,10 +50,10 @@ final class ContainerFactoryFactoryTest extends TestCase
 
         $this->container->has($class)->willReturn(false);
 
-        $containerFactory = $this->containerFactoryFactory->createFactory($class);
+        $containerFactory = $this->containerFactoryFactory->factory($class);
 
         self::assertEquals(
-            $abstractFactoryFactory->createFactory($class),
+            $abstractFactoryFactory->factory($class),
             $containerFactory
         );
 
@@ -73,7 +73,7 @@ final class ContainerFactoryFactoryTest extends TestCase
         $this->container->has($class)->willReturn(true);
         $this->container->get($class)->willReturn($object);
 
-        $containerFactory = $this->containerFactoryFactory->createFactory($class);
+        $containerFactory = $this->containerFactoryFactory->factory($class);
 
         self::assertInstanceOf('CoiSA\\Factory\\FactoryInterface', $containerFactory);
         self::assertInstanceOf('CoiSA\\Factory\\ContainerFactory', $containerFactory);
