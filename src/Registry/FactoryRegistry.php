@@ -14,8 +14,6 @@
 namespace CoiSA\Factory\Registry;
 
 use CoiSA\Factory\AbstractFactory;
-use CoiSA\Factory\AbstractFactoryFactory;
-use CoiSA\Factory\FactoryFactoryInterface;
 use CoiSA\Factory\FactoryInterface;
 
 /**

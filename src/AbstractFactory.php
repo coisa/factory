@@ -23,7 +23,7 @@ use Psr\Container\ContainerInterface;
 final class AbstractFactory implements StaticFactoryInterface
 {
     /**
-     * @var ContainerInterface|null
+     * @var null|ContainerInterface
      */
     private static $container;
 
