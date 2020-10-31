@@ -48,6 +48,12 @@ final class ReflectionFactory implements FactoryInterface
      */
     public function create()
     {
+        if (null === $this->reflectionClass->getConstructor()
+            && \method_exists($this->reflectionClass, 'newInstanceWithoutConstructor')
+        ) {
+            return $this->reflectionClass->newInstanceWithoutConstructor();
+        }
+
         if (\func_num_args() === 0) {
             return $this->reflectionClass->newInstance();
         }
