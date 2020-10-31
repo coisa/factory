@@ -18,19 +18,6 @@ namespace CoiSA\Factory\Exception;
  *
  * @package CoiSA\Factory\Exception
  */
-final class ReflectionException extends \ReflectionException implements FactoryException
+final class ReflectionException extends \CoiSA\Exception\Spl\ReflectionException implements FactoryExceptionInterface
 {
-    /**
-     * @param \ReflectionException $reflectionException
-     *
-     * @return ReflectionException
-     */
-    public static function fromReflectionException(\ReflectionException $reflectionException)
-    {
-        return new self(
-            $reflectionException->getMessage(),
-            $reflectionException->getCode(),
-            $reflectionException
-        );
-    }
 }

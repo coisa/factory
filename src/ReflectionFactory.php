@@ -39,7 +39,11 @@ final class ReflectionFactory implements FactoryInterface
         try {
             $this->reflectionClass = new \ReflectionClass($objectOrClassName);
         } catch (\ReflectionException $reflectionException) {
-            throw ReflectionException::fromReflectionException($reflectionException);
+            throw ReflectionException::create(
+                $reflectionException->getMessage(),
+                $reflectionException->getCode(),
+                $reflectionException
+            );
         }
     }
 
