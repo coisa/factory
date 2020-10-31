@@ -29,16 +29,8 @@ final class StaticFactoryTest extends TestCase implements StaticFactoryInterface
         self::assertTrue($reflectionClass->isFinal());
     }
 
-    public function testConstructorIsNotPublic()
-    {
-        $reflectionClass = new \ReflectionClass('CoiSA\\Factory\\StaticFactory');
-        $constructor     = $reflectionClass->getConstructor();
-
-        self::assertFalse($constructor->isPublic());
-    }
-
     /**
-     * @expectedException BadMethodCallException
+     * @expectedException \ArgumentCountError
      */
     public function testCreateWithoutArgumentsWillThrowBadMethodCallException()
     {
@@ -46,7 +38,7 @@ final class StaticFactoryTest extends TestCase implements StaticFactoryInterface
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \ReflectionException
      */
     public function testCreateWithNonExistentClassWillThrowException()
     {

@@ -13,8 +13,7 @@
 
 namespace CoiSA\Factory;
 
-use CoiSA\Factory\Exception\InvalidArgumentException;
-use CoiSA\Factory\Exception\UnexpectedValueException;
+use CoiSA\Factory\Exception\ReflectionException;
 
 /**
  * Class StaticFactoryProxyFactory
@@ -38,14 +37,14 @@ final class StaticFactoryProxyFactory implements FactoryInterface
     public function __construct($staticFactory)
     {
         if (false === \class_exists($staticFactory)) {
-            throw InvalidArgumentException::forClassNotFound($staticFactory);
+            throw ReflectionException::forClassNotFound($staticFactory);
         }
 
         $implements             = \class_implements($staticFactory);
         $staticFactoryInterface = 'CoiSA\\Factory\\StaticFactoryInterface';
 
         if (false === \in_array($staticFactoryInterface, $implements)) {
-            throw UnexpectedValueException::forExpectedClassImplements($staticFactory, $staticFactoryInterface);
+            throw ReflectionException::forClassNotSubclassOf($staticFactory, $staticFactoryInterface);
         }
 
         $this->staticFactory = $staticFactory;

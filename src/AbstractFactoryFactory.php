@@ -13,36 +13,41 @@
 
 namespace CoiSA\Factory;
 
-use CoiSA\Factory\Exception\ArgumentCountError;
+use CoiSA\Factory\Registry\FactoryRegistry;
 use Psr\Container\ContainerInterface;
 
 /**
- * Class AbstractFactory
+ * Class AbstractFactoryFactory
  *
  * @package CoiSA\Factory
  */
-abstract class AbstractFactory implements AbstractFactoryInterface
+final class AbstractFactoryFactory implements AbstractFactoryInterface
 {
     /**
+     * @var null|ContainerInterface
+     */
+    private static $container;
+
+    // @codeCoverageIgnoreStart
+
+    /**
+     * Prevent class from being initialized.
+     */
+    private function __construct()
+    {
+    }
+
+    // @codeCoverageIgnoreEnd
+
+    /**
      * {@inheritDoc}
-     *
-     * @param string $className
-     * @param mixed  $arguments [optional] Zero or more arguments to be passed to factory create method
-     *
-     * @throws ArgumentCountError
      */
     public static function create()
     {
-        if (\func_num_args() === 0) {
-            throw ArgumentCountError::forExpectedAtLeast(1);
-        }
+        $class          = \func_get_arg(0);
+        $factoryFactory = new FactoryFactory(self::$container);
 
-        $arguments = \func_get_args();
-        $className = \array_shift($arguments);
-
-        $factory = self::getFactory($className);
-
-        return \call_user_func_array(array($factory, 'create'), $arguments);
+        return $factoryFactory->create($class);
     }
 
     /**
@@ -50,7 +55,7 @@ abstract class AbstractFactory implements AbstractFactoryInterface
      */
     public static function setContainer(ContainerInterface $container)
     {
-        AbstractFactoryFactory::setContainer($container);
+        self::$container = $container;
     }
 
     /**
@@ -61,7 +66,7 @@ abstract class AbstractFactory implements AbstractFactoryInterface
      */
     public static function setFactory($class, FactoryInterface $factory)
     {
-        AbstractFactoryFactory::setFactory($class, $factory);
+        FactoryRegistry::set($class, $factory);
     }
 
     /**
@@ -71,6 +76,10 @@ abstract class AbstractFactory implements AbstractFactoryInterface
      */
     public static function getFactory($class)
     {
-        return AbstractFactoryFactory::getFactory($class);
+        if (FactoryRegistry::has($class)) {
+            return FactoryRegistry::get($class);
+        }
+
+        return self::create($class);
     }
 }
