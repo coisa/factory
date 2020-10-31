@@ -7,17 +7,17 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/factory
+ *
  * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
-
 namespace CoiSA\Factory;
 
 use CoiSA\Factory\Registry\FactoryRegistry;
 use Psr\Container\ContainerInterface;
 
 /**
- * Class AbstractFactoryFactory
+ * Class AbstractFactoryFactory.
  *
  * @package CoiSA\Factory
  */
@@ -40,7 +40,7 @@ final class AbstractFactoryFactory implements AbstractFactoryInterface
     // @codeCoverageIgnoreEnd
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function create()
     {

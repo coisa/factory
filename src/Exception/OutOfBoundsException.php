@@ -7,21 +7,23 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/factory
+ *
  * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
-
 namespace CoiSA\Factory\Exception;
 
 /**
- * Class OutOfBoundsException
+ * Class OutOfBoundsException.
  *
  * @package CoiSA\Factory\Exception
  */
 final class OutOfBoundsException extends \CoiSA\Exception\Spl\OutOfBoundsException implements FactoryExceptionInterface
 {
     /**
-     * @param string $class
+     * @param string     $class
+     * @param mixed      $code
+     * @param null|mixed $previous
      *
      * @return OutOfBoundsException
      */

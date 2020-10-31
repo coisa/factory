@@ -7,17 +7,17 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/factory
+ *
  * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
-
 namespace CoiSA\Factory;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
- * Class ProphecyFactoryTest
+ * Class ProphecyFactoryTest.
  *
  * @package CoiSA\Factory
  */
@@ -57,7 +57,7 @@ final class ProphecyFactoryTest extends TestCase
 
         $factory = new ProphecyFactory(
             $objectProphecy,
-            function (ObjectProphecy $objectProphecy, $arguments = null) {
+            function(ObjectProphecy $objectProphecy, $arguments = null) {
                 $objectProphecy->create()->willReturn($arguments);
             }
         );

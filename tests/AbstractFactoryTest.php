@@ -7,18 +7,16 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/factory
+ *
  * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
-
 namespace CoiSA\Factory;
 
-use CoiSA\Factory\Stub\ClassWithoutConstructor;
-use CoiSA\Factory\Stub\ConstructorWithMixedArgument;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class AbstractFactoryTest
+ * Class AbstractFactoryTest.
  *
  * @package CoiSA\Factory
  */
@@ -37,7 +35,7 @@ final class AbstractFactoryTest extends TestCase
 
         $class = \uniqid('class', false);
 
-        $object = new \stdClass();
+        $object        = new \stdClass();
         $object->class = $class;
 
         $this->container->has($class)->willReturn(true);

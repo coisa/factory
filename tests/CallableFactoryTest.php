@@ -7,10 +7,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/factory
+ *
  * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
-
 namespace CoiSA\Factory;
 
 use CoiSA\Factory\Stub\ClassWithoutConstructor;
@@ -18,7 +18,7 @@ use CoiSA\Factory\Stub\ConstructorWithMixedArgument;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class CallableFactoryTest
+ * Class CallableFactoryTest.
  *
  * @package CoiSA\Factory
  */
@@ -32,7 +32,7 @@ final class CallableFactoryTest extends TestCase
 
     public function testCreateWithouArgumentWillReturnCallableResult()
     {
-        $callable = function () {
+        $callable = function() {
             return new ClassWithoutConstructor();
         };
 
@@ -57,7 +57,7 @@ final class CallableFactoryTest extends TestCase
      */
     public function testCreateWithArgumentsWillReturnReturnCallableResult($arguments = null)
     {
-        $callable = function () {
+        $callable = function() {
             return new ConstructorWithMixedArgument(\func_get_args());
         };
 

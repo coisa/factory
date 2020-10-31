@@ -7,24 +7,24 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/factory
+ *
  * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
-
 namespace CoiSA\Factory;
 
 use CoiSA\Factory\Exception\ArgumentCountError;
 use Psr\Container\ContainerInterface;
 
 /**
- * Class AbstractFactory
+ * Class AbstractFactory.
  *
  * @package CoiSA\Factory
  */
 abstract class AbstractFactory implements AbstractFactoryInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param string $className
      * @param mixed  $arguments [optional] Zero or more arguments to be passed to factory create method

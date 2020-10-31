@@ -7,16 +7,16 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/factory
+ *
  * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
-
 namespace CoiSA\Factory;
 
 use Psr\Container\ContainerInterface;
 
 /**
- * Class FactoryFactory
+ * Class FactoryFactory.
  *
  * @package CoiSA\Factory
  */
@@ -38,7 +38,7 @@ final class FactoryFactory implements FactoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @throws \ReflectionException
      *

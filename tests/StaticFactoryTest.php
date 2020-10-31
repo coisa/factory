@@ -7,16 +7,16 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/factory
+ *
  * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
-
 namespace CoiSA\Factory;
 
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class StaticFactoryTest
+ * Class StaticFactoryTest.
  *
  * @package CoiSA\Factory
  */
@@ -83,7 +83,7 @@ final class StaticFactoryTest extends TestCase implements StaticFactoryInterface
     public function testGetFactoryWillReturnGivenSetFactory()
     {
         $class   = \get_called_class();
-        $factory = new CallableFactory(function () {
+        $factory = new CallableFactory(function() {
             return true;
         });
 

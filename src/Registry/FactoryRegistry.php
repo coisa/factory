@@ -7,17 +7,17 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/factory
+ *
  * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
-
 namespace CoiSA\Factory\Registry;
 
 use CoiSA\Factory\Exception\OutOfBoundsException;
 use CoiSA\Factory\FactoryInterface;
 
 /**
- * Class FactoryRegistry
+ * Class FactoryRegistry.
  *
  * @package CoiSA\Factory\FactoryRegistry
  */
@@ -40,7 +40,7 @@ final class FactoryRegistry implements FactoryRegistryInterface
     // @codeCoverageIgnoreEnd
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function set($class, FactoryInterface $factory)
     {
@@ -48,7 +48,7 @@ final class FactoryRegistry implements FactoryRegistryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function has($class)
     {
@@ -56,7 +56,7 @@ final class FactoryRegistry implements FactoryRegistryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function get($class)
     {
