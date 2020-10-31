@@ -17,23 +17,10 @@ namespace CoiSA\Factory\Exception;
  * Class UnexpectedValueException
  *
  * @package CoiSA\Factory\Exception
+ *
+ * @deprecated
  */
-final class UnexpectedValueException extends \UnexpectedValueException implements FactoryException
+final class UnexpectedValueException extends \CoiSA\Exception\Spl\UnexpectedValueException implements
+    FactoryExceptionInterface
 {
-    /**
-     * @param string $class
-     * @param string $implements
-     *
-     * @return UnexpectedValueException
-     */
-    public static function forExpectedClassImplements($class, $implements)
-    {
-        $message = \sprintf(
-            'Expected class "%s" to implement "%s".',
-            $class,
-            $implements
-        );
-
-        return new self($message);
-    }
 }

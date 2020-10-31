@@ -35,7 +35,7 @@ final class CallableFactory implements FactoryInterface
     public function __construct($callable)
     {
         if (false === \is_callable($callable)) {
-            throw InvalidArgumentException::isNotCallable('callable');
+            throw InvalidArgumentException::forInvalidArgumentType('callable', 'callable');
         }
 
         $this->callable = $callable;

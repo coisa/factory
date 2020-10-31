@@ -18,35 +18,7 @@ namespace CoiSA\Factory\Exception;
  *
  * @package CoiSA\Factory\Exception
  */
-final class InvalidArgumentException extends \InvalidArgumentException implements FactoryException
+final class InvalidArgumentException extends \CoiSA\Exception\Spl\InvalidArgumentException implements
+    FactoryExceptionInterface
 {
-    /**
-     * @param mixed $argument
-     *
-     * @return InvalidArgumentException
-     */
-    public static function isNotCallable($argument)
-    {
-        $message = \sprintf(
-            'Given argument "%s" are not a valid callable function.',
-            $argument
-        );
-
-        return new self($message);
-    }
-
-    /**
-     * @param string $class
-     *
-     * @return InvalidArgumentException
-     */
-    public static function forClassNotFound($class)
-    {
-        $message = \sprintf(
-            'Class "%s" not found!',
-            $class
-        );
-
-        return new self($message);
-    }
 }

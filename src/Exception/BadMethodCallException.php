@@ -17,16 +17,10 @@ namespace CoiSA\Factory\Exception;
  * Class BadMethodCallException
  *
  * @package CoiSA\Factory\Exception
+ *
+ * @deprecated
  */
-final class BadMethodCallException extends \BadMethodCallException implements FactoryException
+final class BadMethodCallException extends \CoiSA\Exception\Spl\BadMethodCallException implements
+    FactoryExceptionInterface
 {
-    /**
-     * @return BadMethodCallException
-     */
-    public static function forEmptyGivenArguments()
-    {
-        $message = 'You should inform at least one argument to create an instance.';
-
-        return new self($message);
-    }
 }

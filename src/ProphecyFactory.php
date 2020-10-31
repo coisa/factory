@@ -42,7 +42,10 @@ final class ProphecyFactory implements FactoryInterface
     public function __construct(ObjectProphecy $objectProphecy, $prophesizeMethodsCallable = null)
     {
         if ($prophesizeMethodsCallable && false === \is_callable($prophesizeMethodsCallable)) {
-            throw InvalidArgumentException::isNotCallable('prophesizeMethodsCallable');
+            throw InvalidArgumentException::forInvalidArgumentType(
+                'prophesizeMethodsCallable',
+                'callable'
+            );
         }
 
         $this->objectProphecy            = $objectProphecy;

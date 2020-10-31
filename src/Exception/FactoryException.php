@@ -17,7 +17,9 @@ namespace CoiSA\Factory\Exception;
  * Interface FactoryException
  *
  * @package CoiSA\Factory\Exception
+ *
+ * @deprecated Use CoiSA\Factory\FactoryExceptionInterface instead
  */
-interface FactoryException
+interface FactoryException extends FactoryExceptionInterface
 {
 }

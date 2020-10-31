@@ -18,20 +18,20 @@ namespace CoiSA\Factory\Exception;
  *
  * @package CoiSA\Factory\Exception
  */
-final class OutOfBoundsException extends \OutOfBoundsException implements FactoryException
+final class OutOfBoundsException extends \CoiSA\Exception\Spl\OutOfBoundsException implements FactoryExceptionInterface
 {
     /**
      * @param string $class
      *
      * @return OutOfBoundsException
      */
-    public static function forNotFoundClassFactory($class)
+    public static function forNotFoundClassFactory($class, $code = 0, $previous = null)
     {
         $message = \sprintf(
             'Given class "%s" are not set into the Registry.',
             $class
         );
 
-        return new self($message);
+        return self::create($message, $code, $previous);
     }
 }
