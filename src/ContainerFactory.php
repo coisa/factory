@@ -13,6 +13,8 @@
 
 namespace CoiSA\Factory;
 
+use CoiSA\Factory\Exception\ContainerException;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -46,12 +48,13 @@ final class ContainerFactory implements FactoryInterface
 
     /**
      * {@inheritDoc}
-     *
-     * @throws \Psr\Container\NotFoundExceptionInterface  no entry was found for **this** identifier
-     * @throws \Psr\Container\ContainerExceptionInterface error while retrieving the entry
      */
     public function create()
     {
-        return $this->container->get($this->class);
+        try {
+            return $this->container->get($this->class);
+        } catch (ContainerExceptionInterface $containerException) {
+            throw ContainerException::forExceptionResolvingIdentifier($containerException, $this->class);
+        }
     }
 }
