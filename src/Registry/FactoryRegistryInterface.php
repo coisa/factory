@@ -41,9 +41,9 @@ interface FactoryRegistryInterface
     /**
      * @param string $class
      *
-     * @return FactoryInterface
-     *
      * @throws OutOfBoundsException
+     *
+     * @return FactoryInterface
      */
     public static function get($class);
 }
