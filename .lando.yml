@@ -1,0 +1,21 @@
+# https://docs.lando.dev/
+
+name: factory
+
+services:
+  php:
+    type: php:5.3
+    via: cli
+    build_as_root:
+      - docker-php-ext-enable xdebug
+
+tooling:
+  php:
+    service: php
+    description: Runs with php 5.3
+    cmd: php
+
+  composer:
+    service: php
+    description: Runs composer with php 5.3
+    cmd: composer
