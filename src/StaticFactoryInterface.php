@@ -17,15 +17,9 @@ namespace CoiSA\Factory;
  * Interface StaticFactoryInterface
  *
  * @package CoiSA\Factory
+ *
+ * @deprecated Use CoiSA\Factory\AbstractFactoryInterface instead
  */
-interface StaticFactoryInterface
+interface StaticFactoryInterface extends AbstractFactoryInterface
 {
-    /**
-     * Create new instance of a class with given arguments.
-     *
-     * @throws \UnexpectedValueException when given arguments are invalid for create a new instance
-     *
-     * @return object
-     */
-    public static function create();
 }
