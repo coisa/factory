@@ -40,7 +40,7 @@ final class AbstractFactoryFactory implements FactoryInterface
             throw ReflectionException::forClassNotFound($abstractFactory);
         }
 
-        $implements             = \class_implements($abstractFactory);
+        $implements               = \class_implements($abstractFactory);
         $abstractFactoryInterface = 'CoiSA\\Factory\\AbstractFactoryInterface';
 
         if (false === \in_array($abstractFactoryInterface, $implements)) {
