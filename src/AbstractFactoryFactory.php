@@ -13,73 +13,51 @@
  */
 namespace CoiSA\Factory;
 
-use CoiSA\Factory\Registry\FactoryRegistry;
-use Psr\Container\ContainerInterface;
+use CoiSA\Factory\Exception\ReflectionException;
 
 /**
  * Class AbstractFactoryFactory.
  *
  * @package CoiSA\Factory
  */
-final class AbstractFactoryFactory implements AbstractFactoryInterface
+final class AbstractFactoryFactory implements FactoryInterface
 {
     /**
-     * @var null|ContainerInterface
+     * @var string
      */
-    private static $container;
-
-    // @codeCoverageIgnoreStart
+    private $abstractFactory;
 
     /**
-     * Prevent class from being initialized.
+     * AbstractFactoryFactory constructor.
+     *
+     * @param string $abstractFactory
+     *
+     * @throws \UnexpectedValueException
      */
-    private function __construct()
+    public function __construct($abstractFactory)
     {
-    }
+        if (false === \class_exists($abstractFactory)) {
+            throw ReflectionException::forClassNotFound($abstractFactory);
+        }
 
-    // @codeCoverageIgnoreEnd
+        $implements             = \class_implements($abstractFactory);
+        $abstractFactoryInterface = 'CoiSA\\Factory\\AbstractFactoryInterface';
+
+        if (false === \in_array($abstractFactoryInterface, $implements)) {
+            throw ReflectionException::forClassNotSubclassOf($abstractFactory, $abstractFactoryInterface);
+        }
+
+        $this->abstractFactory = $abstractFactory;
+    }
 
     /**
      * {@inheritdoc}
      */
-    public static function create()
+    public function create()
     {
-        $class          = \func_get_arg(0);
-        $factoryFactory = new FactoryFactory(self::$container);
+        $callable  = array($this->abstractFactory, 'create');
+        $arguments = \func_get_args();
 
-        return $factoryFactory->create($class);
-    }
-
-    /**
-     * @param ContainerInterface $container
-     */
-    public static function setContainer(ContainerInterface $container)
-    {
-        self::$container = $container;
-    }
-
-    /**
-     * @param string           $class
-     * @param FactoryInterface $factory
-     *
-     * @return void
-     */
-    public static function setFactory($class, FactoryInterface $factory)
-    {
-        FactoryRegistry::set($class, $factory);
-    }
-
-    /**
-     * @param string $class
-     *
-     * @return FactoryInterface
-     */
-    public static function getFactory($class)
-    {
-        if (FactoryRegistry::has($class)) {
-            return FactoryRegistry::get($class);
-        }
-
-        return self::create($class);
+        return \call_user_func_array($callable, $arguments);
     }
 }

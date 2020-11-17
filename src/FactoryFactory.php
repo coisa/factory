@@ -56,7 +56,7 @@ final class FactoryFactory implements FactoryInterface
         }
 
         try {
-            return new StaticFactoryProxyFactory($class);
+            return new AbstractFactoryFactory($class);
         } catch (\Throwable $throwable) {
             return new ReflectionFactory($class);
         }

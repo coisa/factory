@@ -22,13 +22,6 @@ use PHPUnit\Framework\TestCase;
  */
 final class StaticFactoryTest extends TestCase implements StaticFactoryInterface
 {
-    public function testClassIsFinal()
-    {
-        $reflectionClass = new \ReflectionClass('CoiSA\\Factory\\StaticFactory');
-
-        self::assertTrue($reflectionClass->isFinal());
-    }
-
     /**
      * @expectedException \ArgumentCountError
      */

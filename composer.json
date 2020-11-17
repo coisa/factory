@@ -32,7 +32,10 @@
     "autoload": {
         "psr-4": {
             "CoiSA\\Factory\\": "src"
-        }
+        },
+        "files": [
+            "config/autoload.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
