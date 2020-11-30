@@ -48,18 +48,18 @@ final class FactoryRegistry implements FactoryRegistryInterface
     {
         $factoryInterface = 'CoiSA\\Factory\\FactoryInterface';
 
-        if (\is_string($factory)) {
-            if (false === \class_exists($factory)) {
-                throw ReflectionException::forClassNotFound($factory);
-            }
-
-            $reflectionClass = new \ReflectionClass($factory);
-
-            if (false === $reflectionClass->implementsInterface($factoryInterface)) {
-                throw ReflectionException::forClassNotSubclassOf($factory, $factoryInterface);
-            }
-        } else if (!$factory instanceof FactoryInterface) {
+        if (false === \is_string($factory) && !$factory instanceof FactoryInterface) {
             throw InvalidArgumentException::forInvalidArgumentType('factory', $factoryInterface . '|string');
+        }
+
+        if (\is_string($factory) && false === \class_exists($factory)) {
+            throw ReflectionException::forClassNotFound($factory);
+        }
+
+        $givenFactoryReflectionClass = new \ReflectionClass($factory);
+
+        if (false === $givenFactoryReflectionClass->implementsInterface($factoryInterface)) {
+            throw ReflectionException::forClassNotSubclassOf($factory, $factoryInterface);
         }
 
         self::$factories[$class] = $factory;
