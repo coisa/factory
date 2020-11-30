@@ -14,6 +14,7 @@
 namespace CoiSA\Factory\Registry;
 
 use CoiSA\Factory\Exception\OutOfBoundsException;
+use CoiSA\Factory\Exception\ReflectionException;
 use CoiSA\Factory\FactoryInterface;
 
 /**
@@ -24,12 +25,14 @@ use CoiSA\Factory\FactoryInterface;
 interface FactoryRegistryInterface
 {
     /**
-     * @param string           $class
-     * @param FactoryInterface $factory
+     * @param string                  $class
+     * @param FactoryInterface|string $factory
+     *
+     * @throws ReflectionException
      *
      * @return void
      */
-    public static function set($class, FactoryInterface $factory);
+    public static function set($class, $factory);
 
     /**
      * @param string $class

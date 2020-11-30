@@ -48,4 +48,16 @@ final class AbstractFactoryTest extends TestCase
         self::assertInstanceOf('CoiSA\\Factory\\ContainerFactory', $containerFactory);
         self::assertSame($object, $containerFactory->create());
     }
+
+    public function testGetFactoryWithStringFactoryGivenWillReturnFactoryInstance()
+    {
+        $objectClass  = \uniqid('class', false);
+        $factoryClass = 'CoiSA\\Factory\\Stub\\Factory\\TestFactory';
+
+        AbstractFactory::setFactory($objectClass, $factoryClass);
+
+        $factory = AbstractFactory::getFactory($objectClass);
+
+        self::assertInstanceOf($factoryClass, $factory);
+    }
 }

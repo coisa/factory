@@ -14,6 +14,7 @@
 namespace CoiSA\Factory\Registry;
 
 use CoiSA\Factory\Exception\OutOfBoundsException;
+use CoiSA\Factory\Exception\ReflectionException;
 use CoiSA\Factory\FactoryInterface;
 
 /**
@@ -42,8 +43,19 @@ final class FactoryRegistry implements FactoryRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public static function set($class, FactoryInterface $factory)
+    public static function set($class, $factory)
     {
+        if (\is_string($factory) && false === \class_exists($factory)) {
+            throw ReflectionException::forClassNotFound($factory);
+        }
+
+        $interface  = 'CoiSA\\Factory\\FactoryInterface';
+        $implements = \class_implements($factory);
+
+        if (false === \in_array($interface, $implements)) {
+            throw ReflectionException::forClassNotSubclassOf($factory, $interface);
+        }
+
         self::$factories[$class] = $factory;
     }
 
@@ -64,6 +76,12 @@ final class FactoryRegistry implements FactoryRegistryInterface
             throw OutOfBoundsException::forNotFoundClassFactory($class);
         }
 
-        return self::$factories[$class];
+        $factory = self::$factories[$class];
+
+        if (\is_string($factory)) {
+            $factory = new $factory();
+        }
+
+        return $factory;
     }
 }
