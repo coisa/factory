@@ -51,7 +51,7 @@ final class AbstractFactoryTest extends TestCase
 
     public function testGetFactoryWithStringFactoryGivenWillReturnFactoryInstance()
     {
-        $objectClass  = \uniqid('class', false);
+        $objectClass  = 'stdClass';
         $factoryClass = 'CoiSA\\Factory\\Stub\\Factory\\TestFactory';
 
         AbstractFactory::setFactory($objectClass, $factoryClass);
