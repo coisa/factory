@@ -46,6 +46,10 @@ final class FactoryRegistry implements FactoryRegistryInterface
      */
     public static function set($class, $factory)
     {
+        if (false === \class_exists($class)) {
+            throw ReflectionException::forClassNotFound($class);
+        }
+
         $factoryInterface = 'CoiSA\\Factory\\FactoryInterface';
 
         if (false === \is_string($factory) && !$factory instanceof FactoryInterface) {
