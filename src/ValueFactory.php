@@ -14,7 +14,7 @@
 namespace CoiSA\Factory;
 
 /**
- * Class ValueFactory
+ * Class ValueFactory.
  *
  * @package CoiSA\Factory
  */
