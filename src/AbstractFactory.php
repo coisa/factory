@@ -21,8 +21,19 @@ use Psr\Container\ContainerInterface;
  *
  * @package CoiSA\Factory
  */
-abstract class AbstractFactory implements AbstractFactoryInterface
+final class AbstractFactory implements AbstractFactoryInterface
 {
+    // @codeCoverageIgnoreStart
+
+    /**
+     * Prevent class from being initialized.
+     */
+    private function __construct()
+    {
+    }
+
+    // @codeCoverageIgnoreEnd
+
     /**
      * {@inheritdoc}
      *
