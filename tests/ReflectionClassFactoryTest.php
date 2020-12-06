@@ -16,24 +16,24 @@ namespace CoiSA\Factory;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class ReflectionFactoryTest.
+ * Class ReflectionClassFactoryTest.
  *
  * @package CoiSA\Factory
  */
-final class ReflectionFactoryTest extends TestCase
+final class ReflectionClassFactoryTest extends TestCase
 {
     public function testConstructorWithNonExistentClassWillThrowException()
     {
         $className = __NAMESPACE__ . '\\' . \uniqid('Test', false);
 
         $this->setExpectedException('CoiSA\\Factory\\Exception\\ReflectionException');
-        new ReflectionFactory($className);
+        new ReflectionClassFactory($className);
     }
 
     public function testCreateWithoutArgumentsReturnObjectOnClassWithoutConstructor()
     {
         $className         = __NAMESPACE__ . '\\Stub\\ClassWithoutConstructor';
-        $reflectionFactory = new ReflectionFactory($className);
+        $reflectionFactory = new ReflectionClassFactory($className);
 
         $object = $reflectionFactory->create();
 
@@ -43,7 +43,7 @@ final class ReflectionFactoryTest extends TestCase
     public function testCreateWithoutArgumentsReturnInitializedObjectOnClassWithoutArgumentConstructor()
     {
         $className         = __NAMESPACE__ . '\\Stub\\ConstructorWithoutArgument';
-        $reflectionFactory = new ReflectionFactory($className);
+        $reflectionFactory = new ReflectionClassFactory($className);
 
         $object = $reflectionFactory->create();
 
@@ -66,7 +66,7 @@ final class ReflectionFactoryTest extends TestCase
     public function testCreateWithArgumentsWillInstantiateConstructorWithArguments(array $arguments)
     {
         $className         = __NAMESPACE__ . '\\Stub\\ConstructorWithMixedArgument';
-        $reflectionFactory = new ReflectionFactory($className);
+        $reflectionFactory = new ReflectionClassFactory($className);
 
         $object = $reflectionFactory->create($arguments);
 

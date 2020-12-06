@@ -58,7 +58,7 @@ final class FactoryFactory implements FactoryInterface
         try {
             return new AbstractFactoryFactory($class);
         } catch (\Throwable $throwable) {
-            return new ReflectionFactory($class);
+            return new ReflectionClassFactory($class);
         }
     }
 }

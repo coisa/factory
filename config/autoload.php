@@ -31,3 +31,7 @@
     'CoiSA\\Factory\\AbstractFactoryFactory',
     'CoiSA\\Factory\\StaticFactoryProxyFactory'
 );
+\class_alias(
+    'CoiSA\\Factory\\ReflectionClassFactory',
+    'CoiSA\\Factory\\ReflectionFactory'
+);

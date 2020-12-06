@@ -16,11 +16,11 @@ namespace CoiSA\Factory;
 use CoiSA\Factory\Exception\ReflectionException;
 
 /**
- * Class ReflectionFactory.
+ * Class ReflectionClassFactory.
  *
  * @package CoiSA\Factory
  */
-final class ReflectionFactory implements FactoryInterface
+final class ReflectionClassFactory implements FactoryInterface
 {
     /**
      * @var \ReflectionClass
@@ -28,7 +28,7 @@ final class ReflectionFactory implements FactoryInterface
     private $reflectionClass;
 
     /**
-     * ReflectionFactory constructor.
+     * ReflectionClassFactory constructor.
      *
      * @param mixed $objectOrClassName
      *
