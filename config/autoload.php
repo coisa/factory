@@ -35,3 +35,7 @@
     'CoiSA\\Factory\\ReflectionClassFactory',
     'CoiSA\\Factory\\ReflectionFactory'
 );
+\class_alias(
+    'CoiSA\\Factory\\Annotation\\FactoryAnnotation',
+    'CoiSA\\Factory\\Annotation\\Factory'
+);
