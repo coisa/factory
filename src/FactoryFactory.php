@@ -44,7 +44,6 @@ final class FactoryFactory implements FactoryInterface
      *
      * @return FactoryInterface
      *
-     * @TODO Add support to \Doctrine\Common\Annotation
      * @TODO Add support to \ReflectionAttribute (PHP 8.0)
      */
     public function create()
