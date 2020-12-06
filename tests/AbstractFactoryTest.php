@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @package CoiSA\Factory
  */
-final class AbstractFactoryTest extends TestCase
+final class AbstractFactoryTest extends TestCase implements AbstractFactoryInterface
 {
     private $container;
 
@@ -59,5 +59,68 @@ final class AbstractFactoryTest extends TestCase
         $factory = AbstractFactory::getFactory($objectClass);
 
         self::assertInstanceOf($factoryClass, $factory);
+    }
+
+    /**
+     * @expectedException \ArgumentCountError
+     */
+    public function testCreateWithoutArgumentsWillThrowBadMethodCallException()
+    {
+        AbstractFactory::create();
+    }
+
+    /**
+     * @expectedException \ReflectionException
+     */
+    public function testCreateWithNonExistentClassWillThrowException()
+    {
+        AbstractFactory::create(__NAMESPACE__ . '\\' . \uniqid('Test', false));
+    }
+
+    public function testCreateWithoutArgumentsReturnObjectOnClassWithoutConstructor()
+    {
+        $object = AbstractFactory::create(__NAMESPACE__ . '\\Stub\\ClassWithoutConstructor');
+
+        self::assertInstanceOf(__NAMESPACE__ . '\\Stub\\ClassWithoutConstructor', $object);
+    }
+
+    public function testCreateWithoutArgumentsReturnInitializedObjectOnClassWithoutArgumentConstructor()
+    {
+        $object = AbstractFactory::create(__NAMESPACE__ . '\\Stub\\ConstructorWithoutArgument');
+
+        self::assertInstanceOf(__NAMESPACE__ . '\\Stub\\ConstructorWithoutArgument', $object);
+        self::assertStringStartsWith('test', $object->argument);
+    }
+
+    public static function create()
+    {
+        $object       = new \stdClass();
+        $object->argv = \func_get_args();
+
+        return $object;
+    }
+
+    public function testCreateWithAbstractFactoryImplementationWillReturnCreateFromGivenClass()
+    {
+        $class = \get_called_class();
+        $arg1  = \uniqid('arg1', true);
+        $arg2  = \uniqid('arg2', true);
+
+        $object = AbstractFactory::create($class, $arg1, $arg2);
+
+        self::assertInstanceOf('stdClass', $object);
+        self::assertEquals(array($arg1, $arg2), $object->argv);
+    }
+
+    public function testGetFactoryWillReturnGivenSetFactory()
+    {
+        $class   = \get_called_class();
+        $factory = new CallableFactory(function() {
+            return true;
+        });
+
+        AbstractFactory::setFactory($class, $factory);
+
+        self::assertSame($factory, AbstractFactory::getFactory($class));
     }
 }
