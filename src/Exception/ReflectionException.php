@@ -20,4 +20,23 @@ namespace CoiSA\Factory\Exception;
  */
 final class ReflectionException extends \CoiSA\Exception\Spl\ReflectionException implements FactoryExceptionInterface
 {
+    /** @const string */
+    const MESSAGE_ANNOTATION_CLASS_NOT_FOUND = '';
+
+    /**
+     * @param string                     $annotation
+     * @param int                        $code
+     * @param null|\Exception|\Throwable $previous
+     *
+     * @return ReflectionException
+     */
+    public static function forAnnotationNotFound($annotation, $code = 0, $previous = null)
+    {
+        $message = \sprintf(
+            self::MESSAGE_ANNOTATION_CLASS_NOT_FOUND,
+            $annotation
+        );
+
+        return self::create($message, $code, $previous);
+    }
 }

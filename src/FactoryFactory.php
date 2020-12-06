@@ -55,6 +55,13 @@ final class FactoryFactory implements FactoryInterface
             return new ContainerFactory($this->container, $class);
         }
 
+        if (\class_exists('Doctrine\\Common\\Annotations\\AnnotationReader')) {
+            try {
+                return new DoctrineAnnotationFactory($class);
+            } catch (\Throwable $throwable) {
+            }
+        }
+
         try {
             return new AbstractFactoryFactory($class);
         } catch (\Throwable $throwable) {
