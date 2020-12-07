@@ -23,6 +23,9 @@ final class ReflectionException extends \CoiSA\Exception\Spl\ReflectionException
     /** @const string */
     const MESSAGE_ANNOTATION_CLASS_NOT_FOUND = 'Annotation "%s" not found on class definition.';
 
+    /** @const string */
+    const MESSAGE_UNINSTANTIABLE_CLASS = 'Given class "%s" cannot be instantiated.';
+
     /**
      * @param string                     $annotation
      * @param int                        $code
@@ -35,6 +38,23 @@ final class ReflectionException extends \CoiSA\Exception\Spl\ReflectionException
         $message = \sprintf(
             self::MESSAGE_ANNOTATION_CLASS_NOT_FOUND,
             $annotation
+        );
+
+        return self::create($message, $code, $previous);
+    }
+
+    /**
+     * @param string                     $class
+     * @param int                        $code
+     * @param null|\Exception|\Throwable $previous
+     *
+     * @return \CoiSA\Exception\Throwable|mixed
+     */
+    public static function forUninstantiableClass($class, $code = 0, $previous = null)
+    {
+        $message = \sprintf(
+            self::MESSAGE_UNINSTANTIABLE_CLASS,
+            $class
         );
 
         return self::create($message, $code, $previous);

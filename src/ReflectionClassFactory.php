@@ -45,6 +45,10 @@ final class ReflectionClassFactory implements FactoryInterface
                 $reflectionException
             );
         }
+
+        if (false === $this->reflectionClass->isInstantiable()) {
+            throw ReflectionException::forUninstantiableClass($this->reflectionClass->getName());
+        }
     }
 
     /**
