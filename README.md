@@ -17,7 +17,7 @@ $ composer require coisa/factory
 
 ## License
 
-Please see [License File](LICENSE.md) for more information.
+Please see [License File](LICENSE) for more information.
 
 [ico-version]: https://img.shields.io/packagist/v/coisa/factory.svg?style=flat-square
 [ico-php]: https://img.shields.io/packagist/php-v/coisa/factory.svg?style=flat-square
