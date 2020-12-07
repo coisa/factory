@@ -21,7 +21,7 @@ namespace CoiSA\Factory\Exception;
 final class ReflectionException extends \CoiSA\Exception\Spl\ReflectionException implements FactoryExceptionInterface
 {
     /** @const string */
-    const MESSAGE_ANNOTATION_CLASS_NOT_FOUND = '';
+    const MESSAGE_ANNOTATION_CLASS_NOT_FOUND = 'Annotation "%s" not found on class definition.';
 
     /**
      * @param string                     $annotation
