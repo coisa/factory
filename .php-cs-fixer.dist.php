@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/factory.
  *
@@ -11,11 +13,12 @@
  * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
-$paths = array(
+
+$paths = [
     __FILE__,
     __DIR__,
-);
+];
 
-$header = \file_get_contents(__DIR__ . '/.docheader');
+$header = file_get_contents(__DIR__ . '/.docheader');
 
 return CoiSA\PhpCsFixer\PhpCsFixer::create($paths, $header);
