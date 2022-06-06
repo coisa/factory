@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/factory.
  *
@@ -7,10 +9,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/factory
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\Factory;
 
 use PHPUnit\Framework\TestCase;
@@ -20,21 +22,24 @@ use Prophecy\Prophecy\ObjectProphecy;
  * Class ProphesizeFactoryTest.
  *
  * @package CoiSA\Factory
+ *
+ * @internal
+ * @coversNothing
  */
 final class ProphesizeFactoryTest extends TestCase
 {
-    public function testCreateWithInvalidProphesizeMethodsCallableArgumentWillThrowInvalidArgumentException()
+    public function testCreateWithInvalidProphesizeMethodsCallableArgumentWillThrowInvalidArgumentException(): void
     {
-        $this->setExpectedException('CoiSA\\Factory\\Exception\\InvalidArgumentException');
+        $this->expectException('CoiSA\\Factory\\Exception\\InvalidArgumentException');
         new ProphesizeFactory('CoiSA\\Factory\\FactoryInterface', true);
     }
 
     public function provideClassOrIterface()
     {
-        return array(
-            array('CoiSA\\Factory\\Stub\\ClassWithoutConstructor'),
-            array('CoiSA\\Factory\\FactoryInterface'),
-        );
+        return [
+            ['CoiSA\\Factory\\Stub\\ClassWithoutConstructor'],
+            ['CoiSA\\Factory\\FactoryInterface'],
+        ];
     }
 
     /**
@@ -42,11 +47,11 @@ final class ProphesizeFactoryTest extends TestCase
      *
      * @param string $classOrInterface
      */
-    public function testCreateWillReturnRevealedGivenClassOrInterface($classOrInterface)
+    public function testCreateWillReturnRevealedGivenClassOrInterface($classOrInterface): void
     {
         $factory = new ProphesizeFactory($classOrInterface);
 
-        self::assertInstanceOf($classOrInterface, $factory->create());
+        parent::assertInstanceOf($classOrInterface, $factory->create());
     }
 
     /**
@@ -54,12 +59,12 @@ final class ProphesizeFactoryTest extends TestCase
      *
      * @param string $classOrInterface
      */
-    public function testCreateWillReturnDifferentRevealedGivenClassOrInterfaceEveryCall($classOrInterface)
+    public function testCreateWillReturnDifferentRevealedGivenClassOrInterfaceEveryCall($classOrInterface): void
     {
         $factory = new ProphesizeFactory($classOrInterface);
 
-        self::assertInstanceOf($classOrInterface, $factory->create());
-        self::assertNotSame($factory->create(), $factory->create());
+        parent::assertInstanceOf($classOrInterface, $factory->create());
+        parent::assertNotSame($factory->create(), $factory->create());
     }
 
     /**
@@ -67,17 +72,17 @@ final class ProphesizeFactoryTest extends TestCase
      *
      * @param string $classOrInterface
      */
-    public function testCreateeWillApplyProphesizeMethodToGivenClassOrInterfaceBeforeReveal($classOrInterface)
+    public function testCreateeWillApplyProphesizeMethodToGivenClassOrInterfaceBeforeReveal($classOrInterface): void
     {
-        $id = \mt_rand(1, 1000);
+        $id = random_int(1, 1000);
 
         $factory = new ProphesizeFactory(
             $classOrInterface,
-            function(ObjectProphecy $objectProphecy, $arguments = null) use ($id) {
+            function (ObjectProphecy $objectProphecy, $arguments = null) use ($id): void {
                 $objectProphecy->id = $id;
             }
         );
 
-        self::assertEquals($id, $factory->create()->id);
+        parent::assertSame($id, $factory->create()->id);
     }
 }

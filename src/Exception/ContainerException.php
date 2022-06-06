@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/factory.
  *
@@ -7,18 +9,19 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/factory
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\Factory\Exception;
+
+use CoiSA\Exception\Container\ContainerException as CoisaException;
 
 /**
  * Class ContainerException.
  *
  * @package CoiSA\Factory\Exception
  */
-final class ContainerException extends \CoiSA\Exception\Container\ContainerException implements
-    FactoryExceptionInterface
+final class ContainerException extends CoisaException implements FactoryExceptionInterface
 {
 }

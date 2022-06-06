@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/factory.
  *
@@ -7,10 +9,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/factory
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\Factory;
 
 use CoiSA\Factory\Stub\ClassWithoutConstructor;
@@ -21,33 +23,34 @@ use PHPUnit\Framework\TestCase;
  * Class CallableFactoryTest.
  *
  * @package CoiSA\Factory
+ *
+ * @internal
+ * @coversNothing
  */
 final class CallableFactoryTest extends TestCase
 {
-    public function testCreateWithInvalidCallableArgumentWillThrowInvalidArgumentException()
+    public function testCreateWithInvalidCallableArgumentWillThrowInvalidArgumentException(): void
     {
-        $this->setExpectedException('CoiSA\\Factory\\Exception\\InvalidArgumentException');
+        $this->expectException('CoiSA\\Factory\\Exception\\InvalidArgumentException');
         new CallableFactory(true);
     }
 
-    public function testCreateWithouArgumentWillReturnCallableResult()
+    public function testCreateWithouArgumentWillReturnCallableResult(): void
     {
-        $callable = function() {
-            return new ClassWithoutConstructor();
-        };
+        $callable = fn () => new ClassWithoutConstructor();
 
         $factory = new CallableFactory($callable);
 
-        self::assertInstanceOf('CoiSA\\Factory\\Stub\\ClassWithoutConstructor', $factory->create());
+        parent::assertInstanceOf('CoiSA\\Factory\\Stub\\ClassWithoutConstructor', $factory->create());
     }
 
     public function provideArguments()
     {
-        return array(
-            array(array(1)),
-            array(array(1, 2)),
-            array(array(1, 2, 3)),
-        );
+        return [
+            [[1]],
+            [[1, 2]],
+            [[1, 2, 3]],
+        ];
     }
 
     /**
@@ -55,20 +58,18 @@ final class CallableFactoryTest extends TestCase
      *
      * @param array $arguments
      */
-    public function testCreateWithArgumentsWillReturnReturnCallableResult($arguments = null)
+    public function testCreateWithArgumentsWillReturnReturnCallableResult($arguments = null): void
     {
-        $callable = function() {
-            return new ConstructorWithMixedArgument(\func_get_args());
-        };
+        $callable = fn () => new ConstructorWithMixedArgument(\func_get_args());
 
         $factory = new CallableFactory($callable);
 
-        self::assertInstanceOf(
+        parent::assertInstanceOf(
             'CoiSA\\Factory\\Stub\\ConstructorWithMixedArgument',
-            \call_user_func_array(array($factory, 'create'), $arguments)
+            \call_user_func_array([$factory, 'create'], $arguments)
         );
 
-        $object = \call_user_func_array(array($factory, 'create'), $arguments);
-        self::assertSame($arguments, $object->getArgument());
+        $object = \call_user_func_array([$factory, 'create'], $arguments);
+        parent::assertSame($arguments, $object->getArgument());
     }
 }

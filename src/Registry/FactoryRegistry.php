@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/factory.
  *
@@ -7,10 +9,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/factory
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\Factory\Registry;
 
 use CoiSA\Factory\Exception\InvalidArgumentException;
@@ -28,9 +30,9 @@ final class FactoryRegistry implements FactoryRegistryInterface
     /**
      * @var FactoryInterface[]
      */
-    private static $factories = array();
+    private static $factories = [];
 
-    // @codeCoverageIgnoreStart
+    /** @codeCoverageIgnoreStart */
 
     /**
      * Prevent class from being initialized.
@@ -39,12 +41,12 @@ final class FactoryRegistry implements FactoryRegistryInterface
     {
     }
 
-    // @codeCoverageIgnoreEnd
+    /** @codeCoverageIgnoreEnd */
 
     /**
      * {@inheritdoc}
      */
-    public static function set($class, $factory)
+    public static function set($class, $factory): void
     {
         $factoryInterface = 'CoiSA\\Factory\\FactoryInterface';
 
@@ -52,7 +54,7 @@ final class FactoryRegistry implements FactoryRegistryInterface
             throw InvalidArgumentException::forInvalidArgumentType('factory', $factoryInterface . '|string');
         }
 
-        if (\is_string($factory) && false === \class_exists($factory)) {
+        if (\is_string($factory) && false === class_exists($factory)) {
             throw ReflectionException::forClassNotFound($factory);
         }
 

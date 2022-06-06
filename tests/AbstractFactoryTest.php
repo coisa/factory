@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/factory.
  *
@@ -7,10 +9,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/factory
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\Factory;
 
 use PHPUnit\Framework\TestCase;
@@ -19,21 +21,24 @@ use PHPUnit\Framework\TestCase;
  * Class AbstractFactoryTest.
  *
  * @package CoiSA\Factory
+ *
+ * @internal
+ * @coversNothing
  */
 final class AbstractFactoryTest extends TestCase implements AbstractFactoryInterface
 {
     private $container;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
     }
 
-    public function testCreateWithContainerWillReturnContainerFactory()
+    public function testCreateWithContainerWillReturnContainerFactory(): void
     {
-        $this->markTestIncomplete();
+        parent::markTestIncomplete();
 
-        $class = \uniqid('class', false);
+        $class = uniqid('class', false);
 
         $object        = new \stdClass();
         $object->class = $class;
@@ -45,51 +50,49 @@ final class AbstractFactoryTest extends TestCase implements AbstractFactoryInter
 
         $containerFactory = AbstractFactory::create($class);
 
-        self::assertInstanceOf('CoiSA\\Factory\\ContainerFactory', $containerFactory);
-        self::assertSame($object, $containerFactory->create());
+        parent::assertInstanceOf('CoiSA\\Factory\\ContainerFactory', $containerFactory);
+        parent::assertSame($object, $containerFactory->create());
     }
 
-    public function testGetFactoryWithStringFactoryGivenWillReturnFactoryInstance()
+    public function testGetFactoryWithStringFactoryGivenWillReturnFactoryInstance(): void
     {
-        $objectClass  = \uniqid('class', false);
+        $objectClass  = uniqid('class', false);
         $factoryClass = 'CoiSA\\Factory\\Stub\\Factory\\TestFactory';
 
         AbstractFactory::setFactory($objectClass, $factoryClass);
 
         $factory = AbstractFactory::getFactory($objectClass);
 
-        self::assertInstanceOf($factoryClass, $factory);
+        parent::assertInstanceOf($factoryClass, $factory);
     }
 
-    /**
-     * @expectedException \ArgumentCountError
-     */
-    public function testCreateWithoutArgumentsWillThrowArgumentCountErrorException()
+    public function testCreateWithoutArgumentsWillThrowArgumentCountErrorException(): void
     {
+        $this->expectException(\ArgumentCountError::class);
+
         AbstractFactory::create();
     }
 
-    /**
-     * @expectedException \ReflectionException
-     */
-    public function testCreateWithNonExistentClassWillThrowException()
+    public function testCreateWithNonExistentClassWillThrowException(): void
     {
-        AbstractFactory::create(__NAMESPACE__ . '\\' . \uniqid('Test', false));
+        $this->expectException(\ReflectionException::class);
+
+        AbstractFactory::create(__NAMESPACE__ . '\\' . uniqid('Test', false));
     }
 
-    public function testCreateWithoutArgumentsReturnObjectOnClassWithoutConstructor()
+    public function testCreateWithoutArgumentsReturnObjectOnClassWithoutConstructor(): void
     {
         $object = AbstractFactory::create(__NAMESPACE__ . '\\Stub\\ClassWithoutConstructor');
 
-        self::assertInstanceOf(__NAMESPACE__ . '\\Stub\\ClassWithoutConstructor', $object);
+        parent::assertInstanceOf(__NAMESPACE__ . '\\Stub\\ClassWithoutConstructor', $object);
     }
 
-    public function testCreateWithoutArgumentsReturnInitializedObjectOnClassWithoutArgumentConstructor()
+    public function testCreateWithoutArgumentsReturnInitializedObjectOnClassWithoutArgumentConstructor(): void
     {
         $object = AbstractFactory::create(__NAMESPACE__ . '\\Stub\\ConstructorWithoutArgument');
 
-        self::assertInstanceOf(__NAMESPACE__ . '\\Stub\\ConstructorWithoutArgument', $object);
-        self::assertStringStartsWith('test', $object->argument);
+        parent::assertInstanceOf(__NAMESPACE__ . '\\Stub\\ConstructorWithoutArgument', $object);
+        parent::assertStringStartsWith('test', $object->argument);
     }
 
     public static function create()
@@ -100,27 +103,25 @@ final class AbstractFactoryTest extends TestCase implements AbstractFactoryInter
         return $object;
     }
 
-    public function testCreateWithAbstractFactoryImplementationWillReturnCreateFromGivenClass()
+    public function testCreateWithAbstractFactoryImplementationWillReturnCreateFromGivenClass(): void
     {
-        $class = \get_called_class();
-        $arg1  = \uniqid('arg1', true);
-        $arg2  = \uniqid('arg2', true);
+        $class = static::class;
+        $arg1  = uniqid('arg1', true);
+        $arg2  = uniqid('arg2', true);
 
         $object = AbstractFactory::create($class, $arg1, $arg2);
 
-        self::assertInstanceOf('stdClass', $object);
-        self::assertEquals(array($arg1, $arg2), $object->argv);
+        parent::assertInstanceOf('stdClass', $object);
+        parent::assertSame([$arg1, $arg2], $object->argv);
     }
 
-    public function testGetFactoryWillReturnGivenSetFactory()
+    public function testGetFactoryWillReturnGivenSetFactory(): void
     {
-        $class   = \get_called_class();
-        $factory = new CallableFactory(function() {
-            return true;
-        });
+        $class   = static::class;
+        $factory = new CallableFactory(fn () => true);
 
         AbstractFactory::setFactory($class, $factory);
 
-        self::assertSame($factory, AbstractFactory::getFactory($class));
+        parent::assertSame($factory, AbstractFactory::getFactory($class));
     }
 }

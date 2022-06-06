@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/factory.
  *
@@ -7,10 +9,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/factory
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\Factory\Exception;
 
 /**
@@ -21,10 +23,10 @@ namespace CoiSA\Factory\Exception;
 final class ReflectionException extends \CoiSA\Exception\Spl\ReflectionException implements FactoryExceptionInterface
 {
     /** @const string */
-    const MESSAGE_ANNOTATION_CLASS_NOT_FOUND = 'Annotation "%s" not found on class definition.';
+    public const MESSAGE_ANNOTATION_CLASS_NOT_FOUND = 'Annotation "%s" not found on class definition.';
 
     /** @const string */
-    const MESSAGE_UNINSTANTIABLE_CLASS = 'Given class "%s" cannot be instantiated.';
+    public const MESSAGE_UNINSTANTIABLE_CLASS = 'Given class "%s" cannot be instantiated.';
 
     /**
      * @param string                     $annotation
@@ -35,7 +37,7 @@ final class ReflectionException extends \CoiSA\Exception\Spl\ReflectionException
      */
     public static function forAnnotationNotFound($annotation, $code = 0, $previous = null)
     {
-        $message = \sprintf(
+        $message = sprintf(
             self::MESSAGE_ANNOTATION_CLASS_NOT_FOUND,
             $annotation
         );
@@ -52,7 +54,7 @@ final class ReflectionException extends \CoiSA\Exception\Spl\ReflectionException
      */
     public static function forUninstantiableClass($class, $code = 0, $previous = null)
     {
-        $message = \sprintf(
+        $message = sprintf(
             self::MESSAGE_UNINSTANTIABLE_CLASS,
             $class
         );

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/factory.
  *
@@ -7,10 +9,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/factory
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\Factory;
 
 use Psr\Container\ContainerInterface;
@@ -29,8 +31,6 @@ final class FactoryFactory implements FactoryInterface
 
     /**
      * FactoryFactory constructor.
-     *
-     * @param ContainerInterface|null $container
      */
     public function __construct(ContainerInterface $container = null)
     {
@@ -48,13 +48,13 @@ final class FactoryFactory implements FactoryInterface
      */
     public function create()
     {
-        $class = \func_get_arg(0);
+        $class = func_get_arg(0);
 
         if (null !== $this->container && $this->container->has($class)) {
             return new ContainerFactory($this->container, $class);
         }
 
-        if (\class_exists('Doctrine\\Common\\Annotations\\AnnotationReader')) {
+        if (class_exists('Doctrine\\Common\\Annotations\\AnnotationReader')) {
             try {
                 return new DoctrineAnnotationFactory($class);
             } catch (\Throwable $throwable) {
