@@ -64,7 +64,7 @@ final class AbstractFactoryTest extends TestCase implements AbstractFactoryInter
     /**
      * @expectedException \ArgumentCountError
      */
-    public function testCreateWithoutArgumentsWillThrowBadMethodCallException()
+    public function testCreateWithoutArgumentsWillThrowArgumentCountErrorException()
     {
         AbstractFactory::create();
     }
