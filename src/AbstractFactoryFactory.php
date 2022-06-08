@@ -24,29 +24,23 @@ use CoiSA\Factory\Exception\ReflectionException;
  */
 final class AbstractFactoryFactory implements FactoryInterface
 {
-    /**
-     * @var string
-     */
-    private $abstractFactory;
+    private string $abstractFactory;
 
     /**
      * AbstractFactoryFactory constructor.
      *
-     * @param string $abstractFactory
-     *
-     * @throws \UnexpectedValueException
+     * @throws ReflectionException
      */
-    public function __construct($abstractFactory)
+    public function __construct(string $abstractFactory)
     {
         if (false === class_exists($abstractFactory)) {
             throw ReflectionException::forClassNotFound($abstractFactory);
         }
 
-        $implements               = class_implements($abstractFactory);
-        $abstractFactoryInterface = 'CoiSA\\Factory\\AbstractFactoryInterface';
+        $implements = class_implements($abstractFactory);
 
-        if (false === \in_array($abstractFactoryInterface, $implements, true)) {
-            throw ReflectionException::forClassNotSubclassOf($abstractFactory, $abstractFactoryInterface);
+        if (false === \in_array(AbstractFactoryInterface::class, $implements, true)) {
+            throw ReflectionException::forClassNotSubclassOf($abstractFactory, AbstractFactoryInterface::class);
         }
 
         $this->abstractFactory = $abstractFactory;
