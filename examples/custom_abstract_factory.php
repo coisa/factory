@@ -42,7 +42,6 @@ class RandomStringAbtractFactory implements AbstractFactoryInterface
 }
 
 // Set the callable factory for the RandomString class
-// @TODO setAbstractFactory?? Can we set a factory and an abstract factory for the same object?
 AbstractFactory::setFactory(RandomString::class, RandomStringAbtractFactory::class);
 
 var_dump(
