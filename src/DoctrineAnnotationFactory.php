@@ -40,7 +40,7 @@ final class DoctrineAnnotationFactory implements FactoryInterface
      */
     public function __construct($objectOrClassName)
     {
-        if (class_exists(AnnotationReader::class)) {
+        if (false === class_exists(AnnotationReader::class)) {
             throw ReflectionException::forClassNotFound(AnnotationReader::class);
         }
 

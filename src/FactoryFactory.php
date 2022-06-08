@@ -25,10 +25,7 @@ use Psr\Container\ContainerInterface;
  */
 final class FactoryFactory implements FactoryInterface
 {
-    /**
-     * @var null|ContainerInterface
-     */
-    private $container;
+    private ?ContainerInterface $container;
 
     /**
      * FactoryFactory constructor.
@@ -53,7 +50,7 @@ final class FactoryFactory implements FactoryInterface
             return new ContainerFactory($this->container, $class);
         }
 
-        if (\PHP_VERSION_ID < 80000) {
+        if (\PHP_VERSION_ID >= 80000) {
             try {
                 return new ReflectionAttributeFactory($class);
             } catch (\Throwable $throwable) {
