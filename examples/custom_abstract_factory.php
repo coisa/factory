@@ -13,15 +13,12 @@ declare(strict_types=1);
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
+namespace examples\custom_abstract_factory;
+
 use CoiSA\Factory\AbstractFactory;
 use CoiSA\Factory\AbstractFactoryInterface;
 
-require_once dirname(__DIR__) . '/vendor/autoload.php';
-
-/*
- * You can run this example with the following command:
- * $ docker run --rm -v $(pwd):/app -w /app php:alpine php examples/callable_factory.php
- */
+require_once \dirname(__DIR__) . '/vendor/autoload.php';
 
 class RandomString
 {
@@ -37,15 +34,25 @@ class RandomStringAbtractFactory implements AbstractFactoryInterface
 {
     public static function create()
     {
-        return new RandomString(...func_get_args());
+        return new RandomString(...\func_get_args());
     }
 }
 
 // Set the callable factory for the RandomString class
 AbstractFactory::setFactory(RandomString::class, RandomStringAbtractFactory::class);
 
-var_dump(
-    AbstractFactory::create(RandomString::class),
-    AbstractFactory::create(RandomString::class, 'prefix_'),
-    AbstractFactory::create(RandomString::class, 'prefix_', '_suffix')
-);
+return [
+    __NAMESPACE__ => [
+        'AbstractFactory::getFactory(RandomString::class)'          => AbstractFactory::getFactory(RandomString::class),
+        'AbstractFactory::create(RandomString::class)'              => AbstractFactory::create(RandomString::class),
+        'AbstractFactory::create(RandomString::class, \'prefix_\')' => AbstractFactory::create(
+            RandomString::class,
+            'prefix_'
+        ),
+        'AbstractFactory::create(RandomString::class, \'prefix_\', \'_suffix\')' => AbstractFactory::create(
+            RandomString::class,
+            'prefix_',
+            '_suffix'
+        ),
+    ],
+];

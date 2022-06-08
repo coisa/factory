@@ -13,16 +13,14 @@ declare(strict_types=1);
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
+namespace examples\reflection_attribute_factory;
+
 use CoiSA\Factory\AbstractFactory;
 use CoiSA\Factory\AbstractFactoryInterface;
+use CoiSA\Factory\Attribute\Factory;
 use CoiSA\Factory\FactoryInterface;
 
-require_once dirname(__DIR__) . '/vendor/autoload.php';
-
-/*
- * You can run this example with the following command:
- * $ docker run --rm -v $(pwd):/app -w /app php:alpine php examples/doctrine_annotation_factory.php
- */
+require_once \dirname(__DIR__) . '/vendor/autoload.php';
 
 /**
  * Define an abstract factory for the RandomInt class.
@@ -56,12 +54,12 @@ class RandomStringFactory implements FactoryInterface
 /**
  * Define the RandomInt class and register the abstract factory through the attribute.
  */
-#[CoiSA\Factory\Attribute\Factory(factory: RandomIntAbstractFactory::class)]
+#[Factory(factory: RandomIntAbstractFactory::class)]
 class RandomInt
 {
     public int $randomInt;
 
-    public function __construct(int $randomInt)
+    public function __construct(int $randomInt = 0)
     {
         $this->randomInt = $randomInt;
     }
@@ -70,17 +68,17 @@ class RandomInt
 /**
  * Define the RandomString class and register the factory through the attribute.
  */
-#[CoiSA\Factory\Attribute\Factory(factory: RandomStringFactory::class)]
+#[Factory(factory: RandomStringFactory::class)]
 class RandomString
 {
     public string $randomString;
 
-    public function __construct(string $randomString)
+    public function __construct(string $randomString = '')
     {
         $this->randomString = $randomString;
     }
 }
-#[CoiSA\Factory\Attribute\Factory(factory: new RandomStringFactory('other'))]
+#[Factory(factory: new RandomStringFactory('other'))]
 class RandomOtherString
 {
     public string $randomString;
@@ -91,16 +89,17 @@ class RandomOtherString
     }
 }
 
-// Create the instances using the factories given on annotations.
-var_dump(
-    AbstractFactory::create(RandomInt::class),
-    AbstractFactory::create(RandomString::class),
-    AbstractFactory::create(RandomOtherString::class)
-);
+return [
+    __NAMESPACE__ => [
+        'AbstractFactory::getFactory(RandomInt::class)' => AbstractFactory::getFactory(RandomInt::class),
+        'AbstractFactory::create(RandomInt::class)'     => AbstractFactory::create(RandomInt::class),
 
-// Return the factory instances used for construction of the objects.
-var_dump(
-    AbstractFactory::getFactory(RandomInt::class),
-    AbstractFactory::getFactory(RandomString::class),
-    AbstractFactory::getFactory(RandomOtherString::class)
-);
+        'AbstractFactory::getFactory(RandomString::class)' => AbstractFactory::getFactory(RandomString::class),
+        'AbstractFactory::create(RandomString::class)'     => AbstractFactory::create(RandomString::class),
+
+        'AbstractFactory::getFactory(RandomOtherString::class)' => AbstractFactory::getFactory(
+            RandomOtherString::class
+        ),
+        'AbstractFactory::create(RandomOtherString::class)' => AbstractFactory::create(RandomOtherString::class),
+    ],
+];

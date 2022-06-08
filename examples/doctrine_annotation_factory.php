@@ -13,16 +13,13 @@ declare(strict_types=1);
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
+namespace examples\doctrine_annotation_factory;
+
 use CoiSA\Factory\AbstractFactory;
 use CoiSA\Factory\AbstractFactoryInterface;
 use CoiSA\Factory\FactoryInterface;
 
-require_once dirname(__DIR__) . '/vendor/autoload.php';
-
-/*
- * You can run this example with the following command:
- * $ docker run --rm -v $(pwd):/app -w /app php:alpine php examples/doctrine_annotation_factory.php
- */
+require_once \dirname(__DIR__) . '/vendor/autoload.php';
 
 /**
  * Define an abstract factory for the RandomInt class.
@@ -49,7 +46,7 @@ class RandomStringFactory implements FactoryInterface
 /**
  * Define the RandomInt class and register the abstract factory through the annotation.
  *
- * @CoiSA\Factory\Annotation\Factory(factory="RandomIntAbstractFactory")
+ * @CoiSA\Factory\Annotation\Factory(factory="examples\doctrine_annotation_factory\RandomIntAbstractFactory")
  */
 class RandomInt
 {
@@ -64,7 +61,7 @@ class RandomInt
 /**
  * Define the RandomString class and register the factory through the annotation.
  *
- * @CoiSA\Factory\Annotation\Factory(factory="RandomStringFactory")
+ * @CoiSA\Factory\Annotation\Factory(factory="examples\doctrine_annotation_factory\RandomStringFactory")
  */
 class RandomString
 {
@@ -76,14 +73,11 @@ class RandomString
     }
 }
 
-// Create the instances using the factories given on annotations.
-var_dump(
-    AbstractFactory::create(RandomInt::class),
-    AbstractFactory::create(RandomString::class)
-);
-
-// Return the factory instances used for construction of the objects.
-var_dump(
-    AbstractFactory::getFactory(RandomInt::class),
-    AbstractFactory::getFactory(RandomString::class)
-);
+return [
+    __NAMESPACE__ => [
+        'AbstractFactory::getFactory(RandomInt::class)'    => AbstractFactory::getFactory(RandomInt::class),
+        'AbstractFactory::create(RandomInt::class)'        => AbstractFactory::create(RandomInt::class),
+        'AbstractFactory::getFactory(RandomString::class)' => AbstractFactory::getFactory(RandomString::class),
+        'AbstractFactory::create(RandomString::class)'     => AbstractFactory::create(RandomString::class),
+    ],
+];
