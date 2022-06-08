@@ -15,8 +15,6 @@ declare(strict_types=1);
 
 namespace CoiSA\Factory;
 
-use CoiSA\Factory\Exception\InvalidArgumentException;
-
 /**
  * Class CallableFactory.
  *
@@ -31,15 +29,9 @@ final class CallableFactory implements FactoryInterface
 
     /**
      * CallableFactory constructor.
-     *
-     * @param callable $callable
      */
-    public function __construct($callable)
+    public function __construct(callable $callable)
     {
-        if (false === \is_callable($callable)) {
-            throw InvalidArgumentException::forInvalidArgumentType('callable', 'callable');
-        }
-
         $this->callable = $callable;
     }
 

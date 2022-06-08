@@ -64,22 +64,14 @@ final class AbstractFactory implements AbstractFactoryInterface
     }
 
     /**
-     * @param string                  $class
      * @param FactoryInterface|string $factory
-     *
-     * @return void
      */
-    public static function setFactory($class, $factory): void
+    public static function setFactory(string $class, $factory): void
     {
         FactoryAbstractFactory::setFactory($class, $factory);
     }
 
-    /**
-     * @param string $class
-     *
-     * @return FactoryInterface
-     */
-    public static function getFactory($class)
+    public static function getFactory(string $class): FactoryInterface
     {
         return FactoryAbstractFactory::getFactory($class);
     }

@@ -24,28 +24,21 @@ use CoiSA\Factory\Exception\ReflectionException;
  */
 final class ReflectionClassFactory implements FactoryInterface
 {
-    /**
-     * @var \ReflectionClass
-     */
-    private $reflectionClass;
+    private \ReflectionClass $reflectionClass;
 
     /**
      * ReflectionClassFactory constructor.
      *
      * @param mixed $objectOrClassName
      *
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function __construct($objectOrClassName)
     {
         try {
             $this->reflectionClass = new \ReflectionClass($objectOrClassName);
         } catch (\ReflectionException $reflectionException) {
-            throw ReflectionException::create(
-                $reflectionException->getMessage(),
-                $reflectionException->getCode(),
-                $reflectionException
-            );
+            throw ReflectionException::createFromThrowable($reflectionException);
         }
 
         if (false === $this->reflectionClass->isInstantiable()) {

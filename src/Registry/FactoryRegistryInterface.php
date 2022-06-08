@@ -27,28 +27,16 @@ use CoiSA\Factory\FactoryInterface;
 interface FactoryRegistryInterface
 {
     /**
-     * @param string                  $class
      * @param FactoryInterface|string $factory
      *
      * @throws ReflectionException
-     *
-     * @return void
      */
-    public static function set($class, $factory): void;
+    public static function set(string $class, $factory): void;
+
+    public static function has(string $class): bool;
 
     /**
-     * @param string $class
-     *
-     * @return bool
-     */
-    public static function has($class);
-
-    /**
-     * @param string $class
-     *
      * @throws OutOfBoundsException
-     *
-     * @return FactoryInterface
      */
-    public static function get($class);
+    public static function get(string $class): FactoryInterface;
 }

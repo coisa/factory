@@ -25,10 +25,7 @@ use Psr\Container\ContainerInterface;
  */
 final class FactoryAbstractFactory implements AbstractFactoryInterface
 {
-    /**
-     * @var null|ContainerInterface
-     */
-    private static $container;
+    private static ContainerInterface $container;
 
     /** @codeCoverageIgnoreStart */
 
@@ -47,7 +44,7 @@ final class FactoryAbstractFactory implements AbstractFactoryInterface
     public static function create()
     {
         $class          = func_get_arg(0);
-        $factoryFactory = new FactoryFactory(self::$container);
+        $factoryFactory = new FactoryFactory(static::$container ?? null);
 
         return $factoryFactory->create($class);
     }
@@ -58,22 +55,14 @@ final class FactoryAbstractFactory implements AbstractFactoryInterface
     }
 
     /**
-     * @param string                  $class
      * @param FactoryInterface|string $factory
-     *
-     * @return void
      */
-    public static function setFactory($class, $factory): void
+    public static function setFactory(string $class, $factory): void
     {
         FactoryRegistry::set($class, $factory);
     }
 
-    /**
-     * @param string $class
-     *
-     * @return FactoryInterface
-     */
-    public static function getFactory($class)
+    public static function getFactory(string $class): FactoryInterface
     {
         if (FactoryRegistry::has($class)) {
             return FactoryRegistry::get($class);

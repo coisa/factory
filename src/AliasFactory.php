@@ -22,17 +22,12 @@ namespace CoiSA\Factory;
  */
 final class AliasFactory implements FactoryInterface
 {
-    /**
-     * @var string
-     */
-    private $factoryAlias;
+    private string $factoryAlias;
 
     /**
      * AliasFactory constructor.
-     *
-     * @param string $factoryAlias
      */
-    public function __construct($factoryAlias)
+    public function __construct(string $factoryAlias)
     {
         $this->factoryAlias = $factoryAlias;
     }

@@ -15,7 +15,6 @@ declare(strict_types=1);
 
 namespace CoiSA\Factory;
 
-use CoiSA\Factory\Exception\InvalidArgumentException;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
@@ -25,10 +24,7 @@ use Prophecy\Prophecy\ObjectProphecy;
  */
 final class ProphecyFactory implements FactoryInterface
 {
-    /**
-     * @var ObjectProphecy
-     */
-    private $objectProphecy;
+    private ObjectProphecy $objectProphecy;
 
     /**
      * @var null|callable
@@ -37,18 +33,9 @@ final class ProphecyFactory implements FactoryInterface
 
     /**
      * ProphecyFactory constructor.
-     *
-     * @param null|callable $prophesizeMethodsCallable
      */
-    public function __construct(ObjectProphecy $objectProphecy, $prophesizeMethodsCallable = null)
+    public function __construct(ObjectProphecy $objectProphecy, callable $prophesizeMethodsCallable = null)
     {
-        if ($prophesizeMethodsCallable && false === \is_callable($prophesizeMethodsCallable)) {
-            throw InvalidArgumentException::forInvalidArgumentType(
-                'prophesizeMethodsCallable',
-                'callable'
-            );
-        }
-
         $this->objectProphecy            = $objectProphecy;
         $this->prophesizeMethodsCallable = $prophesizeMethodsCallable;
     }

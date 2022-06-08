@@ -26,22 +26,14 @@ use Psr\Container\ContainerInterface;
  */
 final class ContainerFactory implements FactoryInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ContainerInterface $container;
 
-    /**
-     * @var string
-     */
-    private $class;
+    private string $class;
 
     /**
      * ContainerFactory constructor.
-     *
-     * @param string $class
      */
-    public function __construct(ContainerInterface $container, $class)
+    public function __construct(ContainerInterface $container, string $class)
     {
         $this->container = $container;
         $this->class     = $class;
