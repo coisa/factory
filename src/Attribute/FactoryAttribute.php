@@ -13,31 +13,32 @@ declare(strict_types=1);
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
-namespace CoiSA\Factory\Annotation;
+namespace CoiSA\Factory\Attribute;
 
 use CoiSA\Factory\AbstractFactory;
 use CoiSA\Factory\FactoryInterface;
 
 /**
- * Class FactoryAnnotation.
+ * Class FactoryAttribute.
  *
- * @package CoiSA\Factory\Annotation
- *
- * @Annotation
- * @NamedArgumentConstructor
- * @Target("CLASS")
+ * @package CoiSA\Factory\Attribute
  */
-final class FactoryAnnotation
+#[\Attribute(\Attribute::TARGET_CLASS)]
+final class FactoryAttribute
 {
-    private string $factory;
+    private string|FactoryInterface $factory;
 
-    public function __construct(string $factory)
+    public function __construct(string|FactoryInterface $factory)
     {
         $this->factory = $factory;
     }
 
     public function getFactory(): FactoryInterface
     {
+        if ($this->factory instanceof FactoryInterface) {
+            return $this->factory;
+        }
+
         $implements = class_implements($this->factory);
 
         if (\in_array(FactoryInterface::class, $implements, true)) {

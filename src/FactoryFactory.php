@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace CoiSA\Factory;
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -43,8 +44,6 @@ final class FactoryFactory implements FactoryInterface
      * @throws \ReflectionException
      *
      * @return FactoryInterface
-     *
-     * @TODO Add support to \ReflectionAttribute (PHP 8.0)
      */
     public function create()
     {
@@ -54,7 +53,14 @@ final class FactoryFactory implements FactoryInterface
             return new ContainerFactory($this->container, $class);
         }
 
-        if (class_exists('Doctrine\\Common\\Annotations\\AnnotationReader')) {
+        if (\PHP_VERSION_ID < 80000) {
+            try {
+                return new ReflectionAttributeFactory($class);
+            } catch (\Throwable $throwable) {
+            }
+        }
+
+        if (class_exists(AnnotationReader::class)) {
             try {
                 return new DoctrineAnnotationFactory($class);
             } catch (\Throwable $throwable) {

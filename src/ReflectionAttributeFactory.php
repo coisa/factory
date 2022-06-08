@@ -15,21 +15,17 @@ declare(strict_types=1);
 
 namespace CoiSA\Factory;
 
-use CoiSA\Factory\Annotation\FactoryAnnotation;
+use CoiSA\Factory\Attribute\Factory;
 use CoiSA\Factory\Exception\ReflectionException;
-use Doctrine\Common\Annotations\AnnotationReader;
 
 /**
- * Class DoctrineAnnotationFactory.
+ * Class ReflectionAttributeFactory.
  *
  * @package CoiSA\Factory
  */
-final class DoctrineAnnotationFactory implements FactoryInterface
+final class ReflectionAttributeFactory implements FactoryInterface
 {
-    /**
-     * @var FactoryInterface
-     */
-    private $factory;
+    private FactoryInterface $factory;
 
     /**
      * DoctrineAnnotationFactory constructor.
@@ -40,8 +36,8 @@ final class DoctrineAnnotationFactory implements FactoryInterface
      */
     public function __construct($objectOrClassName)
     {
-        if (class_exists(AnnotationReader::class)) {
-            throw ReflectionException::forClassNotFound(AnnotationReader::class);
+        if (\PHP_VERSION_ID < 80000) {
+            throw ReflectionException::forClassNotFound('ReflectionAttribute');
         }
 
         try {
@@ -50,14 +46,17 @@ final class DoctrineAnnotationFactory implements FactoryInterface
             throw ReflectionException::createFromThrowable($reflectionException);
         }
 
-        $annotationReader  = new AnnotationReader();
-        $factoryAnnotation = $annotationReader->getClassAnnotation($reflectionClass, FactoryAnnotation::class);
+        $reflectionAttributes = $reflectionClass->getAttributes(
+            Factory::class,
+            \ReflectionAttribute::IS_INSTANCEOF
+        );
 
-        if (!$factoryAnnotation instanceof FactoryAnnotation) {
-            throw ReflectionException::forAnnotationNotFound(FactoryAnnotation::class);
+        if (empty($reflectionAttributes)) {
+            throw ReflectionException::forClassAttributeNotFound(Factory::class);
         }
 
-        $this->factory = $factoryAnnotation->getFactory();
+        $factoryAttribute = $reflectionAttributes[0]->newInstance();
+        $this->factory    = $factoryAttribute->getFactory();
     }
 
     /**

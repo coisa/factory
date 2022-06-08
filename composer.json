@@ -6,17 +6,17 @@
     "authors": [
         {
             "name": "Felipe Sayão Lobato Abreu",
-            "email": "github@felipeabreu.com.br"
+            "email": "github@mentor.dev.br"
         }
     ],
     "require": {
         "php": "^7.4 || ^8.0",
-        "coisa/exceptions": "^1.0",
+        "coisa/exceptions": "^2.1",
         "psr/container": "^1.0 || ^2.0"
     },
     "require-dev": {
         "coisa/php-cs-fixer": "^2.1",
-        "doctrine/annotations": "^1.2",
+        "doctrine/annotations": "^1.13",
         "php-parallel-lint/php-console-highlighter": "^1.0",
         "php-parallel-lint/php-parallel-lint": "^1.3",
         "phpspec/prophecy-phpunit": "^2.0",
@@ -33,13 +33,16 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-2.x": "2.0"
+            "dev-2.x": "2.0-dev"
         }
     },
     "autoload": {
         "psr-4": {
             "CoiSA\\Factory\\": "src"
-        }
+        },
+        "files": [
+            "config/autoload.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -58,6 +61,6 @@
         "cs-fix": "php-cs-fixer fix",
         "lint": "parallel-lint --exclude vendor .",
         "sniff": "phpcs",
-        "test": "phpunit --color=always"
+        "test": "phpunit --color=always --testdox"
     }
 }
