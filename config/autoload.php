@@ -13,12 +13,14 @@ declare(strict_types=1);
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
+namespace CoiSA\Factory;
+
 use CoiSA\Factory\Annotation\FactoryAnnotation;
 use CoiSA\Factory\Attribute\FactoryAttribute;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 
-class_alias(FactoryAnnotation::class, 'CoiSA\\Factory\\Annotation\\Factory');
-class_alias(FactoryAttribute::class, 'CoiSA\\Factory\\Attribute\\Factory');
+class_alias(FactoryAnnotation::class, Annotation\Factory::class);
+class_alias(FactoryAttribute::class, Attribute\Factory::class);
 
 if (class_exists(AnnotationRegistry::class)) {
     AnnotationRegistry::registerUniqueLoader('class_exists');

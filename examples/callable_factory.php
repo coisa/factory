@@ -33,7 +33,7 @@ class RandomString
     }
 }
 
-$callable = fn (string $prefix = 'random_', string $suffix = '_string') => new RandomString( uniqid($prefix) . $suffix);
+$callable = fn (string $prefix = 'random_', string $suffix = '_string') => new RandomString(uniqid($prefix) . $suffix);
 $factory = new CallableFactory($callable);
 
 // Set the callable factory for the RandomString class
