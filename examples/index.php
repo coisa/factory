@@ -13,15 +13,18 @@ declare(strict_types=1);
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
-namespace CoiSA\Factory\Exception;
+// $ docker run --rm -ti -v $(pwd):/app -w /app php:alpine php examples/index.php
 
-use CoiSA\Exception\Spl\InvalidArgumentException as CoisaException;
+use Symfony\Component\VarDumper\VarDumper;
 
-/**
- * Class InvalidArgumentException.
- *
- * @package CoiSA\Factory\Exception
- */
-final class InvalidArgumentException extends CoisaException implements FactoryExceptionInterface
-{
+$examples = [];
+
+foreach (glob(__DIR__ . '/*.php') as $file) {
+    if (__FILE__ === $file) {
+        continue;
+    }
+
+    $examples += include $file;
 }
+
+VarDumper::dump($examples);

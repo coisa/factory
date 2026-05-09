@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/factory.
  *
@@ -7,13 +9,12 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/factory
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\Factory;
 
-use CoiSA\Factory\Exception\InvalidArgumentException;
 use Prophecy\Prophet;
 
 /**
@@ -23,10 +24,7 @@ use Prophecy\Prophet;
  */
 final class ProphesizeFactory implements FactoryInterface
 {
-    /**
-     * @var string
-     */
-    private $classOrInterface;
+    private string $classOrInterface;
 
     /**
      * @var null|callable
@@ -35,19 +33,9 @@ final class ProphesizeFactory implements FactoryInterface
 
     /**
      * ProphesizeFactory constructor.
-     *
-     * @param string        $classOrInterface
-     * @param null|callable $prophesizeMethodsCallable
      */
-    public function __construct($classOrInterface, $prophesizeMethodsCallable = null)
+    public function __construct(string $classOrInterface, callable $prophesizeMethodsCallable = null)
     {
-        if ($prophesizeMethodsCallable && false === \is_callable($prophesizeMethodsCallable)) {
-            throw InvalidArgumentException::forInvalidArgumentType(
-                'prophesizeMethodsCallable',
-                'callable'
-            );
-        }
-
         $this->classOrInterface          = $classOrInterface;
         $this->prophesizeMethodsCallable = $prophesizeMethodsCallable;
     }

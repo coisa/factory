@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/factory.
  *
@@ -7,35 +9,19 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/factory
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
-/**
- * @deprecated only for retro-compatibility purpose
- */
-\class_alias(
-    'CoiSA\\Factory\\Exception\\FactoryExceptionInterface',
-    'CoiSA\\Factory\\Exception\\FactoryException'
-);
-\class_alias(
-    'CoiSA\\Factory\\AbstractFactory',
-    'CoiSA\\Factory\\StaticFactory'
-);
-\class_alias(
-    'CoiSA\\Factory\\AbstractFactoryInterface',
-    'CoiSA\\Factory\\StaticFactoryInterface'
-);
-\class_alias(
-    'CoiSA\\Factory\\AbstractFactoryFactory',
-    'CoiSA\\Factory\\StaticFactoryProxyFactory'
-);
-\class_alias(
-    'CoiSA\\Factory\\ReflectionClassFactory',
-    'CoiSA\\Factory\\ReflectionFactory'
-);
-\class_alias(
-    'CoiSA\\Factory\\Annotation\\FactoryAnnotation',
-    'CoiSA\\Factory\\Annotation\\Factory'
-);
+namespace CoiSA\Factory;
+
+use CoiSA\Factory\Annotation\FactoryAnnotation;
+use CoiSA\Factory\Attribute\FactoryAttribute;
+use Doctrine\Common\Annotations\AnnotationRegistry;
+
+class_alias(FactoryAnnotation::class, Annotation\Factory::class);
+class_alias(FactoryAttribute::class, Attribute\Factory::class);
+
+if (class_exists(AnnotationRegistry::class)) {
+    AnnotationRegistry::registerUniqueLoader('class_exists');
+}

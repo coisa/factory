@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/factory.
  *
@@ -7,10 +9,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/factory
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\Factory;
 
 /**
@@ -20,17 +22,12 @@ namespace CoiSA\Factory;
  */
 final class AliasFactory implements FactoryInterface
 {
-    /**
-     * @var string
-     */
-    private $factoryAlias;
+    private string $factoryAlias;
 
     /**
      * AliasFactory constructor.
-     *
-     * @param string $factoryAlias
      */
-    public function __construct($factoryAlias)
+    public function __construct(string $factoryAlias)
     {
         $this->factoryAlias = $factoryAlias;
     }
@@ -43,6 +40,6 @@ final class AliasFactory implements FactoryInterface
         $arguments = \func_get_args();
         $factory   = AbstractFactory::getFactory($this->factoryAlias);
 
-        return \call_user_func_array(array($factory, 'create'), $arguments);
+        return \call_user_func_array([$factory, 'create'], $arguments);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/factory.
  *
@@ -7,10 +9,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/factory
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\Factory;
 
 use CoiSA\Factory\Exception\ReflectionException;
@@ -22,28 +24,21 @@ use CoiSA\Factory\Exception\ReflectionException;
  */
 final class ReflectionClassFactory implements FactoryInterface
 {
-    /**
-     * @var \ReflectionClass
-     */
-    private $reflectionClass;
+    private \ReflectionClass $reflectionClass;
 
     /**
      * ReflectionClassFactory constructor.
      *
      * @param mixed $objectOrClassName
      *
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function __construct($objectOrClassName)
     {
         try {
             $this->reflectionClass = new \ReflectionClass($objectOrClassName);
         } catch (\ReflectionException $reflectionException) {
-            throw ReflectionException::create(
-                $reflectionException->getMessage(),
-                $reflectionException->getCode(),
-                $reflectionException
-            );
+            throw ReflectionException::createFromThrowable($reflectionException);
         }
 
         if (false === $this->reflectionClass->isInstantiable()) {
@@ -57,12 +52,12 @@ final class ReflectionClassFactory implements FactoryInterface
     public function create()
     {
         if (null === $this->reflectionClass->getConstructor()
-            && \method_exists($this->reflectionClass, 'newInstanceWithoutConstructor')
+            && method_exists($this->reflectionClass, 'newInstanceWithoutConstructor')
         ) {
             return $this->reflectionClass->newInstanceWithoutConstructor();
         }
 
-        if (\func_num_args() === 0) {
+        if (0 === \func_num_args()) {
             return $this->reflectionClass->newInstance();
         }
 

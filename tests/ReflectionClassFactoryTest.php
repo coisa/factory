@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/factory.
  *
@@ -7,10 +9,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/factory
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\Factory;
 
 use PHPUnit\Framework\TestCase;
@@ -19,57 +21,60 @@ use PHPUnit\Framework\TestCase;
  * Class ReflectionClassFactoryTest.
  *
  * @package CoiSA\Factory
+ *
+ * @internal
+ * @coversNothing
  */
 final class ReflectionClassFactoryTest extends TestCase
 {
-    public function testConstructorWithNonExistentClassWillThrowException()
+    public function testConstructorWithNonExistentClassWillThrowException(): void
     {
-        $className = __NAMESPACE__ . '\\' . \uniqid('Test', false);
+        $className = __NAMESPACE__ . '\\' . uniqid('Test', false);
 
-        $this->setExpectedException('CoiSA\\Factory\\Exception\\ReflectionException');
+        $this->expectException('CoiSA\\Factory\\Exception\\ReflectionException');
         new ReflectionClassFactory($className);
     }
 
-    public function testCreateWithoutArgumentsReturnObjectOnClassWithoutConstructor()
+    public function testCreateWithoutArgumentsReturnObjectOnClassWithoutConstructor(): void
     {
         $className         = __NAMESPACE__ . '\\Stub\\ClassWithoutConstructor';
         $reflectionFactory = new ReflectionClassFactory($className);
 
         $object = $reflectionFactory->create();
 
-        self::assertInstanceOf(__NAMESPACE__ . '\\Stub\\ClassWithoutConstructor', $object);
+        parent::assertInstanceOf(__NAMESPACE__ . '\\Stub\\ClassWithoutConstructor', $object);
     }
 
-    public function testCreateWithoutArgumentsReturnInitializedObjectOnClassWithoutArgumentConstructor()
+    public function testCreateWithoutArgumentsReturnInitializedObjectOnClassWithoutArgumentConstructor(): void
     {
         $className         = __NAMESPACE__ . '\\Stub\\ConstructorWithoutArgument';
         $reflectionFactory = new ReflectionClassFactory($className);
 
         $object = $reflectionFactory->create();
 
-        self::assertInstanceOf(__NAMESPACE__ . '\\Stub\\ConstructorWithoutArgument', $object);
-        self::assertStringStartsWith('test', $object->argument);
+        parent::assertInstanceOf(__NAMESPACE__ . '\\Stub\\ConstructorWithoutArgument', $object);
+        parent::assertStringStartsWith('test', $object->argument);
     }
 
     public function provideArguments()
     {
-        return array(
-            array(array(1)),
-            array(array(1, 2)),
-            array(array(1, 2, 3)),
-        );
+        return [
+            [[1]],
+            [[1, 2]],
+            [[1, 2, 3]],
+        ];
     }
 
     /**
      * @dataProvider provideArguments
      */
-    public function testCreateWithArgumentsWillInstantiateConstructorWithArguments(array $arguments)
+    public function testCreateWithArgumentsWillInstantiateConstructorWithArguments(array $arguments): void
     {
         $className         = __NAMESPACE__ . '\\Stub\\ConstructorWithMixedArgument';
         $reflectionFactory = new ReflectionClassFactory($className);
 
         $object = $reflectionFactory->create($arguments);
 
-        self::assertEquals($arguments, $object->getArgument());
+        parent::assertSame($arguments, $object->getArgument());
     }
 }

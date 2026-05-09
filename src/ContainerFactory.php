@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/factory.
  *
@@ -7,10 +9,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/factory
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\Factory;
 
 use CoiSA\Factory\Exception\ContainerException;
@@ -24,23 +26,14 @@ use Psr\Container\ContainerInterface;
  */
 final class ContainerFactory implements FactoryInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ContainerInterface $container;
 
-    /**
-     * @var string
-     */
-    private $class;
+    private string $class;
 
     /**
      * ContainerFactory constructor.
-     *
-     * @param ContainerInterface $container
-     * @param string             $class
      */
-    public function __construct(ContainerInterface $container, $class)
+    public function __construct(ContainerInterface $container, string $class)
     {
         $this->container = $container;
         $this->class     = $class;

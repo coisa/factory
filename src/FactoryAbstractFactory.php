@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/factory.
  *
@@ -7,10 +9,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/factory
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\Factory;
 
 use CoiSA\Factory\Registry\FactoryRegistry;
@@ -23,12 +25,9 @@ use Psr\Container\ContainerInterface;
  */
 final class FactoryAbstractFactory implements AbstractFactoryInterface
 {
-    /**
-     * @var null|ContainerInterface
-     */
-    private static $container;
+    private static ContainerInterface $container;
 
-    // @codeCoverageIgnoreStart
+    /** @codeCoverageIgnoreStart */
 
     /**
      * Prevent class from being initialized.
@@ -37,44 +36,33 @@ final class FactoryAbstractFactory implements AbstractFactoryInterface
     {
     }
 
-    // @codeCoverageIgnoreEnd
+    /** @codeCoverageIgnoreEnd */
 
     /**
      * {@inheritdoc}
      */
     public static function create()
     {
-        $class          = \func_get_arg(0);
-        $factoryFactory = new FactoryFactory(self::$container);
+        $class          = func_get_arg(0);
+        $factoryFactory = new FactoryFactory(static::$container ?? null);
 
         return $factoryFactory->create($class);
     }
 
-    /**
-     * @param ContainerInterface $container
-     */
-    public static function setContainer(ContainerInterface $container)
+    public static function setContainer(ContainerInterface $container): void
     {
         self::$container = $container;
     }
 
     /**
-     * @param string                  $class
      * @param FactoryInterface|string $factory
-     *
-     * @return void
      */
-    public static function setFactory($class, $factory)
+    public static function setFactory(string $class, $factory): void
     {
         FactoryRegistry::set($class, $factory);
     }
 
-    /**
-     * @param string $class
-     *
-     * @return FactoryInterface
-     */
-    public static function getFactory($class)
+    public static function getFactory(string $class): FactoryInterface
     {
         if (FactoryRegistry::has($class)) {
             return FactoryRegistry::get($class);

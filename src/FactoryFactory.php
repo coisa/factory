@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/factory.
  *
@@ -7,12 +9,13 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/factory
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\Factory;
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -22,15 +25,10 @@ use Psr\Container\ContainerInterface;
  */
 final class FactoryFactory implements FactoryInterface
 {
-    /**
-     * @var null|ContainerInterface
-     */
-    private $container;
+    private ?ContainerInterface $container;
 
     /**
      * FactoryFactory constructor.
-     *
-     * @param ContainerInterface|null $container
      */
     public function __construct(ContainerInterface $container = null)
     {
@@ -43,18 +41,23 @@ final class FactoryFactory implements FactoryInterface
      * @throws \ReflectionException
      *
      * @return FactoryInterface
-     *
-     * @TODO Add support to \ReflectionAttribute (PHP 8.0)
      */
     public function create()
     {
-        $class = \func_get_arg(0);
+        $class = func_get_arg(0);
 
         if (null !== $this->container && $this->container->has($class)) {
             return new ContainerFactory($this->container, $class);
         }
 
-        if (\class_exists('Doctrine\\Common\\Annotations\\AnnotationReader')) {
+        if (\PHP_VERSION_ID >= 80000) {
+            try {
+                return new ReflectionAttributeFactory($class);
+            } catch (\Throwable $throwable) {
+            }
+        }
+
+        if (class_exists(AnnotationReader::class)) {
             try {
                 return new DoctrineAnnotationFactory($class);
             } catch (\Throwable $throwable) {

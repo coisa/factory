@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/factory.
  *
@@ -7,13 +9,12 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/factory
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\Factory;
 
-use CoiSA\Factory\Exception\InvalidArgumentException;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
@@ -23,10 +24,7 @@ use Prophecy\Prophecy\ObjectProphecy;
  */
 final class ProphecyFactory implements FactoryInterface
 {
-    /**
-     * @var ObjectProphecy
-     */
-    private $objectProphecy;
+    private ObjectProphecy $objectProphecy;
 
     /**
      * @var null|callable
@@ -35,19 +33,9 @@ final class ProphecyFactory implements FactoryInterface
 
     /**
      * ProphecyFactory constructor.
-     *
-     * @param ObjectProphecy $objectProphecy
-     * @param null|callable  $prophesizeMethodsCallable
      */
-    public function __construct(ObjectProphecy $objectProphecy, $prophesizeMethodsCallable = null)
+    public function __construct(ObjectProphecy $objectProphecy, callable $prophesizeMethodsCallable = null)
     {
-        if ($prophesizeMethodsCallable && false === \is_callable($prophesizeMethodsCallable)) {
-            throw InvalidArgumentException::forInvalidArgumentType(
-                'prophesizeMethodsCallable',
-                'callable'
-            );
-        }
-
         $this->objectProphecy            = $objectProphecy;
         $this->prophesizeMethodsCallable = $prophesizeMethodsCallable;
     }

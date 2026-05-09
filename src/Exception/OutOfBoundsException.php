@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/factory.
  *
@@ -7,10 +9,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/factory
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\Factory\Exception;
 
 /**
@@ -20,16 +22,9 @@ namespace CoiSA\Factory\Exception;
  */
 final class OutOfBoundsException extends \CoiSA\Exception\Spl\OutOfBoundsException implements FactoryExceptionInterface
 {
-    /**
-     * @param string     $class
-     * @param mixed      $code
-     * @param null|mixed $previous
-     *
-     * @return OutOfBoundsException
-     */
-    public static function forNotFoundClassFactory($class, $code = 0, $previous = null)
+    public static function forNotFoundClassFactory(string $class, int $code = 0, \Throwable $previous = null): self
     {
-        $message = \sprintf(
+        $message = sprintf(
             'Given class "%s" are not set into the Registry.',
             $class
         );
