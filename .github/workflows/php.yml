@@ -1,45 +1,69 @@
 name: PHP
-on: [push, pull_request]
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
 permissions:
   contents: read
+
 jobs:
-  tests:
-    runs-on: ubuntu-22.04
+  check:
+    name: PHP ${{ matrix.php }} / ${{ matrix.dependencies }}
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['7.4', '8.0', '8.1']
+        include:
+          - php: '8.3'
+            dependencies: latest
+          - php: '8.4'
+            dependencies: latest
+          - php: '8.5'
+            dependencies: latest
+          - php: '8.3'
+            dependencies: lowest
     steps:
-      - name: Checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # v2
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
         with:
-          php-version: ${{ matrix.php-versions }}
-          tools: composer:2
-          coverage: xdebug
-          ini-values: memory_limit=-1
-
-      - name: Validate composer.json and composer.lock
-        run: composer validate
-
-      - name: Get composer cache directory
-        id: composercache
-        run: printf 'dir=%s\n' "$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
-
-      - name: Cache composer dependencies
-        id: composer-cache
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+          php-version: ${{ matrix.php }}
+          extensions: dom, mbstring, xml, xmlwriter
+          coverage: none
+          tools: composer:v2
+      - name: Resolve dependencies on the actual runtime
+        run: composer update --no-plugins --no-scripts --no-interaction --prefer-dist --no-progress ${{ matrix.dependencies == 'lowest' && '--prefer-lowest --prefer-stable' || '' }}
+      - name: Validate, analyse, test and build documentation
+        run: composer --no-plugins check
+      - name: Audit resolved dependencies
+        run: composer --no-plugins audit --locked
+      - name: Documentation preview
+        if: matrix.php == '8.5' && matrix.dependencies == 'latest'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          path: ${{ steps.composercache.outputs.dir }}
-          key: ${{ runner.os }}-php-${{ matrix.php-versions }}-composer-2-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-php-${{ matrix.php-versions }}-composer-2-
+          name: factory-documentation-preview
+          path: build/site/
+          if-no-files-found: error
+          retention-days: 14
 
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-interaction --no-plugins --no-scripts
-
-      - name: Run test suite
-        run: composer run-script test
+  runtime:
+    name: Core without optional adapters / PHP ${{ matrix.php }}
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        php: ['8.3', '8.4', '8.5']
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: composer:v2
+      - run: composer update --no-dev --no-plugins --no-scripts --no-interaction --prefer-dist --no-progress
+      - run: composer --no-plugins validate --strict
+      - run: php tools/check-runtime.php

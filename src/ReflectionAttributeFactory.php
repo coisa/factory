@@ -2,70 +2,40 @@
 
 declare(strict_types=1);
 
-/**
- * This file is part of coisa/factory.
- *
- * This source file is subject to the license that is bundled
- * with this source code in the file LICENSE.
- *
- * @link      https://github.com/coisa/factory
- * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
- * @license   https://opensource.org/licenses/MIT MIT License
- */
-
 namespace CoiSA\Factory;
 
-use CoiSA\Factory\Attribute\Factory;
+use CoiSA\Factory\Attribute\FactoryAttribute;
 use CoiSA\Factory\Exception\ReflectionException;
+use CoiSA\Factory\Internal\FactoryDefinition;
+use CoiSA\Factory\Registry\FactoryRegistryInterface;
 
-/**
- * Class ReflectionAttributeFactory.
- *
- * @package CoiSA\Factory
- */
-final class ReflectionAttributeFactory implements FactoryInterface
+final readonly class ReflectionAttributeFactory implements FactoryInterface
 {
     private FactoryInterface $factory;
 
-    /**
-     * DoctrineAnnotationFactory constructor.
-     *
-     * @param object|string $objectOrClassName
-     *
-     * @throws ReflectionException
-     */
-    public function __construct($objectOrClassName)
+    public function __construct(object|string $objectOrClassName, ?FactoryRegistryInterface $registry = null)
     {
-        if (\PHP_VERSION_ID < 80000) {
-            throw ReflectionException::forClassNotFound('ReflectionAttribute');
-        }
-
         try {
-            $reflectionClass = new \ReflectionClass($objectOrClassName);
-        } catch (\ReflectionException $reflectionException) {
-            throw ReflectionException::createFromThrowable($reflectionException);
+            $class = new \ReflectionClass($objectOrClassName);
+        } catch (\ReflectionException $exception) {
+            throw new ReflectionException($exception->getMessage(), 0, $exception);
         }
 
-        $reflectionAttributes = $reflectionClass->getAttributes(
-            Factory::class,
-            \ReflectionAttribute::IS_INSTANCEOF
-        );
+        $attributes = $class->getAttributes(FactoryAttribute::class);
 
-        if (empty($reflectionAttributes)) {
-            throw ReflectionException::forClassAttributeNotFound(Factory::class);
+        if ($attributes === []) {
+            throw new ReflectionException(sprintf('Class "%s" has no FactoryAttribute.', $class->getName()));
         }
 
-        $factoryAttribute = $reflectionAttributes[0]->newInstance();
-        $this->factory    = $factoryAttribute->getFactory();
+        // A selected attribute or factory may fail. That error must not trigger reflection fallback.
+        $attribute = $attributes[0]->newInstance();
+        $this->factory = $registry !== null && $registry->has($attribute->factory)
+            ? $registry->get($attribute->factory)
+            : FactoryDefinition::instantiate($attribute->factory);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function create()
+    public function create(mixed ...$arguments): mixed
     {
-        $arguments = \func_get_args();
-
-        return \call_user_func_array([$this->factory, 'create'], $arguments);
+        return $this->factory->create(...$arguments);
     }
 }

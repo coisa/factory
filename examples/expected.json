@@ -1,0 +1,6 @@
+{
+    "quickstart.php": "Hello, Ada!\nHello, test!\n",
+    "legacy-to-di.php": "Adapted: local: report\nTest: fake: report\nDirect DI: fake: report\nUnchanged direct call: local: report\n",
+    "strategies.php": "ready: hello\nUTC\n",
+    "prophecy.php": "12:00\nPredictions checked.\n"
+}

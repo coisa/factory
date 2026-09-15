@@ -2,59 +2,25 @@
 
 declare(strict_types=1);
 
-/**
- * This file is part of coisa/factory.
- *
- * This source file is subject to the license that is bundled
- * with this source code in the file LICENSE.
- *
- * @link      https://github.com/coisa/factory
- * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
- * @license   https://opensource.org/licenses/MIT MIT License
- */
-
 namespace CoiSA\Factory;
 
-use CoiSA\Factory\Exception\InvalidArgumentException;
 use Prophecy\Prophecy\ObjectProphecy;
 
-/**
- * Class ProphecyFactory.
- *
- * @package CoiSA\Factory
- */
-final class ProphecyFactory implements FactoryInterface
+/** Adapts an existing prophecy. Its owner must verify predictions. */
+final readonly class ProphecyFactory implements FactoryInterface
 {
-    private ObjectProphecy $objectProphecy;
+    private ?\Closure $configure;
 
-    /**
-     * @var null|callable
-     */
-    private $prophesizeMethodsCallable;
-
-    /**
-     * ProphecyFactory constructor.
-     *
-     * @param null|callable $prophesizeMethodsCallable
-     * @throws InvalidArgumentException
-     */
-    public function __construct(ObjectProphecy $objectProphecy, $prophesizeMethodsCallable = null)
+    /** @param ObjectProphecy<object> $objectProphecy */
+    public function __construct(private ObjectProphecy $objectProphecy, ?callable $configure = null)
     {
-        if (null !== $prophesizeMethodsCallable && !\is_callable($prophesizeMethodsCallable)) {
-            throw new InvalidArgumentException('Prophecy configuration must be callable.');
-        }
-
-        $this->objectProphecy            = $objectProphecy;
-        $this->prophesizeMethodsCallable = $prophesizeMethodsCallable;
+        $this->configure = $configure === null ? null : \Closure::fromCallable($configure);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function create()
+    public function create(mixed ...$arguments): object
     {
-        if ($this->prophesizeMethodsCallable) {
-            \call_user_func($this->prophesizeMethodsCallable, $this->objectProphecy, \func_get_args());
+        if ($this->configure !== null) {
+            ($this->configure)($this->objectProphecy, $arguments);
         }
 
         return $this->objectProphecy->reveal();

@@ -1,29 +1,50 @@
 # CoiSA Factory
 
-[![PHP Version][ico-php]][link-packagist]
-[![Latest Version on Packagist][ico-version]][link-packagist]
-[![Software License][ico-license]](LICENSE)
-[![Total Downloads][ico-downloads]][link-downloads]
+**Make object construction an explicit, replaceable boundary.**
 
-## Install
+Factory is a small PHP library for moving legacy construction code toward dependency injection. Use reflection, callbacks, registered values, aliases, PHP attributes, PSR-11 containers, or optional Prophecy adapters through one deliberate seam.
 
-```sh
-$ composer require coisa/factory
+This checkout is the **unreleased 2.0 development line**, requiring PHP 8.3+. CI covers PHP 8.3, 8.4 and 8.5. The published 1.x API is different; do not apply these examples to 1.x.
+
+```php
+use CoiSA\Factory\Factory;
+use CoiSA\Factory\ValueFactory;
+
+$factory = new Factory();
+$greeting = $factory->create(Greeting::class, ['name' => 'Ada']);
+
+$factory->set(Greeting::class, new ValueFactory(new Greeting('test')));
+$testGreeting = $factory->create(Greeting::class);
 ```
 
-## Credits
+The complete [quickstart](examples/quickstart.php) runs without a framework or external service. Each resolver owns its registry by default. It does not intercept arbitrary `new` expressions or direct static method calls.
 
-- [Felipe Sayão Lobato Abreu][link-author]
+## Try this checkout
 
-## License
+Install PHP 8.3+ and Composer 2. In a checkout containing this development line:
 
-Please see [License File](LICENSE) for more information.
+```sh
+composer install --no-plugins
+composer --no-plugins check
+php examples/legacy-to-di.php
+```
 
-[ico-version]: https://img.shields.io/packagist/v/coisa/factory.svg?style=flat-square
-[ico-php]: https://img.shields.io/packagist/php-v/coisa/factory.svg?style=flat-square
-[ico-license]: https://img.shields.io/github/license/coisa/factory.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/coisa/factory.svg?style=flat-square
+For application installation from a local checkout, follow the [installation guide](docs/quickstart.md). No 2.0 tag is published by this change.
 
-[link-packagist]: https://packagist.org/packages/coisa/factory
-[link-downloads]: https://packagist.org/packages/coisa/factory
-[link-author]: https://github.com/coisa
+## Learn the boundary
+
+- [Installation and quickstart](docs/quickstart.md)
+- [Construction strategies and lifetimes](docs/strategies.md)
+- [API and error reference](docs/api.md)
+- [Executable examples: legacy → seam → DI](docs/examples.md)
+- [Testing, limits and troubleshooting](docs/testing.md)
+- [Migration from 1.x](docs/migration.md)
+- [Contributing, compatibility and documentation builds](CONTRIBUTING.md)
+- [Changelog](CHANGELOG.md)
+
+`composer --no-plugins docs` builds the static reference site in `build/site/`, executes its PHP examples and validates local links. PHP runs during the build, never in GitHub Pages. Deployment is a separate manual workflow restricted to the default branch.
+
+## Credits and license
+
+Created by [Felipe Sayão Lobato Abreu](https://github.com/coisa).
+Released under the [MIT license](LICENSE).
