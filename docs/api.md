@@ -54,11 +54,11 @@ Every adapter implements `create(mixed ...$arguments): mixed` (some narrow their
 | Definition does not implement the required factory contract | Local `InvalidArgumentException` |
 | Recursive resolver call / alias loop | Local `CircularDependencyException` with path |
 | PSR-11 `get()` throws `NotFoundExceptionInterface` | Local `ContainerNotFoundException`, also implementing the PSR interface |
-| Other PSR-11 `get()` failure | Local `ContainerException`, also implementing `ContainerExceptionInterface` |
+| PSR-11 `get()` throws another `ContainerExceptionInterface` | Local `ContainerException`, also implementing `ContainerExceptionInterface` |
 | Arguments passed to a PSR-11 lookup | Local `InvalidArgumentException` |
 | Invalid callable, type mismatch or missing PHP argument | Native PHP `TypeError` / `ArgumentCountError` |
 | Malformed or repeated attribute | Native PHP attribute error |
-| User constructor, static factory, callback or container `has()` throws | Original exception, unchanged |
+| User constructor, static factory, callback, container `has()` or non-PSR container `get()` throws | Original error, unchanged |
 
 All local errors implement `FactoryExceptionInterface`, which extends `Throwable`. Local reflection/out-of-bounds/invalid-argument errors also extend their corresponding native PHP error classes. Container wrappers preserve `getPrevious()`. No exception depends on `coisa/exceptions` or its inherited static creation helpers.
 

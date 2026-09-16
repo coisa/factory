@@ -11,6 +11,7 @@ Notable changes are documented here. The project follows Semantic Versioning.
 - Behavioral tests for strategy precedence, selected-strategy failures, lifetimes, PSR-11 errors and substitution boundaries.
 - Tested installation and executable legacy-to-DI, strategy and Prophecy examples.
 - API, strategy, testing, troubleshooting and migration guides with a static documentation site.
+- Portable agent maintenance guide and a self-contained Factory construction skill with a runnable dependency-substitution example.
 - Supported-PHP and dependency-resolution CI, static analysis, dependency auditing and a manually gated Pages workflow.
 
 ### Changed

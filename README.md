@@ -40,6 +40,8 @@ For application installation from a local checkout, follow the [installation gui
 - [Testing, limits and troubleshooting](docs/testing.md)
 - [Migration from 1.x](docs/migration.md)
 - [Contributing, compatibility and documentation builds](CONTRIBUTING.md)
+- [Agent maintenance guide](AGENTS.md)
+- [Factory construction skill](.agents/skills/factory-construction/SKILL.md)
 - [Changelog](CHANGELOG.md)
 
 `composer --no-plugins docs` builds the static reference site in `build/site/`, executes its PHP examples and validates local links. PHP runs during the build, never in GitHub Pages. Deployment is a separate manual workflow restricted to the default branch.
