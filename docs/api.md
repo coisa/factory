@@ -12,6 +12,7 @@ new Factory(
 
 $factory->create(string $id, array $arguments = []): mixed;
 $factory->getFactory(string $id): FactoryInterface;
+$factory->setContainer(?Psr\Container\ContainerInterface $container): void;
 $factory->set(string $id, FactoryInterface|string $factory): void;
 $factory->has(string $id): bool;
 $factory->remove(string $id): bool;
@@ -24,6 +25,22 @@ These are signature summaries, not a runnable PHP program. `ResolverInterface` c
 `has()` checks explicit registrations only. It does not query the container or claim that a class can be constructed. `remove()` returns whether a registration existed. `clear()` removes registrations and aliases from the supplied registry, not the container. Sharing a registry between resolvers is explicit; changes then affect all those resolvers.
 
 `getFactory()` returns the selected strategy without producing a value. Selecting it can construct a factory class and can therefore throw. Calling that returned strategy directly follows the same strategy contract; call `create()` on the resolver when you want its complete cycle tracking.
+
+`setContainer()` installs, replaces or detaches the container for future selections. The resolver, its registrations and existing aliases stay intact. Each in-flight selection uses the container it consulted, even if `has()` changes configuration or yields. A `ContainerFactory` already returned by `getFactory()` keeps that selected container; a retained alias continues resolving its target dynamically. Existing products and configured factories retain their dependencies. No container services are cleared or reinjected.
+
+## LegacyFactory
+
+```php
+LegacyFactory::resolver(): Factory;
+LegacyFactory::setContainer(?Psr\Container\ContainerInterface $container): void;
+LegacyFactory::create(string $id, array $arguments = []): mixed;
+LegacyFactory::getFactory(string $id): FactoryInterface;
+LegacyFactory::reset(): void;
+```
+
+This opt-in static bridge lazily creates one shared `Factory`. Use `resolver()` for registrations, aliases or gradual resolver injection. `create()` and `getFactory()` use the same selection and error contracts as the instance API. Calls can precede container installation when their strategy can already construct the value.
+
+`reset()` calls `clear()` and detaches the container on the **same resolver**. References already injected elsewhere see the cleared registry and disconnected container. Captured strategies and products retain their own lifetimes; reset does not revoke them or purge external container caches. Use `finally` at sequential job/test boundaries. The bridge is not scoped by request or Fiber; use separately owned instances for concurrent work. See the [legacy adoption guide](legacy-adoption.md) for working bootstrap and migration examples.
 
 ## FactoryRegistryInterface
 

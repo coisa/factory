@@ -21,7 +21,7 @@ declare(strict_types=1);
         <span class="brand-mark" aria-hidden="true">F</span>
         <span>CoiSA <strong>Factory</strong></span>
     </a>
-    <span class="version">2.0 <span>in development</span></span>
+    <span class="version">2.0-dev</span>
     <a class="source-link" href="https://github.com/coisa/factory">Source ↗</a>
 </header>
 <?php if ($slug === 'index') : ?>
@@ -43,7 +43,7 @@ declare(strict_types=1);
         <div class="step selected"><span>02</span><strong>Factory</strong><small>choose the construction strategy</small></div>
         <div class="connector" aria-hidden="true">↓</div>
         <div class="step"><span>03</span><strong>A useful instance</strong><small>real, adapted, or interface-compatible fake</small></div>
-        <p>No hidden global registry. No rewritten PHP.</p>
+        <p>Isolated by default. An opt-in legacy bridge.</p>
     </div>
 </section>
 <section class="principles" aria-label="Library principles">

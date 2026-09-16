@@ -20,9 +20,9 @@ The library intentionally does not commit `composer.lock`: CI resolves current a
 
 ## Construction contract
 
-The [strategy guide](docs/strategies.md), [API](docs/api.md) and [migration guide](docs/migration.md) define the public 2.0 behavior. Keep precedence, argument forwarding, lifetimes, selected-strategy failures and prediction ownership consistent across code, tests and docs. Do not introduce global state, broad exception-swallowing or universal mocking claims.
+The [strategy guide](docs/strategies.md), [API](docs/api.md), [legacy adoption guide](docs/legacy-adoption.md) and [migration guide](docs/migration.md) define the public 2.0 behavior. Keep precedence, argument forwarding, lifetimes, selected-strategy failures and prediction ownership consistent across code, tests and docs. Keep resolvers isolated by default; `LegacyFactory` is an opt-in shared bridge for sequential legacy work. Container changes and reset must preserve its resolver identity, without clearing external service caches or reinjecting products. Do not introduce broad exception-swallowing or universal mocking claims.
 
-Keep regression tests behavioral. Source code is under `src/`; optional Prophecy adapters remain inert until used. `tests/` contains only synthetic fixtures. Preserve the original license and author credit.
+Keep regression tests behavioral. Source code is under `src/`; optional Prophecy adapters remain inert until used. PHP-DI is a development-only integration proof and example dependency; the core delegates through PSR-11 and does not implement autowiring. `tests/` contains only synthetic fixtures. Preserve the original license and author credit.
 
 ## Static documentation
 

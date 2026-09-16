@@ -12,7 +12,7 @@ A resolver selects one strategy for a requested identifier. Registry keys are ex
 | 4 | The class implements `AbstractFactoryInterface` | Call its static `create(...$arguments)` |
 | 5 | The class is instantiable | Call its constructor through reflection |
 
-Absence advances the search. Failure after selecting a strategy does not. A container error, malformed attribute, throwing factory constructor or throwing callback remains visible. Factory does not autowire constructor dependencies.
+Absence advances the search. Failure after selecting a strategy does not. A container error, malformed attribute, throwing factory constructor or throwing callback remains visible. Factory delegates autowiring to the supplied container; its own reflection and metadata strategies do not inject constructor dependencies.
 
 ## Choose the smallest seam
 
@@ -38,7 +38,7 @@ $factory->set('fresh', MyNoArgumentFactory::class);   // new factory on every lo
 $factory->alias('public.name', 'builder');
 ```
 
-A registered factory object's state survives calls. A registered factory class must implement `FactoryInterface` with an accessible constructor, or a concrete static `AbstractFactoryInterface::create()`. Class definitions are validated when registered and instantiated when selected. If a constructor needs dependencies, register an already configured object. A constructor failure propagates.
+A registered factory object's state survives calls. A registered factory class must implement `FactoryInterface` with an accessible constructor, or a concrete static `AbstractFactoryInterface::create()`. Class definitions are validated when registered and instantiated when selected. If a constructor needs dependencies, register an already configured object, including one created by your container. Resolving a factory's class through a container produces the factory object; register it under a product identifier to invoke it for that product. A constructor failure propagates.
 
 Aliases see later replacement of their target. Self-aliases, alias loops and recursive `create()` calls throw `CircularDependencyException` with the resolution path. The active path is released after success or failure and is separate for each Fiber. That protects resolution bookkeeping; it does not make user factories or containers concurrency-safe.
 
@@ -62,3 +62,9 @@ The attribute names a registered strategy in this resolver's registry, or a fact
 ## PSR-11 arguments
 
 PSR-11 `get($id)` accepts no construction arguments. Passing any to `ContainerFactory` throws `InvalidArgumentException` before lookup. Register a `CallableFactory` explicitly when you need to resolve dependencies from a container and then construct with call-specific arguments.
+
+## Container changes and the legacy bridge
+
+`$factory->setContainer($container)` changes future selections on the same resolver; pass `null` to detach the container. Registrations and aliases survive either operation. A selected container remains fixed for that in-flight selection. Holding a `ContainerFactory` returned earlier keeps its original container, while holding an alias keeps a dynamic route through the resolver.
+
+`LegacyFactory` exposes this resolver through an opt-in static entrypoint for sequential legacy work. Its `reset()` clears the shared registry and detaches the container in place. Ordinary `new Factory()` instances remain isolated by default. Neither operation reinjects products, disposes resources or clears a container's cached services. The [legacy adoption guide](legacy-adoption.md) shows configured factories, lazy container-aware callbacks and incremental migration to directly injected dependencies.

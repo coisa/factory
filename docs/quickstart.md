@@ -23,7 +23,7 @@ composer require 'coisa/factory:@dev' --no-plugins
 
 This explicitly opts that one package into development code. Commit your application's Composer lock file. Remove the path repository and select a released version when you intentionally adopt a release. This change does not create a 2.0 release.
 
-The runtime package requires only PHP and `psr/container`. The documentation generator, test runner and Prophecy are development dependencies of this checkout. Applications using the optional test-double adapters install Prophecy explicitly:
+The runtime package requires only PHP and `psr/container`. The documentation generator, test runner, PHP-DI integration example and Prophecy are development dependencies of this checkout. Applications choose their own PSR-11 implementation. Applications using the optional test-double adapters install Prophecy explicitly:
 
 ```sh
 composer require --dev 'phpspec/prophecy:^1.22' --no-plugins
@@ -64,3 +64,5 @@ $greeting = $factory->create(Greeting::class, ['name' => 'Ada']);
 Only calls through this resolver see that registration. Another `new Factory()`, a direct `new Greeting(...)`, and a direct static call keep their normal PHP behavior.
 
 For a complete, service-free example, run `php examples/quickstart.php`. The [examples](examples.md) show its exact source and checked output in the built site.
+
+For an application that still uses static helpers, start with the [legacy adoption guide](legacy-adoption.md). Its opt-in `LegacyFactory` bridge lets later container bootstrap reach existing callers while preserving registrations, then supports gradual migration to instance injection.

@@ -38,6 +38,32 @@ final class NoConstructor
 {
 }
 
+final readonly class AutowiredDependency
+{
+    public function __construct(public string $name = 'default')
+    {
+    }
+}
+
+final readonly class AutowiredProduct
+{
+    public function __construct(public AutowiredDependency $dependency, public string $label = 'report')
+    {
+    }
+}
+
+final readonly class AutowiredProductFactory implements FactoryInterface
+{
+    public function __construct(public AutowiredDependency $dependency)
+    {
+    }
+
+    public function create(mixed ...$arguments): AutowiredProduct
+    {
+        return new AutowiredProduct($this->dependency, ...$arguments);
+    }
+}
+
 final class CountingFactory implements FactoryInterface
 {
     private int $calls = 0;

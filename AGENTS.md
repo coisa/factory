@@ -13,8 +13,9 @@ Source, behavioral tests and public documentation must agree. Investigate a disa
 ## Local Contracts
 
 - Keep source, documentation, examples and skill instructions in English. Document public API or lifecycle changes in the same PR, including migration guidance when behavior changes.
-- Keep resolver registries isolated by default. Preserve explicit registry sharing, strategy precedence, argument forwarding and visible selected-strategy failures.
-- Keep runtime dependencies separate from optional testing adapters and development tools. The core must run without Prophecy; its caller or test framework owns prediction verification.
+- Keep resolver registries isolated by default. `LegacyFactory` is the explicit, opt-in shared bridge for sequential legacy work; concurrent requests need separately owned resolvers and containers. Preserve precedence, argument forwarding and visible selected-strategy failures.
+- Preserve the stable resolver during container installation, replacement, removal and bridge reset. Reset clears its registry and detaches its container; it does not purge container caches, reinject products or dispose resources. Document captured-strategy lifetimes.
+- Keep runtime dependencies separate from optional testing adapters and development tools. The core must run without Prophecy or PHP-DI; the supplied container owns autowiring and service lifetimes, and the test caller owns prediction verification.
 - Limit replacement claims to explicit construction seams. Direct constructors/static calls, PHP type compatibility and final/internal-class restrictions retain ordinary PHP behavior.
 - Keep `Internal` implementation details out of public compatibility promises. Do not add global aliases, implicit autowiring or product caching without an explicit API decision.
 - Keep examples service-free and tests synthetic. Generated documentation belongs in ignored `build/site/`; temporary checks belong in ignored `tmp/`.
@@ -23,7 +24,7 @@ Source, behavioral tests and public documentation must agree. Investigate a disa
 
 Use [CONTRIBUTING.md](CONTRIBUTING.md) for dependency setup, development commands and the documentation workflow. Read the relevant strategy, API or migration guide before changing that behavior. Keep tests focused on observable behavior and update executable examples when their documented result changes.
 
-Use the [factory-construction skill](.agents/skills/factory-construction/SKILL.md) when helping a consumer choose a construction strategy, introduce a seam or substitute a test dependency. It is a repository-local, portable entrypoint; publishing or installing it into another environment is a separate action.
+Use the [coisa-factory skill](.agents/skills/coisa-factory/SKILL.md) when helping a consumer choose a construction strategy, adopt the legacy bridge, introduce a seam or substitute a test dependency. It is a repository-local, portable entrypoint; publishing or installing it into another environment is a separate action.
 
 Make reviewable changes on a topic branch, preserve unrelated work, add an Unreleased changelog entry and sign off commits. Keep runtime evidence tied to the tested commit and distinguish local checks, remote CI, review, release and deployment state.
 
@@ -46,8 +47,9 @@ There are no child `AGENTS.md` contracts. These entrypoints provide the focused 
 
 - [README.md](README.md): package purpose and installation entrypoint; distinguishes this development line from published 1.x.
 - [CONTRIBUTING.md](CONTRIBUTING.md): development and static-site commands; release and deployment remain maintainer decisions.
-- [Strategies and lifetimes](docs/strategies.md): precedence, registrations and adapter lifetimes; no automatic dependency injection.
+- [Legacy adoption](docs/legacy-adoption.md): late container bootstrap, explicit autowiring integration, static-call adapters, incremental injection and sequential lifecycle.
+- [Strategies and lifetimes](docs/strategies.md): precedence, registrations and adapter lifetimes; container-owned autowiring.
 - [API and errors](docs/api.md): public signatures and error boundaries; excludes the `Internal` namespace.
 - [Testing and limits](docs/testing.md): substitution and prediction ownership; no universal static/final/internal mocking.
 - [Migration from 1.x](docs/migration.md): removed APIs and their explicit 2.0 replacements.
-- [Factory construction skill](.agents/skills/factory-construction/SKILL.md): consumer-facing construction guidance and a runnable example; keeps its procedure in one package entrypoint.
+- [CoiSA Factory skill](.agents/skills/coisa-factory/SKILL.md): consumer-facing construction guidance and a runnable example; keeps its procedure in one package entrypoint.

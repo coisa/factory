@@ -1,6 +1,7 @@
 {
     "quickstart.php": "Hello, Ada!\nHello, test!\n",
-    "legacy-to-di.php": "Adapted: local: report\nTest: fake: report\nDirect DI: fake: report\nUnchanged direct call: local: report\n",
+    "legacy-bridge.php": "Before container: ready\nNo-argument factory: ready\nAutowire: first: daily\nOverride: fake\nNext selection: second: daily\nCaptured strategy: first: daily\nConfigured factory: first: weekly\nLazy factory: second: weekly\nExisting product: first: daily\nSame resolver after reset: yes\nRegistration after reset: absent\nJob: job A: daily\nJob: job B: daily\n",
+    "legacy-to-di.php": "Adapted: local: report\nTest: fake: report\nInjected resolver: fake: report\nDirect DI: fake: report\nUnchanged direct call: local: report\n",
     "strategies.php": "ready: hello\nUTC\n",
     "prophecy.php": "12:00\nPredictions checked.\n"
 }

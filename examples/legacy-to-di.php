@@ -5,7 +5,8 @@ declare(strict_types=1);
 require dirname(__DIR__) . '/vendor/autoload.php';
 
 use CoiSA\Factory\CallableFactory;
-use CoiSA\Factory\FactoryInterface;
+use CoiSA\Factory\LegacyFactory;
+use CoiSA\Factory\ResolverInterface;
 use CoiSA\Factory\ValueFactory;
 
 interface Sender
@@ -14,29 +15,29 @@ interface Sender
 }
 
 // A local stand-in for a legacy API. This example never contacts a service.
-final class LegacySender implements Sender
+final class LegacyMailApi
 {
-    public static function connect(): self
-    {
-        return new self();
-    }
-
-    public function send(string $message): string
+    public static function send(string $message): string
     {
         return "local: {$message}";
     }
 }
 
-// Step 1: move the construction call to an injected, explicit seam.
-final readonly class ReportWithFactory
+// Step 1: put the hardcoded static collaborator behind the application's interface.
+final class LegacySenderAdapter implements Sender
 {
-    public function __construct(private FactoryInterface $senderFactory)
+    public function send(string $message): string
     {
+        return LegacyMailApi::send($message);
     }
+}
 
-    public function deliver(): string
+// A legacy caller can keep its public static entrypoint while gaining a seam.
+final class LegacyReport
+{
+    public static function deliver(): string
     {
-        $sender = $this->senderFactory->create();
+        $sender = LegacyFactory::create(Sender::class);
         if (!$sender instanceof Sender) {
             throw new UnexpectedValueException('The factory must create a Sender.');
         }
@@ -44,18 +45,22 @@ final readonly class ReportWithFactory
     }
 }
 
-$live = new ReportWithFactory(new CallableFactory([LegacySender::class, 'connect']));
-echo 'Adapted: ', $live->deliver(), PHP_EOL;
-
-// Step 2: replace that seam in a test with an interface-compatible fake.
-$fake = new class implements Sender {
-    public function send(string $message): string
+// Step 2: remove global lookup from a migrated consumer by injecting the resolver.
+final readonly class ReportWithResolver
+{
+    public function __construct(private ResolverInterface $factory)
     {
-        return "fake: {$message}";
     }
-};
-$test = new ReportWithFactory(new ValueFactory($fake));
-echo 'Test: ', $test->deliver(), PHP_EOL;
+
+    public function deliver(): string
+    {
+        $sender = $this->factory->create(Sender::class);
+        if (!$sender instanceof Sender) {
+            throw new UnexpectedValueException('The factory must create a Sender.');
+        }
+        return $sender->send('report');
+    }
+}
 
 // Step 3: once construction is in the composition root, inject the dependency itself.
 final readonly class Report
@@ -70,5 +75,23 @@ final readonly class Report
     }
 }
 
-echo 'Direct DI: ', (new Report($fake))->deliver(), PHP_EOL;
-echo 'Unchanged direct call: ', LegacySender::connect()->send('report'), PHP_EOL;
+LegacyFactory::reset();
+try {
+    $resolver = LegacyFactory::resolver();
+    $resolver->set(Sender::class, new CallableFactory(static fn (): Sender => new LegacySenderAdapter()));
+    echo 'Adapted: ', LegacyReport::deliver(), PHP_EOL;
+
+    $fake = new class implements Sender {
+        public function send(string $message): string
+        {
+            return "fake: {$message}";
+        }
+    };
+    $resolver->set(Sender::class, new ValueFactory($fake));
+    echo 'Test: ', LegacyReport::deliver(), PHP_EOL;
+    echo 'Injected resolver: ', (new ReportWithResolver($resolver))->deliver(), PHP_EOL;
+    echo 'Direct DI: ', (new Report($resolver->create(Sender::class)))->deliver(), PHP_EOL;
+    echo 'Unchanged direct call: ', LegacyMailApi::send('report'), PHP_EOL;
+} finally {
+    LegacyFactory::reset();
+}

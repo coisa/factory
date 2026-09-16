@@ -15,6 +15,7 @@ if (!is_dir($output) && !mkdir($output, 0777, true) && !is_dir($output)) {
 
 $pages = [
     'index' => ['Start here', 'docs/quickstart.md'],
+    'legacy-adoption' => ['Legacy adoption', 'docs/legacy-adoption.md'],
     'strategies' => ['Strategies & lifetimes', 'docs/strategies.md'],
     'api' => ['API & errors', 'docs/api.md'],
     'examples' => ['Executable examples', 'docs/examples.md'],

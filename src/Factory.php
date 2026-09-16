@@ -21,10 +21,16 @@ final class Factory implements ResolverInterface
     private \WeakMap $fiberResolutions;
 
     public function __construct(
-        private readonly ?ContainerInterface $container = null,
+        private ?ContainerInterface $container = null,
         private readonly FactoryRegistryInterface $registry = new FactoryRegistry(),
     ) {
         $this->fiberResolutions = new \WeakMap();
+    }
+
+    /** Change future selections without replacing the resolver or its registrations. */
+    public function setContainer(?ContainerInterface $container): void
+    {
+        $this->container = $container;
     }
 
     public function set(string $id, FactoryInterface|string $factory): void
@@ -79,8 +85,9 @@ final class Factory implements ResolverInterface
             return $this->registry->get($id);
         }
 
-        if ($this->container !== null && $this->container->has($id)) {
-            return new ContainerFactory($this->container, $id);
+        $container = $this->container;
+        if ($container !== null && $container->has($id)) {
+            return new ContainerFactory($container, $id);
         }
 
         try {

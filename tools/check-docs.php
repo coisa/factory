@@ -22,8 +22,8 @@ function readHtml(string $file): DOMDocument
 }
 
 $pages = glob($root . '/*.html');
-if (count($pages) !== 8) {
-    throw new RuntimeException('Expected eight generated documentation pages.');
+if (count($pages) !== 9) {
+    throw new RuntimeException('Expected nine generated documentation pages.');
 }
 $links = 0;
 foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($root, FilesystemIterator::SKIP_DOTS)) as $file) {
