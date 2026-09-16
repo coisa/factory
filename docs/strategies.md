@@ -1,6 +1,6 @@
 # Strategies & lifetimes
 
-A resolver selects one strategy for a requested identifier. Identifiers are exact, case-sensitive registry and container keys; use canonical class names consistently.
+A resolver selects one strategy for a requested identifier. Registry keys are exact and case-sensitive; use canonical class names consistently. The resolver forwards identifiers unchanged to a supplied container, whose own rules determine identifier matching and aliases.
 
 ## Resolution order
 
