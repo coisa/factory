@@ -6,3 +6,26 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    groups:
+      composer-production:
+        dependency-type: production
+        patterns:
+          - "*"
+      composer-development:
+        dependency-type: development
+        patterns:
+          - "*"
+    labels:
+      - dependencies
+      - php
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+    labels:
+      - dependencies
+      - github-actions
