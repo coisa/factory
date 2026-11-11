@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace CoiSA\Factory;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Class AbstractFactoryTest.
@@ -27,11 +28,18 @@ use PHPUnit\Framework\TestCase;
  */
 final class AbstractFactoryTest extends TestCase implements AbstractFactoryInterface
 {
+    use ProphecyTrait;
+
     private $container;
 
     protected function setUp(): void
     {
         $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
+    }
+
+    public function testNativeAttributeAliasRequiresPhp8(): void
+    {
+        parent::assertSame(\PHP_VERSION_ID >= 80000, \class_exists(Attribute\Factory::class, false));
     }
 
     public function testCreateWithContainerWillReturnContainerFactory(): void

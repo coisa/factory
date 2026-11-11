@@ -20,8 +20,11 @@ use CoiSA\Factory\Attribute\FactoryAttribute;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 
 class_alias(FactoryAnnotation::class, Annotation\Factory::class);
-class_alias(FactoryAttribute::class, Attribute\Factory::class);
 
-if (class_exists(AnnotationRegistry::class)) {
+if (\PHP_VERSION_ID >= 80000) {
+    class_alias(FactoryAttribute::class, Attribute\Factory::class);
+}
+
+if (method_exists(AnnotationRegistry::class, 'registerUniqueLoader')) {
     AnnotationRegistry::registerUniqueLoader('class_exists');
 }

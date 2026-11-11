@@ -15,6 +15,8 @@ declare(strict_types=1);
 
 namespace CoiSA\Factory\Exception;
 
+use CoiSA\Exception\ExceptionTrait;
+
 /**
  * Class ReflectionException.
  *
@@ -22,6 +24,8 @@ namespace CoiSA\Factory\Exception;
  */
 final class ReflectionException extends \CoiSA\Exception\Spl\ReflectionException implements FactoryExceptionInterface
 {
+    use ExceptionTrait;
+
     /** @const string */
     public const MESSAGE_ANNOTATION_CLASS_NOT_FOUND = 'Annotation "%s" not found on class definition.';
 
