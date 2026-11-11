@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace CoiSA\Factory;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
@@ -28,6 +29,8 @@ use Prophecy\Prophecy\ObjectProphecy;
  */
 final class ProphecyFactoryTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testCreateWithInvalidProphesizeMethodsCallableArgumentWillThrowInvalidArgumentException(): void
     {
         $objectProphecy = $this->prophesize('CoiSA\\Factory\\FactoryInterface');

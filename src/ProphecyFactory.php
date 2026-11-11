@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace CoiSA\Factory;
 
+use CoiSA\Factory\Exception\InvalidArgumentException;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
@@ -33,9 +34,16 @@ final class ProphecyFactory implements FactoryInterface
 
     /**
      * ProphecyFactory constructor.
+     *
+     * @param null|callable $prophesizeMethodsCallable
+     * @throws InvalidArgumentException
      */
-    public function __construct(ObjectProphecy $objectProphecy, callable $prophesizeMethodsCallable = null)
+    public function __construct(ObjectProphecy $objectProphecy, $prophesizeMethodsCallable = null)
     {
+        if (null !== $prophesizeMethodsCallable && !\is_callable($prophesizeMethodsCallable)) {
+            throw new InvalidArgumentException('Prophecy configuration must be callable.');
+        }
+
         $this->objectProphecy            = $objectProphecy;
         $this->prophesizeMethodsCallable = $prophesizeMethodsCallable;
     }

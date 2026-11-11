@@ -29,6 +29,6 @@ final class OutOfBoundsException extends \CoiSA\Exception\Spl\OutOfBoundsExcepti
             $class
         );
 
-        return self::create($message, $code, $previous);
+        return new self($message, $code, $previous);
     }
 }
