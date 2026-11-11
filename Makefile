@@ -1,21 +1,15 @@
-SHELL := sh
-.DEFAULT_GOAL := install
+.DEFAULT_GOAL := check
 
-/usr/local/bin/lando:
-	@echo "You need to install lando first!"
-	@echo "See how-to: https://docs.lando.dev/basics/installation.html"
-	@echo
-	@exit 1
+.PHONY: install check test docs
 
-.PHONY: lando
-lando: /usr/local/bin/lando
+install:
+	composer install --no-plugins
 
-.PHONY: install
-install: vendor
+check:
+	composer check
 
-.PHONY: test
-test: lando
-	lando composer test
+test:
+	composer test
 
-vendor: lando
-	lando composer install
+docs:
+	composer docs

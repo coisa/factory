@@ -2,52 +2,42 @@
 
 declare(strict_types=1);
 
-/**
- * This file is part of coisa/factory.
- *
- * This source file is subject to the license that is bundled
- * with this source code in the file LICENSE.
- *
- * @link      https://github.com/coisa/factory
- * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
- * @license   https://opensource.org/licenses/MIT MIT License
- */
-
 namespace CoiSA\Factory;
 
 use CoiSA\Factory\Exception\ContainerException;
+use CoiSA\Factory\Exception\ContainerNotFoundException;
+use CoiSA\Factory\Exception\InvalidArgumentException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
-/**
- * Class ContainerFactory.
- *
- * @package CoiSA\Factory
- */
-final class ContainerFactory implements FactoryInterface
+/** PSR-11 owns the returned value and its lifecycle. */
+final readonly class ContainerFactory implements FactoryInterface
 {
-    private ContainerInterface $container;
-
-    private string $class;
-
-    /**
-     * ContainerFactory constructor.
-     */
-    public function __construct(ContainerInterface $container, string $class)
+    public function __construct(private ContainerInterface $container, private string $id)
     {
-        $this->container = $container;
-        $this->class     = $class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function create()
+    public function create(mixed ...$arguments): mixed
     {
+        if ($arguments !== []) {
+            throw new InvalidArgumentException('PSR-11 lookups do not accept construction arguments.');
+        }
+
         try {
-            return $this->container->get($this->class);
-        } catch (ContainerExceptionInterface $containerException) {
-            throw ContainerException::forExceptionResolvingIdentifier($containerException, $this->class);
+            return $this->container->get($this->id);
+        } catch (NotFoundExceptionInterface $exception) {
+            throw new ContainerNotFoundException(
+                sprintf('Container entry "%s" was not found.', $this->id),
+                0,
+                $exception,
+            );
+        } catch (ContainerExceptionInterface $exception) {
+            throw new ContainerException(
+                sprintf('Container could not resolve "%s".', $this->id),
+                0,
+                $exception,
+            );
         }
     }
 }

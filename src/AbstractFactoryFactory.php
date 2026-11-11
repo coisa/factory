@@ -2,58 +2,38 @@
 
 declare(strict_types=1);
 
-/**
- * This file is part of coisa/factory.
- *
- * This source file is subject to the license that is bundled
- * with this source code in the file LICENSE.
- *
- * @link      https://github.com/coisa/factory
- * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
- * @license   https://opensource.org/licenses/MIT MIT License
- */
-
 namespace CoiSA\Factory;
 
+use CoiSA\Factory\Exception\InvalidArgumentException;
 use CoiSA\Factory\Exception\ReflectionException;
 
-/**
- * Class AbstractFactoryFactory.
- *
- * @package CoiSA\Factory
- */
-final class AbstractFactoryFactory implements FactoryInterface
+/** Calls only the explicit AbstractFactoryInterface::create() construction seam. */
+final readonly class AbstractFactoryFactory implements FactoryInterface
 {
-    private string $abstractFactory;
-
-    /**
-     * AbstractFactoryFactory constructor.
-     *
-     * @throws ReflectionException
-     */
-    public function __construct(string $abstractFactory)
+    public function __construct(private string $abstractFactory)
     {
-        if (false === class_exists($abstractFactory)) {
-            throw ReflectionException::forClassNotFound($abstractFactory);
+        try {
+            $reflection = new \ReflectionClass($abstractFactory);
+        } catch (\ReflectionException $exception) {
+            throw new ReflectionException($exception->getMessage(), 0, $exception);
         }
 
-        $implements = class_implements($abstractFactory);
-
-        if (false === \in_array(AbstractFactoryInterface::class, $implements, true)) {
-            throw ReflectionException::forClassNotSubclassOf($abstractFactory, AbstractFactoryInterface::class);
+        if (
+            !$reflection->implementsInterface(AbstractFactoryInterface::class)
+            || $reflection->getMethod('create')->isAbstract()
+        ) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    '"%s" must implement a concrete %s::create().',
+                    $abstractFactory,
+                    AbstractFactoryInterface::class,
+                ),
+            );
         }
-
-        $this->abstractFactory = $abstractFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function create()
+    public function create(mixed ...$arguments): mixed
     {
-        $callable  = [$this->abstractFactory, 'create'];
-        $arguments = \func_get_args();
-
-        return \call_user_func_array($callable, $arguments);
+        return ($this->abstractFactory)::create(...$arguments);
     }
 }

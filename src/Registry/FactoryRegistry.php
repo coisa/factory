@@ -2,102 +2,53 @@
 
 declare(strict_types=1);
 
-/**
- * This file is part of coisa/factory.
- *
- * This source file is subject to the license that is bundled
- * with this source code in the file LICENSE.
- *
- * @link      https://github.com/coisa/factory
- * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
- * @license   https://opensource.org/licenses/MIT MIT License
- */
-
 namespace CoiSA\Factory\Registry;
 
-use CoiSA\Factory\AbstractFactoryFactory;
-use CoiSA\Factory\AbstractFactoryInterface;
-use CoiSA\Factory\Exception\InvalidArgumentException;
 use CoiSA\Factory\Exception\OutOfBoundsException;
-use CoiSA\Factory\Exception\ReflectionException;
 use CoiSA\Factory\FactoryInterface;
+use CoiSA\Factory\Internal\FactoryDefinition;
 
-/**
- * Class FactoryRegistry.
- *
- * @package CoiSA\Factory\FactoryRegistry
- */
+/** Objects are reused; class definitions create a fresh factory on every lookup. */
 final class FactoryRegistry implements FactoryRegistryInterface
 {
-    /**
-     * @var array<FactoryInterface|string>
-     */
-    private static $factories = [];
+    /** @var array<string, FactoryInterface|string> */
+    private array $factories = [];
 
-    /** @codeCoverageIgnoreStart */
-
-    /**
-     * Prevent class from being initialized.
-     */
-    private function __construct()
+    public function set(string $id, FactoryInterface|string $factory): void
     {
+        if (is_string($factory)) {
+            FactoryDefinition::reflect($factory);
+        }
+
+        $this->factories[$id] = $factory;
     }
 
-    /** @codeCoverageIgnoreEnd */
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function set(string $class, $factory): void
+    public function has(string $id): bool
     {
-        if (false === \is_string($factory) && !$factory instanceof FactoryInterface) {
-            throw InvalidArgumentException::forInvalidArgumentType('factory', FactoryInterface::class . '|string');
-        }
-
-        if (\is_string($factory) && false === class_exists($factory)) {
-            throw ReflectionException::forClassNotFound($factory);
-        }
-
-        $givenFactoryReflectionClass = new \ReflectionClass($factory);
-
-        if (false === $givenFactoryReflectionClass->implementsInterface(FactoryInterface::class)
-            && false === $givenFactoryReflectionClass->implementsInterface(AbstractFactoryInterface::class)
-        ) {
-            throw ReflectionException::forClassNotSubclassOf($factory, FactoryInterface::class);
-        }
-
-        self::$factories[$class] = $factory;
+        return array_key_exists($id, $this->factories);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function has(string $class): bool
+    public function get(string $id): FactoryInterface
     {
-        return \array_key_exists($class, self::$factories);
+        if (!$this->has($id)) {
+            throw new OutOfBoundsException(sprintf('No factory is registered for "%s".', $id));
+        }
+
+        $factory = $this->factories[$id];
+
+        return is_string($factory) ? FactoryDefinition::instantiate($factory) : $factory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function get(string $class): FactoryInterface
+    public function remove(string $id): bool
     {
-        if (false === self::has($class)) {
-            throw OutOfBoundsException::forNotFoundClassFactory($class);
-        }
+        $exists = $this->has($id);
+        unset($this->factories[$id]);
 
-        $factory = self::$factories[$class];
+        return $exists;
+    }
 
-        if (false === \is_string($factory)) {
-            return $factory;
-        }
-
-        $reflectionClass = new \ReflectionClass($factory);
-
-        if ($reflectionClass->implementsInterface(AbstractFactoryInterface::class)) {
-            return new AbstractFactoryFactory($factory);
-        }
-
-        return $reflectionClass->newInstance();
+    public function clear(): void
+    {
+        $this->factories = [];
     }
 }
